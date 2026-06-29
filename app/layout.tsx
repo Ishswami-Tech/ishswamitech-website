@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
     default: siteConfig.title,
-    template: "%s | IshSwamiTech Solutions",
+    template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.description,
   applicationName: siteConfig.shortName,
@@ -52,8 +52,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: siteConfig.ogImage,
-        width: 1200,
-        height: 630,
+        width: 1024,
+        height: 1024,
         alt: siteConfig.name,
       },
     ],
@@ -65,8 +65,11 @@ export const metadata: Metadata = {
     images: [siteConfig.ogImage],
   },
   icons: {
-    icon: "/favicon.ico",
-    apple: "/favicon.ico",
+    icon: [
+      { url: "/logo.png", type: "image/png" },
+      { url: "/favicon.ico" },
+    ],
+    apple: "/logo.png",
   },
 };
 

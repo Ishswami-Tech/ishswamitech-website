@@ -43,7 +43,7 @@ const socialLinks = [
   { href: siteConfig.social.x, label: "X (Twitter)", icon: Twitter },
   { href: siteConfig.social.instagram, label: "Instagram", icon: Instagram },
   { href: siteConfig.social.youtube, label: "YouTube", icon: Youtube },
-];
+].filter((link) => Boolean(link.href));
 
 export default function Footer() {
   return (
@@ -85,19 +85,20 @@ export default function Footer() {
             <Link href="/" className="mb-5 flex items-center gap-3">
               <div className="flex items-center justify-center overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--card)] p-1.5">
                 <Image
-                  src="/Assets/main-logo.png"
+                  src="/logo.png"
                   alt=""
-                  width={32}
-                  height={32}
-                  className="h-8 w-8 scale-[1.2] object-cover"
+                  width={40}
+                  height={40}
+                  sizes="40px"
+                  className="h-10 w-10 object-contain"
                 />
               </div>
               <div className="flex flex-col leading-none">
                 <span className="font-heading text-xl font-bold gradient-text">
-                  IshSwamiTech
+                  Ishswami
                 </span>
                 <span className="type-ui text-[10px] uppercase tracking-[0.18em] text-[var(--text-muted)]">
-                  Solutions
+                  Tech
                 </span>
               </div>
             </Link>
@@ -203,7 +204,7 @@ export default function Footer() {
 
         <div className="mt-12 flex flex-col items-start justify-between gap-4 border-t border-[var(--border)] pt-8 md:flex-row md:items-center">
           <p className="type-body text-sm text-[var(--text-muted)]">
-            © {new Date().getFullYear()} IshSwamiTech Solutions. All rights reserved.
+            © {new Date().getFullYear()} Ishswami Tech. All rights reserved.
           </p>
           <p className="type-body text-xs text-[var(--text-muted)]">
             Crafted with care for founders, product teams, and ambitious builders.

@@ -8,7 +8,7 @@ import { paymentCollectionDisclosure, siteConfig } from "@/lib/site";
 const sections = [
   {
     title: "1. No physical shipping",
-    body: "IshSwamiTech primarily provides software, digital products, technology services, client-platform services, and online payment/booking infrastructure. We do not ship physical goods unless a separate client agreement or order specifically includes physical delivery.",
+    body: "Ishswami Tech primarily provides software, digital products, technology services, client-platform services, and online payment/booking infrastructure. We do not ship physical goods unless a separate client agreement or order specifically includes physical delivery.",
   },
   {
     title: "2. Digital service delivery",
@@ -16,7 +16,7 @@ const sections = [
   },
   {
     title: "3. Client service delivery",
-    body: "For client platforms operated by IshSwamiTech, confirmations and access details may be delivered digitally through the app, website, SMS, WhatsApp, email, or other configured channels. The actual service, product, event, consultation, class, appointment, or deliverable is fulfilled by the listed client or service provider.",
+    body: "For client platforms operated by Ishswami Tech, confirmations and access details may be delivered digitally through the app, website, SMS, WhatsApp, email, or other configured channels. The actual service, product, event, consultation, class, appointment, or deliverable is fulfilled by the listed client or service provider.",
   },
   {
     title: "4. Delivery timelines",

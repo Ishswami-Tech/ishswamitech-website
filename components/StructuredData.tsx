@@ -6,10 +6,10 @@ const organizationSchema = {
   name: siteConfig.name,
   alternateName: siteConfig.shortName,
   url: siteConfig.url,
-  logo: absoluteUrl("/Assets/main-logo.png"),
+  logo: absoluteUrl(siteConfig.logo),
   email: siteConfig.email,
   telephone: siteConfig.phone,
-  sameAs: Object.values(siteConfig.social),
+  sameAs: Object.values(siteConfig.social).filter(Boolean),
   contactPoint: [
     {
       "@type": "ContactPoint",

@@ -85,12 +85,12 @@ export default function AboutPage() {
             className="grid items-end gap-10 lg:grid-cols-[1.3fr_1fr]"
           >
             <div>
-              <p className="type-eyebrow mb-4">About IshSwamiTech</p>
+              <p className="type-eyebrow mb-4">About Ishswami Tech</p>
               <h1 className="type-page-title mb-5 text-[var(--foreground)]">
                 We&apos;re builders, thinkers, and product-minded problem solvers.
               </h1>
               <p className="type-lead max-w-2xl">
-                Since 2019, IshSwamiTech has helped founders and growing teams turn ambitious
+                Since 2019, Ishswami Tech has helped founders and growing teams turn ambitious
                 ideas into shipped products. We blend senior product engineering, AI capability,
                 and a design eye that respects both pixels and conversion rates.
               </p>
@@ -150,7 +150,7 @@ export default function AboutPage() {
               <div className="glass relative overflow-hidden rounded-2xl border border-[var(--border-strong)] aspect-video">
                 <Image
                   src="/Assets/Programmers_4.jpg"
-                  alt="IshSwamiTech engineering team collaborating"
+                  alt="Ishswami Tech engineering team collaborating"
                   fill
                   className="object-cover"
                   sizes="(max-width: 1024px) 100vw, 50vw"
@@ -172,7 +172,7 @@ export default function AboutPage() {
                 Born from a frustration with how software gets built
               </h2>
               <p className="type-body mb-4 text-[var(--text-muted)]">
-                IshSwamiTech was started by a small team of engineers and designers who&apos;d seen
+                Ishswami Tech was started by a small team of engineers and designers who&apos;d seen
                 one too many projects ship late, over budget, and with the soul drained out of
                 them. We knew there was a better way to build — and we wanted to prove it.
               </p>
@@ -302,17 +302,19 @@ export default function AboutPage() {
                 <p className="type-body mb-3 text-center text-sm text-[var(--text-muted)]">
                   {member.role}
                 </p>
-                <div className="flex justify-center">
-                  <a
-                    href={member.linkedin}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--border)] text-[var(--text-muted)] transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)]"
-                    aria-label={`${member.name} on LinkedIn`}
-                  >
-                    <Linkedin size={16} />
-                  </a>
-                </div>
+                {member.linkedin ? (
+                  <div className="flex justify-center">
+                    <a
+                      href={member.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--border)] text-[var(--text-muted)] transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)]"
+                      aria-label={`${member.name} on LinkedIn`}
+                    >
+                      <Linkedin size={16} />
+                    </a>
+                  </div>
+                ) : null}
               </motion.div>
             ))}
           </div>

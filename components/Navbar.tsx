@@ -47,20 +47,21 @@ export default function Navbar() {
         }`}
       >
         <nav className="container mx-auto flex items-center justify-between px-4">
-          <Link href="/" className="group flex items-center gap-3" aria-label="IshSwamiTech home">
+          <Link href="/" className="group flex items-center gap-3" aria-label="Ishswami Tech home">
             <div className="flex items-center justify-center overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--card)] p-1.5 shadow-[0_10px_30px_rgba(0,0,0,0.08)] transition-colors group-hover:bg-[var(--card-soft)]">
               <Image
-                src="/Assets/main-logo.png"
+                src="/logo.png"
                 alt=""
-                width={32}
-                height={32}
-                className="h-8 w-8 scale-[1.2] object-cover"
+                width={40}
+                height={40}
+                sizes="40px"
+                className="h-10 w-10 object-contain"
               />
             </div>
             <div className="flex flex-col leading-none">
-              <span className="font-heading text-xl font-bold gradient-text">IshSwamiTech</span>
+              <span className="font-heading text-xl font-bold gradient-text">Ishswami</span>
               <span className="type-ui text-[10px] uppercase tracking-[0.18em] text-[var(--text-muted)]">
-                Solutions
+                Tech
               </span>
             </div>
           </Link>
@@ -143,14 +144,15 @@ export default function Navbar() {
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   <Image
-                    src="/Assets/main-logo.png"
+                    src="/logo.png"
                     alt=""
-                    width={28}
-                    height={28}
-                    className="h-7 w-7 scale-[1.2] object-cover"
+                    width={36}
+                    height={36}
+                    sizes="36px"
+                    className="h-9 w-9 object-contain"
                   />
                   <span className="font-heading text-base font-bold gradient-text">
-                    IshSwamiTech
+                    Ishswami Tech
                   </span>
                 </Link>
                 <button

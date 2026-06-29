@@ -1,16 +1,17 @@
 import type { Metadata } from "next";
 
 export const siteConfig = {
-  name: "IshSwamiTech Solutions",
-  shortName: "IshSwamiTech",
-  url: "https://ishswamitech.vercel.app",
-  title: "IshSwamiTech Solutions | Custom Software, AI, Cloud & Product Design",
+  name: "Ishswami Tech",
+  shortName: "Ishswami",
+  url: "https://ishswami.in",
+  title: "Ishswami Tech | Custom Software, AI, Cloud & Product Design",
   description:
-    "IshSwamiTech Solutions builds high-performance web apps, mobile apps, AI products, cloud platforms, and UX systems for startups and growing businesses.",
+    "Ishswami Tech builds high-performance web apps, mobile apps, AI products, cloud platforms, and UX systems for startups, clinics, creators, and growing businesses.",
   tagline: "Turning Vision Into Digital Reality",
   email: "info@ishswami.in",
   phone: "+91-9226263215",
-  ogImage: "/Assets/hero_img.jpg",
+  logo: "/logo.png",
+  ogImage: "/logo.png",
   locale: "en_US",
   keywords: [
     "custom software development company",
@@ -25,17 +26,17 @@ export const siteConfig = {
     "software outsourcing India",
   ],
   social: {
-    linkedin: "https://linkedin.com",
-    github: "https://github.com",
-    instagram: "https://instagram.com",
-    youtube: "https://youtube.com",
-    x: "https://twitter.com",
+    linkedin: "",
+    github: "",
+    instagram: "",
+    youtube: "",
+    x: "",
   },
 } as const;
 
 export const legalEntity = {
   enterpriseName: "ISHSWAMI TECH",
-  displayName: "IshSwamiTech Solutions",
+  displayName: "Ishswami Tech",
   registeredEmail: "info@ishswami.in",
   registeredPhone: "+91-9226263215",
   publicLocation: "Pune, India",

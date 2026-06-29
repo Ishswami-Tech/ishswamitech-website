@@ -76,7 +76,7 @@ export default async function BlogPostPage({
       name: siteConfig.name,
       logo: {
         "@type": "ImageObject",
-        url: absoluteUrl("/Assets/main-logo.png"),
+        url: absoluteUrl(siteConfig.logo),
       },
     },
     mainEntityOfPage: absoluteUrl(`/blog/${post.slug}`),

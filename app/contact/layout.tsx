@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { createPageMetadata } from "@/lib/site";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "Contact IshSwamiTech",
+  title: "Contact Ishswami Tech",
   description:
-    "Contact IshSwamiTech Solutions to discuss your web, mobile, AI, cloud, or design project and request a proposal.",
+    "Contact Ishswami Tech to discuss your web, mobile, AI, cloud, or design project and request a proposal.",
   path: "/contact",
   keywords: ["contact software company", "request software quote", "app development consultation"],
 });

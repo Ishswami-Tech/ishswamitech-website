@@ -12,7 +12,7 @@ const sections = [
   },
   {
     title: "2. Client-platform payments",
-    body: "For client platforms, IshSwamiTech may collect online payments as the technology and payment collection partner. The actual service, product, booking, subscription, consultation, event, digital content, or deliverable is provided by the respective client or service provider.",
+    body: "For client platforms, Ishswami Tech may collect online payments as the technology and payment collection partner. The actual service, product, booking, subscription, consultation, event, digital content, or deliverable is provided by the respective client or service provider.",
   },
   {
     title: "3. Cancellations, no-shows, and service-specific rules",

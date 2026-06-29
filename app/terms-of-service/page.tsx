@@ -9,7 +9,7 @@ const sections = [
   {
     id: "agreement",
     title: "1. Service agreement",
-    body: `By engaging IshSwamiTech Solutions for software development or related services, you agree to these Terms of Service. A separate project agreement or statement of work may specify additional terms for individual projects, and those will take precedence over these general terms where they conflict.`,
+    body: `By engaging Ishswami Tech for software development or related services, you agree to these Terms of Service. A separate project agreement or statement of work may specify additional terms for individual projects, and those will take precedence over these general terms where they conflict.`,
   },
   {
     id: "payment",
@@ -29,12 +29,12 @@ const sections = [
   {
     id: "liability",
     title: "5. Limitation of liability",
-    body: `To the maximum extent permitted by law, IshSwamiTech Solutions shall not be liable for any indirect, incidental, special, or consequential damages arising from the use of our services. Our total liability shall not exceed the amount paid by you for the specific project giving rise to the claim.`,
+    body: `To the maximum extent permitted by law, Ishswami Tech shall not be liable for any indirect, incidental, special, or consequential damages arising from the use of our services. Our total liability shall not exceed the amount paid by you for the specific project giving rise to the claim.`,
   },
   {
     id: "law",
     title: "6. Governing law",
-    body: `These Terms shall be governed by and construed in accordance with the laws of the jurisdiction in which IshSwamiTech Solutions is registered, without regard to its conflict of law provisions. Any disputes shall be resolved in the courts of that jurisdiction.`,
+    body: `These Terms shall be governed by and construed in accordance with the laws of the jurisdiction in which Ishswami Tech is registered, without regard to its conflict of law provisions. Any disputes shall be resolved in the courts of that jurisdiction.`,
   },
   {
     id: "changes",

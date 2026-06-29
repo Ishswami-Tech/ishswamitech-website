@@ -3,7 +3,7 @@ import { createPageMetadata } from "@/lib/site";
 
 export const metadata: Metadata = createPageMetadata({
   title: "Terms of Service",
-  description: "Terms and conditions for using IshSwamiTech Solutions services and deliverables.",
+  description: "Terms and conditions for using Ishswami Tech services and deliverables.",
   path: "/terms-of-service",
 });
 

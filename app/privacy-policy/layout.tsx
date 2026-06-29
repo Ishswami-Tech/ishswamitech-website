@@ -3,7 +3,7 @@ import { createPageMetadata } from "@/lib/site";
 
 export const metadata: Metadata = createPageMetadata({
   title: "Privacy Policy",
-  description: "Read how IshSwamiTech collects, uses, and protects visitor and client data.",
+  description: "Read how Ishswami Tech collects, uses, and protects visitor and client data.",
   path: "/privacy-policy",
 });
 

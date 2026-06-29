@@ -29,22 +29,22 @@ export default function CookieConsent() {
           aria-describedby="cookie-consent-desc"
         >
           <div className="container mx-auto max-w-4xl">
-            <div className="glass rounded-xl p-6 flex flex-col md:flex-row items-start md:items-center gap-4">
-              <div className="flex items-start gap-3 flex-1">
-                <div className="p-2 rounded-lg bg-[#00D4FF]/20 shrink-0">
-                  <Cookie className="w-5 h-5 text-[#00D4FF]" />
+            <div className="glass flex flex-col items-start gap-4 rounded-xl border border-[var(--border)] p-6 md:flex-row md:items-center">
+              <div className="flex flex-1 items-start gap-3">
+                <div className="shrink-0 rounded-lg bg-[var(--card-soft)] p-2 text-[var(--accent)]">
+                  <Cookie className="h-5 w-5" />
                 </div>
                 <div>
                   <h3
                     id="cookie-consent-title"
-                    className="font-heading font-semibold text-[var(--foreground)] mb-1"
+                    className="mb-1 font-heading font-semibold text-[var(--foreground)]"
                   >
                     We use cookies
                   </h3>
-                  <p id="cookie-consent-desc" className="text-[var(--text-muted)] text-sm">
+                  <p id="cookie-consent-desc" className="text-sm text-[var(--text-muted)]">
                     We use cookies to enhance your experience and analyze site traffic. By clicking
                     {" "}Accept, you consent to our use of cookies.{" "}
-                    <Link href="/privacy-policy" className="text-[#00D4FF] hover:underline">
+                    <Link href="/privacy-policy" className="text-[var(--accent)] hover:underline">
                       Learn more
                     </Link>
                   </p>
@@ -52,7 +52,7 @@ export default function CookieConsent() {
               </div>
               <button
                 onClick={accept}
-                className="px-5 py-2.5 rounded-lg bg-[#00D4FF] text-[#0A0F1E] font-semibold text-sm hover:bg-[#00D4FF]/90 transition-colors shrink-0"
+                className="shrink-0 rounded-lg bg-[var(--accent)] px-5 py-2.5 text-sm font-semibold text-[var(--background)] transition-all hover:-translate-y-0.5 hover:shadow-[var(--button-shadow)]"
               >
                 Accept
               </button>

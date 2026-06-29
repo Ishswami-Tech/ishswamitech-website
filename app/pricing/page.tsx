@@ -119,7 +119,7 @@ export default function PricingPage() {
   return (
     <div>
       {/* HERO */}
-      <section className="pt-32 pb-16">
+      <section className="page-hero">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

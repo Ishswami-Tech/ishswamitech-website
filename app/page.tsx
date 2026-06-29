@@ -201,7 +201,7 @@ export default function HomePage() {
               transition={{ delay: 0.15, duration: 0.7 }}
               className="relative"
             >
-              <div className="absolute -inset-6 rounded-[2.5rem] bg-gradient-to-br from-[#3dd9eb]/20 via-transparent to-[#ec4899]/20 blur-2xl" />
+              <div className="absolute -inset-6 rounded-[2.5rem] bg-gradient-to-br from-[var(--accent)]/20 via-transparent to-[var(--secondary)]/20 blur-2xl" />
               <div className="relative rounded-[2rem] border border-white/15 bg-[#071321]/70 p-6 backdrop-blur-2xl md:p-8">
                 <div className="mb-6 flex items-start justify-between gap-4">
                   <div>
@@ -263,7 +263,7 @@ export default function HomePage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1 }}
-          className="absolute bottom-8 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-2 text-[#8B9CB6] hover:text-[#3dd9eb] transition-colors"
+          className="absolute bottom-8 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-2 text-[var(--text-muted)] transition-colors hover:text-[var(--accent)]"
           aria-label="Scroll to next section"
         >
           <span className="type-ui">Scroll</span>
@@ -554,7 +554,7 @@ export default function HomePage() {
               Teams that ship with us, again and again
             </h2>
             <p className="type-lead mx-auto max-w-2xl">
-              Founders, product leaders, and CTOs who've trusted us with the work that matters.
+              Founders, product leaders, and CTOs who&apos;ve trusted us with the work that matters.
             </p>
           </motion.div>
 
@@ -572,7 +572,7 @@ export default function HomePage() {
                   {[...Array(t.rating)].map((_, idx) => (
                     <Star
                       key={idx}
-                      className="h-4 w-4 fill-[#f59e0b] text-[#f59e0b]"
+                      className="h-4 w-4 fill-[var(--warning)] text-[var(--warning)]"
                       aria-hidden
                     />
                   ))}

@@ -62,7 +62,7 @@ export default function AboutPage() {
   return (
     <div>
       {/* HERO */}
-      <section className="relative pt-32 pb-16">
+      <section className="page-hero relative">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

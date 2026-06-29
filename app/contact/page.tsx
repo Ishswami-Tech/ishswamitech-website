@@ -65,9 +65,17 @@ const trustPoints = [
   { icon: MessageSquare, label: "No sales pressure" },
 ];
 
+const whatsAppRecipients = [
+  { label: "7218378311", phone: "917218378311" },
+  { label: "7888154917", phone: "917888154917" },
+];
+
+type WhatsAppLink = (typeof whatsAppRecipients)[number] & { href: string };
+
 export default function ContactPage() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [whatsAppLinks, setWhatsAppLinks] = useState<WhatsAppLink[] | null>(null);
 
   const {
     register,
@@ -78,7 +86,15 @@ export default function ContactPage() {
     resolver: zodResolver(formSchema),
   });
 
-  const onSubmit = async () => {
+  const onSubmit = async (data: FormData) => {
+    const message = buildWhatsAppMessage(data);
+    const links = whatsAppRecipients.map((recipient) => ({
+      ...recipient,
+      href: `https://wa.me/${recipient.phone}?text=${encodeURIComponent(message)}`,
+    }));
+
+    setWhatsAppLinks(links);
+
     await new Promise((r) => setTimeout(r, 1200));
     setIsSubmitted(true);
     reset();
@@ -87,7 +103,7 @@ export default function ContactPage() {
   return (
     <div>
       {/* HERO */}
-      <section className="pt-32 pb-16">
+      <section className="page-hero">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -141,7 +157,7 @@ export default function ContactPage() {
       </section>
 
       {/* INFO + FORM */}
-      <section className="pb-16">
+      <section className="site-section--tight site-section--no-top">
         <div className="container mx-auto px-4">
           <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr]">
             {/* LEFT: contact info */}
@@ -258,15 +274,34 @@ export default function ContactPage() {
                       <CheckCircle className="h-8 w-8" />
                     </div>
                     <h3 className="type-section-title mb-3 text-[var(--foreground)]">
-                      Message received!
+                      WhatsApp message ready
                     </h3>
                     <p className="type-lead mx-auto mb-8 max-w-md">
-                      Thanks for reaching out. We&apos;ll review your project and get back within
-                      one business day.
+                      Your project details are prepared. WhatsApp will open only when you choose
+                      one of the numbers below.
                     </p>
+                    {whatsAppLinks && (
+                      <div className="mb-6 flex flex-col justify-center gap-3 sm:flex-row">
+                        {whatsAppLinks.map((link) => (
+                          <a
+                            key={link.phone}
+                            href={link.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="type-ui inline-flex items-center justify-center gap-2 rounded-full bg-[#25D366] px-5 py-2.5 font-semibold text-white transition-all hover:-translate-y-0.5 hover:bg-[#20BD5A]"
+                          >
+                            <MessageSquare className="h-4 w-4" />
+                            WhatsApp {link.label}
+                          </a>
+                        ))}
+                      </div>
+                    )}
                     <button
                       type="button"
-                      onClick={() => setIsSubmitted(false)}
+                      onClick={() => {
+                        setIsSubmitted(false);
+                        setWhatsAppLinks(null);
+                      }}
                       className="type-ui inline-flex items-center gap-2 rounded-full border border-[var(--border-strong)] bg-[var(--card)] px-5 py-2.5 text-[var(--foreground)] transition-colors hover:bg-[var(--card-soft)]"
                     >
                       Send another message
@@ -383,12 +418,12 @@ export default function ContactPage() {
                       {isSubmitting ? (
                         <>
                           <Loader2 className="h-5 w-5 animate-spin" />
-                          Sending...
+                          Preparing...
                         </>
                       ) : (
                         <>
                           <Send className="h-4 w-4" />
-                          Send message
+                          Prepare WhatsApp message
                         </>
                       )}
                     </button>
@@ -467,6 +502,24 @@ export default function ContactPage() {
       </section>
     </div>
   );
+}
+
+function buildWhatsAppMessage(data: FormData) {
+  const value = (input?: string) => input?.trim() || "-";
+
+  return [
+    "New project enquiry from IshSwamiTech website",
+    "",
+    `Name: ${value(data.name)}`,
+    `Email: ${value(data.email)}`,
+    `Phone: ${value(data.phone)}`,
+    `Company: ${value(data.company)}`,
+    `Service: ${value(data.service)}`,
+    `Budget: ${value(data.budget)}`,
+    "",
+    "Project details:",
+    value(data.message),
+  ].join("\n");
 }
 
 function inputClass(hasError: boolean) {

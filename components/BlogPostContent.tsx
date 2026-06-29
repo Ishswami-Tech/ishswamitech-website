@@ -106,7 +106,7 @@ export default function BlogPostContent({ post, relatedPosts }: BlogPostContentP
   return (
     <div>
       {/* HERO */}
-      <section className="pt-32 pb-12">
+      <section className="page-hero page-hero--compact">
         <div className="container mx-auto px-4">
           <div className="mx-auto max-w-4xl">
             <Link
@@ -148,7 +148,7 @@ export default function BlogPostContent({ post, relatedPosts }: BlogPostContentP
       </section>
 
       {/* COVER */}
-      <section className="pb-12">
+      <section className="site-section--tight site-section--no-top">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -171,7 +171,7 @@ export default function BlogPostContent({ post, relatedPosts }: BlogPostContentP
       </section>
 
       {/* ARTICLE BODY */}
-      <section className="pb-12">
+      <section className="site-section--tight site-section--no-top">
         <div className="container mx-auto px-4">
           <div className="mx-auto max-w-3xl">
             <article>{renderContent(post.content)}</article>
@@ -180,7 +180,7 @@ export default function BlogPostContent({ post, relatedPosts }: BlogPostContentP
       </section>
 
       {/* SHARE */}
-      <section className="pb-12">
+      <section className="site-section--tight site-section--no-top">
         <div className="container mx-auto px-4">
           <div className="mx-auto max-w-3xl">
             <div className="glass flex flex-col items-start gap-4 rounded-2xl border border-[var(--border)] p-6 sm:flex-row sm:items-center sm:justify-between">
@@ -192,7 +192,7 @@ export default function BlogPostContent({ post, relatedPosts }: BlogPostContentP
       </section>
 
       {/* AUTHOR */}
-      <section className="pb-16">
+      <section className="site-section--tight site-section--no-top">
         <div className="container mx-auto px-4">
           <div className="mx-auto max-w-3xl">
             <div className="glass flex items-center gap-5 rounded-2xl border border-[var(--border)] p-6">

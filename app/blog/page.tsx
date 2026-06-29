@@ -51,7 +51,7 @@ export default function BlogPage() {
   return (
     <div>
       {/* HERO */}
-      <section className="pt-32 pb-16">
+      <section className="page-hero">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -101,7 +101,7 @@ export default function BlogPage() {
 
       {/* FEATURED */}
       {featuredPost && (
-        <section className="pb-16">
+        <section className="site-section--tight site-section--no-top">
           <div className="container mx-auto px-4">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -191,7 +191,7 @@ export default function BlogPage() {
       </section>
 
       {/* GRID + SIDEBAR */}
-      <section className="pb-24">
+      <section className="site-section--tight site-section--no-top">
         <div className="container mx-auto px-4">
           <div className="grid gap-12 lg:grid-cols-3">
             <div className="lg:col-span-2">

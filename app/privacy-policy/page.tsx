@@ -42,7 +42,7 @@ export default function PrivacyPolicyPage() {
   return (
     <div>
       {/* HERO */}
-      <section className="pt-32 pb-12">
+      <section className="page-hero page-hero--compact">
         <div className="container mx-auto px-4 max-w-4xl">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
             <nav className="type-ui text-[var(--text-muted)]">
@@ -70,7 +70,7 @@ export default function PrivacyPolicyPage() {
       </section>
 
       {/* SECTIONS */}
-      <section className="pb-16">
+      <section className="site-section--tight site-section--no-top">
         <div className="container mx-auto px-4 max-w-4xl">
           <div className="grid gap-8 lg:grid-cols-[0.3fr_1fr]">
             <aside className="hidden lg:block">
@@ -120,7 +120,7 @@ export default function PrivacyPolicyPage() {
         </div>
       </section>
 
-      <section className="pb-20">
+      <section className="site-section--tight site-section--no-top">
         <div className="container mx-auto px-4 max-w-4xl">
           <Link
             href="/"

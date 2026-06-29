@@ -6,7 +6,6 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ArrowUpRight } from "lucide-react";
-import ThemeToggle from "./ThemeToggle";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -27,10 +26,6 @@ export default function Navbar() {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  useEffect(() => {
-    setIsMobileMenuOpen(false);
-  }, [pathname]);
 
   useEffect(() => {
     document.body.style.overflow = isMobileMenuOpen ? "hidden" : "";
@@ -97,7 +92,6 @@ export default function Navbar() {
           </div>
 
           <div className="hidden items-center gap-2.5 lg:flex">
-            <ThemeToggle />
             <Link
               href="/contact"
               className="group inline-flex items-center gap-1.5 rounded-full bg-[var(--button-gradient)] px-5 py-2.5 text-sm font-semibold text-white shadow-[var(--button-shadow)] transition-all hover:-translate-y-0.5"
@@ -194,10 +188,6 @@ export default function Navbar() {
               </nav>
 
               <div className="border-t border-[var(--border)] p-5">
-                <div className="mb-4 flex items-center justify-between">
-                  <span className="type-ui text-[var(--text-muted)]">Theme</span>
-                  <ThemeToggle />
-                </div>
                 <Link
                   href="/contact"
                   onClick={() => setIsMobileMenuOpen(false)}

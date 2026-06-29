@@ -1,0 +1,58 @@
+export const team = [
+  {
+    id: 1,
+    name: "Alex Morgan",
+    role: "CEO & Co-Founder",
+    image: "/Assets/Programmers_4.jpg",
+    linkedin: "https://linkedin.com",
+  },
+  {
+    id: 2,
+    name: "Jordan Lee",
+    role: "CTO",
+    image: "/Assets/Programmers_4.jpg",
+    linkedin: "https://linkedin.com",
+  },
+  {
+    id: 3,
+    name: "Sam Rivera",
+    role: "Lead Developer",
+    image: "/Assets/Programmers_4.jpg",
+    linkedin: "https://linkedin.com",
+  },
+  {
+    id: 4,
+    name: "Taylor Chen",
+    role: "Mobile Developer",
+    image: "/Assets/Programmers_4.jpg",
+    linkedin: "https://linkedin.com",
+  },
+  {
+    id: 5,
+    name: "Casey Kim",
+    role: "UI/UX Designer",
+    image: "/Assets/Programmers_4.jpg",
+    linkedin: "https://linkedin.com",
+  },
+  {
+    id: 6,
+    name: "Morgan Davis",
+    role: "AI Engineer",
+    image: "/Assets/Programmers_4.jpg",
+    linkedin: "https://linkedin.com",
+  },
+  {
+    id: 7,
+    name: "Riley Johnson",
+    role: "Project Manager",
+    image: "/Assets/Programmers_4.jpg",
+    linkedin: "https://linkedin.com",
+  },
+  {
+    id: 8,
+    name: "Quinn Williams",
+    role: "QA Engineer",
+    image: "/Assets/Programmers_4.jpg",
+    linkedin: "https://linkedin.com",
+  },
+];

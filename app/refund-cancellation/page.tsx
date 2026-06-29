@@ -11,12 +11,12 @@ const sections = [
     body: "Refunds for custom software, app development, website development, maintenance, and consulting services are governed by the signed proposal, statement of work, or invoice terms. Work already delivered, approved, or consumed is generally not refundable unless separately agreed in writing.",
   },
   {
-    title: "2. Appointment and client-platform payments",
-    body: "For partner healthcare platforms, IshSwamiTech may collect online payments as the technology and payment collection partner. The healthcare service, appointment, consultation, or treatment is delivered by the respective clinic or practitioner.",
+    title: "2. Client-platform payments",
+    body: "For client platforms, IshSwamiTech may collect online payments as the technology and payment collection partner. The actual service, product, booking, subscription, consultation, event, digital content, or deliverable is provided by the respective client or service provider.",
   },
   {
-    title: "3. Cancellations and missed appointments",
-    body: "Video appointment payments are non-refundable once payment is completed. Missed video appointments require a fresh booking unless the clinic separately approves rescheduling. In-person appointment cancellation, rescheduling, no-show, and missed-slot rules are controlled by the service provider's published policy.",
+    title: "3. Cancellations, no-shows, and service-specific rules",
+    body: "Cancellation and refund eligibility depends on the type of service being purchased and the client/provider policy shown for that service. For healthcare video appointments, payment is non-refundable once completed because the selected provider slot is reserved. Missed video appointments require a fresh booking unless the provider separately approves rescheduling.",
   },
   {
     title: "4. Approved refund timelines",

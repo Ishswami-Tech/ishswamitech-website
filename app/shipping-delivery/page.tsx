@@ -8,19 +8,19 @@ import { paymentCollectionDisclosure, siteConfig } from "@/lib/site";
 const sections = [
   {
     title: "1. No physical shipping",
-    body: "IshSwamiTech provides software, digital products, technology services, and platform services. We do not ship physical goods for these services unless a separate written agreement specifically says otherwise.",
+    body: "IshSwamiTech primarily provides software, digital products, technology services, client-platform services, and online payment/booking infrastructure. We do not ship physical goods unless a separate client agreement or order specifically includes physical delivery.",
   },
   {
     title: "2. Digital service delivery",
-    body: "Software, website, mobile app, cloud, AI, support, and consulting deliverables are provided electronically through agreed channels such as email, project management tools, repositories, cloud environments, or production deployments.",
+    body: "Software, website, mobile app, cloud, AI, support, consulting, digital product, subscription, booking, event, and platform deliverables are provided electronically through agreed channels such as email, project management tools, repositories, cloud environments, production deployments, apps, websites, SMS, WhatsApp, or email.",
   },
   {
-    title: "3. Appointment and consultation delivery",
-    body: "For healthcare platforms operated for clients, appointment confirmations are delivered digitally through the app, website, SMS, WhatsApp, email, or other configured channels. The actual healthcare service is delivered by the listed clinic or practitioner.",
+    title: "3. Client service delivery",
+    body: "For client platforms operated by IshSwamiTech, confirmations and access details may be delivered digitally through the app, website, SMS, WhatsApp, email, or other configured channels. The actual service, product, event, consultation, class, appointment, or deliverable is fulfilled by the listed client or service provider.",
   },
   {
     title: "4. Delivery timelines",
-    body: "Project delivery timelines are defined in the proposal, invoice, or statement of work. Appointment confirmations are normally generated immediately after successful booking and payment confirmation, subject to provider and payment gateway availability.",
+    body: "Project delivery timelines are defined in the proposal, invoice, or statement of work. Platform confirmations are normally generated after successful booking/order creation and payment confirmation, subject to provider, gateway, and system availability.",
   },
 ];
 

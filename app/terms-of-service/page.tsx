@@ -19,7 +19,7 @@ const sections = [
   {
     id: "client-platform-payments",
     title: "3. Client-platform payments",
-    body: `${paymentCollectionDisclosure} Payment, refund, appointment, and service delivery rules may also be governed by the applicable client or service provider policy.`,
+    body: `${paymentCollectionDisclosure} Payment, refund, booking, subscription, cancellation, access, and service delivery rules may also be governed by the applicable client, merchant, or service provider policy.`,
   },
   {
     id: "ip",

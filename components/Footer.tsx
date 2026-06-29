@@ -48,7 +48,6 @@ const socialLinks = [
 export default function Footer() {
   return (
     <footer className="border-t border-[var(--border)] bg-[var(--surface)] backdrop-blur-xl">
-      {/* CTA STRIP */}
       <div className="border-b border-[var(--border)] bg-[var(--home-band-bg)]">
         <div className="container mx-auto px-4 py-12">
           <div className="grid items-center gap-8 md:grid-cols-[1.5fr_1fr]">
@@ -103,7 +102,7 @@ export default function Footer() {
               </div>
             </Link>
             <p className="type-body mb-5 max-w-sm text-sm text-[var(--text-muted)]">
-              We turn vision into digital reality — product engineering, AI integration, cloud
+              We turn vision into digital reality - product engineering, AI integration, cloud
               delivery, and UX systems that help businesses ship faster.
             </p>
             <p className="type-ui mb-6 text-xs uppercase tracking-[0.24em] text-[var(--accent)]">

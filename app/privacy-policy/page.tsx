@@ -22,9 +22,9 @@ const sections = [
     body: `We may share your data with trusted service providers who assist us in operating our business — including hosting, analytics, and email infrastructure. These providers are contractually obligated to protect your data. We may also disclose information when legally required.`,
   },
   {
-    id: "patient-platform-data",
-    title: "4. Patient platform, appointment, and payment data",
-    body: `${paymentCollectionDisclosure} For healthcare client platforms, this may include patient profile details, phone/email verification status, video and in-person appointment bookings, invoices, payment transactions, refunds, support requests, and operational clinic records required to provide the booked service.`,
+    id: "client-platform-data",
+    title: "4. Client platform, booking, and payment data",
+    body: `${paymentCollectionDisclosure} Depending on the client platform, this may include customer or patient profile details, phone/email verification status, bookings, orders, subscriptions, event registrations, class or consultation records, invoices, payment transactions, refunds, support requests, and operational records required to provide the booked or purchased service.`,
   },
   {
     id: "cookies",

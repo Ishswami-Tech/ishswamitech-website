@@ -42,7 +42,7 @@ export const legalEntity = {
 } as const;
 
 export const paymentCollectionDisclosure =
-  "Where enabled for a client platform, online payments may be collected by ISHSWAMI TECH as the technology and payment collection partner. The underlying healthcare, consultation, or clinic service is delivered by the respective service provider under its own professional responsibility.";
+  "Where enabled for a client platform, online payments may be collected by ISHSWAMI TECH as the technology and payment collection partner. The underlying service, product, booking, subscription, consultation, event, or digital deliverable is provided by the respective client, merchant, clinic, creator, educator, consultant, or service provider under its own responsibility.";
 
 export function absoluteUrl(path = "") {
   return path ? `${siteConfig.url}${path}` : siteConfig.url;

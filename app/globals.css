@@ -36,7 +36,7 @@
   --card-radius: 0.75rem;
   --panel-radius: 1rem;
   --motion-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
-  /* Standard scale — 16px base, common web defaults */
+  /* Standard scale - 16px base, common web defaults */
   --text-xs: 0.8125rem;
   --text-sm: 0.875rem;
   --text-base: 1rem;

@@ -42,7 +42,7 @@ const differentiators = [
     icon: Rocket,
     title: "Outcome-Focused Delivery",
     description:
-      "Senior product and engineering leaders embedded from discovery to launch — not ticket-takers waiting for direction.",
+      "Product and engineering ownership from discovery to launch - not ticket-takers waiting for direction.",
   },
   {
     icon: Search,
@@ -54,7 +54,7 @@ const differentiators = [
     icon: ShieldCheck,
     title: "Scalable Architecture",
     description:
-      "Modern, well-typed stacks and clean systems built for integrations, traffic spikes, and the features you'll ship next year.",
+      "Modern, well-typed stacks and clean systems built for integrations, growth, and the features you will ship next.",
   },
 ];
 
@@ -75,7 +75,7 @@ const deliverySteps = [
     phase: "Week 3+",
     icon: Code,
     title: "Build",
-    detail: "Ship iteratively across design, engineering, and QA — with weekly demos so progress is visible from day one.",
+    detail: "Ship iteratively across design, engineering, and QA - with weekly demos so progress is visible from day one.",
   },
   {
     phase: "Launch",
@@ -147,7 +147,7 @@ export default function HomePage() {
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#3dd9eb] opacity-60" />
                   <span className="relative inline-flex h-2 w-2 rounded-full bg-[#3dd9eb]" />
                 </span>
-                Accepting Q3 projects · Senior-led delivery
+                Accepting new projects · Senior-led delivery
               </div>
 
               <h1 className="type-hero mb-6 text-white">
@@ -158,7 +158,7 @@ export default function HomePage() {
               </h1>
               <p className="type-lead mb-10 max-w-xl text-[#c4d4e8] md:text-xl md:leading-relaxed">
                 We design and build websites, SaaS platforms, mobile apps, AI features, and cloud
-                systems for ambitious founders and growing teams — with the engineering depth to
+                systems for ambitious founders and growing teams - with the engineering depth to
                 ship, and the product taste to make it feel inevitable.
               </p>
 
@@ -217,10 +217,10 @@ export default function HomePage() {
 
                 <div className="grid grid-cols-2 gap-3">
                   {[
-                    { value: "200+", label: "Projects delivered" },
-                    { value: "98%", label: "Client satisfaction" },
-                    { value: "5+", label: "Years in market" },
-                    { value: "24/7", label: "Support availability" },
+                    { value: "2026", label: "Founded in Pune" },
+                    { value: "6+", label: "Core service areas" },
+                    { value: "3", label: "Web, mobile, cloud" },
+                    { value: "1", label: "Focused product team" },
                   ].map((metric) => (
                     <div
                       key={metric.label}
@@ -322,11 +322,11 @@ export default function HomePage() {
             <div className="max-w-2xl">
               <p className="type-eyebrow mb-3">Why teams choose us</p>
               <h2 className="type-section-title text-[var(--foreground)]">
-                A cleaner delivery model — with stronger product thinking
+                A cleaner delivery model - with stronger product thinking
               </h2>
             </div>
             <p className="type-lead max-w-xl">
-              Clear scope, thoughtful UX, and engineering you can grow with — so stakeholders see
+              Clear scope, thoughtful UX, and engineering you can grow with - so stakeholders see
               real progress every week and customers get a product that feels intentional.
             </p>
           </motion.div>
@@ -486,10 +486,10 @@ export default function HomePage() {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 gap-8 text-center md:grid-cols-4">
             {[
-              { end: 200, suffix: "+", label: "Projects shipped" },
-              { end: 50, suffix: "+", label: "Happy clients" },
-              { end: 5, suffix: "+", label: "Years delivering" },
-              { end: 15, suffix: "+", label: "Engineers & designers" },
+              { end: 2026, suffix: "", label: "Founded" },
+              { end: 6, suffix: "+", label: "Service areas" },
+              { end: 3, suffix: "", label: "Primary platforms" },
+              { end: 1, suffix: "", label: "Focused team" },
             ].map((stat, i) => (
               <motion.div
                 key={stat.label}
@@ -554,7 +554,7 @@ export default function HomePage() {
               Teams that ship with us, again and again
             </h2>
             <p className="type-lead mx-auto max-w-2xl">
-              Founders, product leaders, and CTOs who&apos;ve trusted us with the work that matters.
+              Feedback themes from the type of client work we focus on: clarity, speed, and practical execution.
             </p>
           </motion.div>
 
@@ -611,7 +611,7 @@ export default function HomePage() {
               Modern, battle-tested tooling
             </h2>
             <p className="type-lead mx-auto max-w-2xl">
-              We pick the right tool for the job — not the trendy one. Production-grade frameworks
+              We pick the right tool for the job - not the trendy one. Production-grade frameworks
               your team can actually hire for.
             </p>
           </motion.div>

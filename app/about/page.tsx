@@ -7,7 +7,6 @@ import {
   Sparkles,
   Target,
   Eye,
-  Linkedin,
   Building2,
   Lightbulb,
   CheckCircle,
@@ -23,7 +22,7 @@ const values = [
   {
     icon: Lightbulb,
     title: "Innovation",
-    desc: "We chase the new, but ship the proven — pairing AI-first thinking with tools your team can hire for.",
+    desc: "We chase the new, but ship the proven - pairing AI-first thinking with tools your team can hire for.",
   },
   {
     icon: Eye,
@@ -33,7 +32,7 @@ const values = [
   {
     icon: CheckCircle,
     title: "Craft & Quality",
-    desc: "Typed, tested, observable code — and interfaces that feel obvious. Nothing gets shipped we wouldn't be proud of.",
+    desc: "Typed, tested, observable code - and interfaces that feel obvious. Nothing gets shipped we wouldn't be proud of.",
   },
   {
     icon: Heart,
@@ -43,19 +42,16 @@ const values = [
 ];
 
 const milestones = [
-  { year: "2019", title: "Founded", detail: "Started in a co-working space with a focus on web craft." },
-  { year: "2020", title: "First 10 clients", detail: "Built initial brand reputation across SaaS and e-commerce." },
-  { year: "2021", title: "AI division launched", detail: "Added a dedicated machine learning and data team." },
-  { year: "2022", title: "50+ projects shipped", detail: "Crossed half a million users on apps we engineered." },
-  { year: "2023", title: "Going global", detail: "First international clients across US, UK, and UAE markets." },
-  { year: "2024", title: "100+ projects", detail: "Expanded into cloud delivery, design systems, and product strategy." },
+  { year: "2026", title: "Ishswami Tech registered", detail: "Started as a Pune-based technology services business focused on practical software delivery." },
+  { year: "Now", title: "Client-platform focus", detail: "Building websites, apps, payment flows, automation, and operational platforms for growing businesses." },
+  { year: "Next", title: "Reliable delivery systems", detail: "Strengthening reusable engineering patterns, support processes, and production-ready platform components." },
 ];
 
 const stats = [
-  { icon: Users, value: "15+", label: "Engineers & designers" },
-  { icon: Globe2, value: "12+", label: "Countries served" },
-  { icon: Award, value: "200+", label: "Projects delivered" },
-  { icon: Sparkles, value: "98%", label: "Client satisfaction" },
+  { icon: Users, value: "Focused", label: "Delivery model" },
+  { icon: Globe2, value: "Pune", label: "India based" },
+  { icon: Award, value: "2026", label: "Registered" },
+  { icon: Sparkles, value: "Multi", label: "Domain capability" },
 ];
 
 export default function AboutPage() {
@@ -90,8 +86,8 @@ export default function AboutPage() {
                 We&apos;re builders, thinkers, and product-minded problem solvers.
               </h1>
               <p className="type-lead max-w-2xl">
-                Since 2019, Ishswami Tech has helped founders and growing teams turn ambitious
-                ideas into shipped products. We blend senior product engineering, AI capability,
+                Ishswami Tech helps founders and growing teams turn ambitious
+                ideas into shipped products. We blend practical product engineering, AI capability,
                 and a design eye that respects both pixels and conversion rates.
               </p>
             </div>
@@ -157,8 +153,8 @@ export default function AboutPage() {
                 />
               </div>
               <div className="absolute -bottom-6 -right-6 hidden rounded-2xl border border-[var(--border-strong)] bg-[var(--card)] p-5 backdrop-blur-xl md:block">
-                <p className="type-stat text-3xl text-[var(--accent)]">5+ yrs</p>
-                <p className="type-stat-label">Of shipping products</p>
+                <p className="type-stat text-3xl text-[var(--accent)]">2026</p>
+                <p className="type-stat-label">Registered in Pune</p>
               </div>
             </motion.div>
 
@@ -174,13 +170,13 @@ export default function AboutPage() {
               <p className="type-body mb-4 text-[var(--text-muted)]">
                 Ishswami Tech was started by a small team of engineers and designers who&apos;d seen
                 one too many projects ship late, over budget, and with the soul drained out of
-                them. We knew there was a better way to build — and we wanted to prove it.
+                them. We knew there was a better way to build - and we wanted to prove it.
               </p>
               <p className="type-body mb-8 text-[var(--text-muted)]">
-                Five years and 200+ projects later, that conviction is still the engine: clear
-                scope, senior-led execution, and software that actually moves your business
+                That conviction is still the engine: clear
+                scope, focused execution, and software that actually moves your business
                 forward. From SaaS platforms and AI features to mobile apps and full cloud
-                migrations — if it&apos;s on your roadmap, it&apos;s in our wheelhouse.
+                migrations - if it&apos;s on your roadmap, it&apos;s in our wheelhouse.
               </p>
 
               <div className="grid gap-4 sm:grid-cols-2">
@@ -200,7 +196,7 @@ export default function AboutPage() {
                   </div>
                   <h3 className="type-card-title mb-1.5 text-[var(--foreground)]">Vision</h3>
                   <p className="type-body text-sm text-[var(--text-muted)]">
-                    A world where every great idea has the software to back it — and a team that
+                    A world where every great idea has the software to back it - and a team that
                     can ship it without melting down.
                   </p>
                 </div>
@@ -222,7 +218,7 @@ export default function AboutPage() {
             <p className="type-eyebrow mb-4">What guides us</p>
             <h2 className="type-section-title mb-4 text-[var(--foreground)]">Core values</h2>
             <p className="type-lead mx-auto max-w-2xl">
-              Not poster slogans — actual operating principles you&apos;ll see in every sprint,
+              Not poster slogans - actual operating principles you&apos;ll see in every sprint,
               demo, and standup.
             </p>
           </motion.div>
@@ -261,18 +257,18 @@ export default function AboutPage() {
             className="mb-14 flex flex-col gap-5 md:flex-row md:items-end md:justify-between"
           >
             <div className="max-w-2xl">
-              <p className="type-eyebrow mb-3">The people</p>
-              <h2 className="type-section-title text-[var(--foreground)]">Meet the team</h2>
+              <p className="type-eyebrow mb-3">Delivery coverage</p>
+              <h2 className="type-section-title text-[var(--foreground)]">A compact team model</h2>
               <p className="type-lead mt-3">
-                Senior engineers, product designers, AI specialists, and operators — all in one
-                room.
+                The site presents the capabilities clients interact with most: scope, engineering,
+                mobile delivery, AI integration, and support.
               </p>
             </div>
             <Link
               href="/contact"
               className="type-ui inline-flex items-center gap-2 text-[var(--accent)] transition-colors hover:text-[var(--link-emphasis)]"
             >
-              Join the team
+              Start a project
               <ArrowUpRight className="h-4 w-4" />
             </Link>
           </motion.div>
@@ -302,19 +298,6 @@ export default function AboutPage() {
                 <p className="type-body mb-3 text-center text-sm text-[var(--text-muted)]">
                   {member.role}
                 </p>
-                {member.linkedin ? (
-                  <div className="flex justify-center">
-                    <a
-                      href={member.linkedin}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--border)] text-[var(--text-muted)] transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)]"
-                      aria-label={`${member.name} on LinkedIn`}
-                    >
-                      <Linkedin size={16} />
-                    </a>
-                  </div>
-                ) : null}
               </motion.div>
             ))}
           </div>
@@ -335,7 +318,7 @@ export default function AboutPage() {
               Milestones we&apos;re proud of
             </h2>
             <p className="type-lead mx-auto max-w-2xl">
-              From a small office to a distributed team shipping products around the world.
+              A straightforward path from registration to reliable client delivery.
             </p>
           </motion.div>
 
@@ -380,21 +363,21 @@ export default function AboutPage() {
             viewport={{ once: true }}
             className="mb-14 text-center"
           >
-            <p className="type-eyebrow mb-4">Recognition</p>
+            <p className="type-eyebrow mb-4">Capabilities</p>
             <h2 className="type-section-title mb-4 text-[var(--foreground)]">
-              Awards & technology partners
+              Platforms we build with
             </h2>
             <p className="type-lead mx-auto max-w-2xl">
-              Recognized by industry leaders we trust — and have shipped real production work on.
+              Practical tools and service areas used for client websites, apps, automations, and operations.
             </p>
           </motion.div>
 
           <div className="grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-4">
             {[
-              { name: "Google Cloud Partner", desc: "Certified expertise" },
-              { name: "AWS Solutions Partner", desc: "Production-ready cloud" },
-              { name: "Microsoft Partner", desc: "Azure & Microsoft 365" },
-              { name: "Meta Developer", desc: "App + ads platform" },
+              { name: "Cloud deployments", desc: "AWS, Azure, GCP, Vercel" },
+              { name: "Web platforms", desc: "Next.js, React, APIs" },
+              { name: "Mobile apps", desc: "Android, iOS, cross-platform" },
+              { name: "AI workflows", desc: "Assistants, automation, search" },
             ].map((partner, i) => (
               <motion.div
                 key={partner.name}
@@ -434,7 +417,7 @@ export default function AboutPage() {
               </h2>
               <p className="type-lead mx-auto mb-8 max-w-xl">
                 Whether you&apos;re scoping a new product, modernizing an old one, or scaling a
-                team — we&apos;d love to hear about it.
+                team - we&apos;d love to hear about it.
               </p>
               <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
                 <Link

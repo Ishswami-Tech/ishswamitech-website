@@ -9,9 +9,9 @@ export const siteConfig = {
     "Ishswami Tech builds high-performance web apps, mobile apps, AI products, cloud platforms, and UX systems for startups, clinics, creators, and growing businesses.",
   tagline: "Turning Vision Into Digital Reality",
   email: "info@ishswami.in",
-  phone: "+91-9226263215",
-  logo: "/logo.png",
-  ogImage: "/logo.png",
+  phone: "+91-7218378311",
+  logo: "/Assets/brand/logo-mark.svg",
+  ogImage: "/Assets/hero_img.jpg",
   locale: "en_US",
   keywords: [
     "custom software development company",
@@ -38,7 +38,7 @@ export const legalEntity = {
   enterpriseName: "ISHSWAMI TECH",
   displayName: "Ishswami Tech",
   registeredEmail: "info@ishswami.in",
-  registeredPhone: "+91-9226263215",
+  registeredPhone: "+91-7218378311",
   publicLocation: "Pune, India",
 } as const;
 
@@ -93,3 +93,4 @@ export function createPageMetadata({
     },
   };
 }
+

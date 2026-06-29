@@ -283,7 +283,7 @@ export default function BlogPostContent({ post, relatedPosts }: BlogPostContentP
               </h2>
               <p className="type-lead mx-auto mb-8 max-w-xl">
                 One short, practical email each Friday. Engineering, design, and shipping
-                software — no fluff.
+                software - no fluff.
               </p>
               <form className="mx-auto flex max-w-md flex-col gap-3 sm:flex-row">
                 <input

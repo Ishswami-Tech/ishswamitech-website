@@ -50,11 +50,12 @@ export default function Navbar() {
           <Link href="/" className="group flex items-center gap-3" aria-label="Ishswami Tech home">
             <div className="flex items-center justify-center overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--card)] p-1.5 shadow-[0_10px_30px_rgba(0,0,0,0.08)] transition-colors group-hover:bg-[var(--card-soft)]">
               <Image
-                src="/logo.png"
+                src="/Assets/brand/logo-mark.svg"
                 alt=""
                 width={40}
                 height={40}
                 sizes="40px"
+                unoptimized
                 className="h-10 w-10 object-contain"
               />
             </div>
@@ -144,11 +145,12 @@ export default function Navbar() {
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   <Image
-                    src="/logo.png"
+                    src="/Assets/brand/logo-mark.svg"
                     alt=""
                     width={36}
                     height={36}
                     sizes="36px"
+                    unoptimized
                     className="h-9 w-9 object-contain"
                   />
                   <span className="font-heading text-base font-bold gradient-text">

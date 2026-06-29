@@ -79,7 +79,7 @@ export default function BlogPage() {
                 Practical writing on building modern software
               </h1>
               <p className="type-lead max-w-2xl">
-                Field notes, deep dives, and case studies from our team — covering web
+                Field notes, deep dives, and case studies from our team - covering web
                 engineering, AI, mobile, design, and the operating model behind shipping
                 products that grow.
               </p>

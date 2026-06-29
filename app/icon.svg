@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" role="img" aria-label="IshSwamiTech">
+  <defs>
+    <linearGradient id="ist-brand" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563eb"/>
+      <stop offset="50%" stop-color="#06b6d4"/>
+      <stop offset="100%" stop-color="#ec4899"/>
+    </linearGradient>
+    <linearGradient id="ist-shine" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.25"/>
+      <stop offset="50%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect width="80" height="80" rx="20" fill="url(#ist-brand)"/>
+  <rect width="80" height="80" rx="20" fill="url(#ist-shine)"/>
+  <!-- "i" stem and dot -->
+  <circle cx="24" cy="24" r="5" fill="#ffffff"/>
+  <rect x="20" y="36" width="8" height="32" rx="3" fill="#ffffff"/>
+  <!-- Stylized "S" curve -->
+  <path d="M58 24 H 44 a8 8 0 0 0 0 16 h 6 a8 8 0 0 1 0 16 H 36"
+        stroke="#ffffff"
+        stroke-width="7"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        fill="none"/>
+</svg>

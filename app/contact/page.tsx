@@ -52,10 +52,10 @@ const services = [
 ];
 
 const budgets = [
-  "Under $2,000",
-  "$2,000 – $10,000",
-  "$10,000 – $50,000",
-  "$50,000+",
+  "Under Rs. 50,000",
+  "Rs. 50,000 - Rs. 2,00,000",
+  "Rs. 2,00,000 - Rs. 10,00,000",
+  "Rs. 10,00,000+",
   "Not sure yet",
 ];
 
@@ -137,7 +137,7 @@ export default function ContactPage() {
               </h1>
               <p className="type-lead max-w-2xl">
                 Tell us about your project and we&apos;ll get back within one business day. Every
-                conversation starts with a free 30-minute discovery — no commitment, no scripts.
+                conversation starts with a free 30-minute discovery - no commitment, no scripts.
               </p>
             </div>
 
@@ -203,7 +203,7 @@ export default function ContactPage() {
                     {siteConfig.phone}
                   </p>
                   <p className="type-body text-sm text-[var(--text-muted)]">
-                    Mon – Fri, 10:00 AM – 7:00 PM IST
+                    Mon - Fri, 10:00 AM - 7:00 PM IST
                   </p>
                 </div>
               </a>
@@ -238,7 +238,7 @@ export default function ContactPage() {
                     href={`mailto:${siteConfig.email}?subject=Discovery%20call`}
                     className="type-ui inline-flex items-center gap-2 text-[var(--accent)] hover:text-[var(--link-emphasis)]"
                   >
-                    Schedule a call →
+                    Schedule a call â†’
                   </a>
                 </div>
               </div>

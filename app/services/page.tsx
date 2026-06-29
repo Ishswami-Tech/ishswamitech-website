@@ -47,7 +47,7 @@ const processSteps = [
   {
     icon: Layout,
     title: "Plan",
-    desc: "Roadmap, architecture, and milestones — written down, agreed, and tracked.",
+    desc: "Roadmap, architecture, and milestones - written down, agreed, and tracked.",
   },
   {
     icon: Palette,
@@ -108,7 +108,7 @@ export default function ServicesPage() {
                 Software services, end-to-end and under one roof
               </h1>
               <p className="type-lead max-w-2xl">
-                From idea to launch — and the long tail of iteration after. We design, engineer,
+                From idea to launch - and the long tail of iteration after. We design, engineer,
                 deploy, and maintain modern digital products across every major platform.
               </p>
             </div>
@@ -117,7 +117,7 @@ export default function ServicesPage() {
               <p className="type-eyebrow mb-3 text-[var(--secondary)]">10 capabilities</p>
               <p className="type-body text-[var(--foreground)]">
                 One team, ten core capabilities. No outsourcing, no handoffs, no &ldquo;that&apos;s
-                not our scope&rdquo; — just senior people who can take your project from zero to
+                not our scope&rdquo; - just senior people who can take your project from zero to
                 production.
               </p>
             </div>
@@ -255,7 +255,7 @@ export default function ServicesPage() {
           >
             <p className="type-eyebrow mb-4">How we work</p>
             <h2 className="type-section-title mb-4 text-[var(--foreground)]">
-              A delivery process refined across 200+ launches
+              A practical delivery process for serious product builds
             </h2>
             <p className="type-lead mx-auto max-w-2xl">
               Seven repeatable phases that keep projects on time, on budget, and on track for the
@@ -312,7 +312,7 @@ export default function ServicesPage() {
                 </h2>
                 <p className="type-lead mb-8 max-w-xl">
                   Walk us through your idea, current state, or roadmap. We&apos;ll help you scope
-                  the right phase — even if it&apos;s not with us.
+                  the right phase - even if it&apos;s not with us.
                 </p>
                 <div className="flex flex-col gap-3 sm:flex-row">
                   <Link
@@ -332,8 +332,8 @@ export default function ServicesPage() {
 
               <ul className="space-y-3">
                 {[
-                  "No sales pressure — just useful advice",
-                  "Fixed-scope quotes if we’re a fit",
+                  "No sales pressure - just useful advice",
+                  "Fixed-scope quotes if we're a fit",
                   "NDA-protected from the first email",
                 ].map((item) => (
                   <li

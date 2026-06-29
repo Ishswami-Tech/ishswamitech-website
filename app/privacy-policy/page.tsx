@@ -9,7 +9,7 @@ const sections = [
   {
     id: "data",
     title: "1. What data we collect",
-    body: `We collect information you provide directly — such as name, email, phone number, company name, and project details — when you contact us or use our services. We also automatically collect technical information when you visit our website, including IP address, browser type, device details, and usage data.`,
+    body: `We collect information you provide directly - such as name, email, phone number, company name, and project details - when you contact us or use our services. We also automatically collect technical information when you visit our website, including IP address, browser type, device details, and usage data.`,
   },
   {
     id: "use",
@@ -19,7 +19,7 @@ const sections = [
   {
     id: "sharing",
     title: "3. Third-party sharing",
-    body: `We may share your data with trusted service providers who assist us in operating our business — including hosting, analytics, and email infrastructure. These providers are contractually obligated to protect your data. We may also disclose information when legally required.`,
+    body: `We may share your data with trusted service providers who assist us in operating our business - including hosting, analytics, and email infrastructure. These providers are contractually obligated to protect your data. We may also disclose information when legally required.`,
   },
   {
     id: "client-platform-data",

@@ -7,7 +7,7 @@ export const contactFaq = [
   {
     id: 2,
     question: "What's your development process?",
-    answer: "We follow an agile methodology: Discovery → Planning → Design → Development → Testing → Launch → Support. We work in 2-week sprints with regular demos and feedback sessions.",
+    answer: "We follow a practical delivery flow: Discovery -> Planning -> Design -> Development -> Testing -> Launch -> Support. We work in short cycles with regular demos and feedback sessions.",
   },
   {
     id: 3,

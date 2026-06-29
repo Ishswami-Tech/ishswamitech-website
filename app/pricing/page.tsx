@@ -24,8 +24,8 @@ const plans = [
     name: "Starter",
     icon: Sparkles,
     desc: "For founders validating an idea or shipping a v1",
-    price: "$500 – $2,000",
-    timeline: "2 – 4 weeks",
+    price: "From Rs. 25,000",
+    timeline: "2 - 4 weeks",
     features: [
       "Single-platform web or mobile app",
       "Up to 5 core screens / features",
@@ -41,8 +41,8 @@ const plans = [
     name: "Growth",
     icon: Briefcase,
     desc: "For SMBs scaling a product with traction",
-    price: "$2,000 – $10,000",
-    timeline: "4 – 12 weeks",
+    price: "From Rs. 75,000",
+    timeline: "4 - 12 weeks",
     features: [
       "Full-stack custom application",
       "Multi-platform (web + mobile)",
@@ -63,7 +63,7 @@ const plans = [
     timeline: "Ongoing",
     features: [
       "Complex enterprise systems",
-      "All platforms — web, mobile, desktop",
+      "All platforms - web, mobile, desktop",
       "Ongoing retainer with dedicated team",
       "Custom SLA with response targets",
       "Security audit & compliance review",
@@ -80,25 +80,25 @@ const addOns = [
   {
     icon: Brush,
     name: "UI/UX Design",
-    price: "$500 – $2,000",
+    price: "From Rs. 25,000",
     desc: "Wireframes, prototypes, and a complete brand-aligned visual system.",
   },
   {
     icon: Search,
     name: "SEO Optimization",
-    price: "$300 – $1,000",
+    price: "From Rs. 15,000",
     desc: "Technical SEO audit, schema, page speed, and content recommendations.",
   },
   {
     icon: Wrench,
     name: "Maintenance Retainer",
-    price: "From $200 / mo",
+    price: "From Rs. 15,000 / mo",
     desc: "Bug fixes, security patches, dependency upgrades, and small features.",
   },
   {
     icon: Brain,
     name: "AI Integration",
-    price: "$1,000 – $5,000",
+    price: "From Rs. 50,000",
     desc: "GPT, embeddings, RAG, or custom models added to an existing product.",
   },
 ];
@@ -147,7 +147,7 @@ export default function PricingPage() {
             </h1>
             <p className="type-lead mx-auto mb-10 max-w-2xl">
               Honest ranges, fixed-scope quotes, and the flexibility to mix project and retainer
-              work. Every engagement starts with a free discovery call — no commitment required.
+              work. Every engagement starts with a free discovery call - no commitment required.
             </p>
 
             <div className="inline-flex items-center gap-1 rounded-full border border-[var(--border)] bg-[var(--card)] p-1 backdrop-blur-xl">
@@ -291,10 +291,10 @@ export default function PricingPage() {
           >
             <p className="type-eyebrow mb-4">Add-on services</p>
             <h2 className="type-section-title mb-4 text-[var(--foreground)]">
-              Bolt-on capabilities, à la carte
+              Add-on capabilities, scoped separately
             </h2>
             <p className="type-lead mx-auto max-w-2xl">
-              Layer these onto any plan — or use them as a stand-alone engagement on an existing
+              Layer these onto any plan - or use them as a stand-alone engagement on an existing
               product.
             </p>
           </motion.div>
@@ -412,7 +412,7 @@ export default function PricingPage() {
               </h2>
               <p className="type-lead mx-auto mb-8 max-w-xl">
                 Tell us about your idea in a 30-minute call. We&apos;ll recommend the right plan
-                — or honestly tell you if we&apos;re not the right fit.
+                - or honestly tell you if we&apos;re not the right fit.
               </p>
               <Link
                 href="/contact"

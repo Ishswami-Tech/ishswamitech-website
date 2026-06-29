@@ -85,12 +85,12 @@ export default function Footer() {
             <Link href="/" className="mb-5 flex items-center gap-3">
               <div className="flex items-center justify-center overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--card)] p-1.5">
                 <Image
-                  src="/logo.png"
+                  src={siteConfig.logo}
                   alt=""
                   width={40}
                   height={40}
                   sizes="40px"
-                  className="h-10 w-10 object-contain"
+                  unoptimized
                 />
               </div>
               <div className="flex flex-col leading-none">

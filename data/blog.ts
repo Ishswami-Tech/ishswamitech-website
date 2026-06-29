@@ -1,4 +1,4 @@
-export const blogPosts = [
+const allBlogPosts = [
   {
     id: 1,
     slug: "building-scalable-web-apps-2025",
@@ -29,12 +29,12 @@ Implement caching at multiple layers: CDN, application, and database. Redis and 
 
 ## Conclusion
 
-Scalability is not an afterthought—it's a fundamental requirement. Plan for growth from the beginning.
+Scalability is not an afterthought-it's a fundamental requirement. Plan for growth from the beginning.
     `,
     category: "Web Dev",
     tag: "web-dev",
     image: "/Assets/frontend.jpg",
-    author: "Sam Rivera",
+    author: "Ishswami Tech Team",
     authorAvatar: "/Assets/Programmers_4.jpg",
     date: "2025-03-01",
     readTime: "6 min read",
@@ -70,7 +70,7 @@ For new projects with no existing codebase, we often recommend Flutter for its p
     category: "Mobile",
     tag: "mobile",
     image: "/Assets/hero_img.jpg",
-    author: "Taylor Chen",
+    author: "Ishswami Tech Team",
     authorAvatar: "/Assets/Programmers_4.jpg",
     date: "2025-02-28",
     readTime: "8 min read",
@@ -83,7 +83,7 @@ For new projects with no existing codebase, we often recommend Flutter for its p
     content: `
 ## The AI Integration Landscape
 
-AI is no longer a luxury—it's becoming a standard expectation. Here's how to integrate it effectively.
+AI is no longer a luxury-it's becoming a standard expectation. Here's how to integrate it effectively.
 
 ## Getting Started
 
@@ -97,7 +97,7 @@ Not every feature needs AI. Look for:
 
 ### 2. Choose Your Approach
 
-- **API-based**: OpenAI, Anthropic, Google AI—quick to integrate
+- **API-based**: OpenAI, Anthropic, Google AI-quick to integrate
 - **Self-hosted**: More control, higher initial cost
 - **Hybrid**: Critical features self-hosted, others via API
 
@@ -117,7 +117,7 @@ AI APIs can get expensive. Implement:
     category: "AI/ML",
     tag: "ai-ml",
     image: "/Assets/aiml.jpg",
-    author: "Morgan Davis",
+    author: "Ishswami Tech Team",
     authorAvatar: "/Assets/Programmers_4.jpg",
     date: "2025-02-25",
     readTime: "7 min read",
@@ -130,7 +130,7 @@ AI APIs can get expensive. Implement:
     content: `
 ## Why Design Systems Matter
 
-Consistency, efficiency, and scalability—a good design system delivers all three.
+Consistency, efficiency, and scalability-a good design system delivers all three.
 
 ## Our Approach
 
@@ -160,7 +160,7 @@ A design system is an investment. Start small, iterate based on real usage, and 
     category: "Design",
     tag: "design",
     image: "/Assets/frontend.jpg",
-    author: "Casey Kim",
+    author: "Ishswami Tech Team",
     authorAvatar: "/Assets/Programmers_4.jpg",
     date: "2025-02-20",
     readTime: "5 min read",
@@ -179,7 +179,7 @@ Cloud architecture is more than lifting and shifting. It's about leveraging clou
 
 ### Serverless
 
-Lambda, Cloud Functions—perfect for event-driven workloads. Pay per use, automatic scaling.
+Lambda, Cloud Functions-perfect for event-driven workloads. Pay per use, automatic scaling.
 
 ### Microservices
 
@@ -187,7 +187,7 @@ Decompose monoliths into focused services. Each team can own and deploy independ
 
 ### Event-Driven
 
-Events over HTTP for loose coupling. Kafka, SQS, EventBridge—choose based on your needs.
+Events over HTTP for loose coupling. Kafka, SQS, EventBridge-choose based on your needs.
 
 ### Multi-Region
 
@@ -196,7 +196,7 @@ Design for failure. Active-active or active-passive across regions ensures avail
     category: "Cloud",
     tag: "cloud",
     image: "/Assets/database.jpg",
-    author: "Jordan Lee",
+    author: "Ishswami Tech Team",
     authorAvatar: "/Assets/Programmers_4.jpg",
     date: "2025-02-15",
     readTime: "9 min read",
@@ -228,7 +228,7 @@ Startups need to move fast. But the wrong choices create technical debt that slo
     category: "Business",
     tag: "business",
     image: "/Assets/computer-screen-with-blue-background-with-keyboard-mouse.jpg",
-    author: "Alex Morgan",
+    author: "Ishswami Tech Team",
     authorAvatar: "/Assets/Programmers_4.jpg",
     date: "2025-02-10",
     readTime: "6 min read",
@@ -236,7 +236,7 @@ Startups need to move fast. But the wrong choices create technical debt that slo
   {
     id: 7,
     slug: "case-study-healthtrack",
-    title: "Case Study: HealthTrack — Fitness & Health Monitoring App",
+    title: "Build Concept: HealthTrack - Fitness & Health Monitoring App",
     excerpt:
       "How we shipped a Flutter + Firebase health app with real-time sync, offline mode, and a 4.8 App Store rating for HealthFirst Inc.",
     content: `
@@ -275,9 +275,9 @@ We delivered a cross-platform Flutter client with Firebase for auth, sync, and p
   {
     id: 8,
     slug: "case-study-shopnest",
-    title: "Case Study: ShopNest — E‑Commerce at Scale",
+    title: "Build Concept: ShopNest - Eâ€‘Commerce at Scale",
     excerpt:
-      "A React and Node.js storefront with Stripe, real-time inventory, and a 3× lift in conversion for RetailPro Ltd.",
+      "A React and Node.js storefront with Stripe, real-time inventory, and a 3Ã— lift in conversion for RetailPro Ltd.",
     content: `
 ## Client & context
 
@@ -299,7 +299,7 @@ We built a React storefront and Node.js APIs with Stripe, real-time inventory, a
 
 ## Results
 
-- 3× conversion rate improvement
+- 3Ã— conversion rate improvement
 - ~40% faster perceived load times
     `,
     category: "Case Study",
@@ -313,7 +313,7 @@ We built a React storefront and Node.js APIs with Stripe, real-time inventory, a
   {
     id: 9,
     slug: "case-study-financeai",
-    title: "Case Study: FinanceAI — Budgeting With Natural Language",
+    title: "Build Concept: FinanceAI - Budgeting With Natural Language",
     excerpt:
       "OpenAI-powered insights on top of React and Python: how FinTech Solutions doubled retention with clearer money stories.",
     content: `
@@ -333,7 +333,7 @@ We combined a React client with Python services and OpenAI to turn transactions 
 
 ## Impact
 
-- 2× user retention
+- 2Ã— user retention
 - 90% satisfaction on in-app surveys
     `,
     category: "Case Study",
@@ -347,7 +347,7 @@ We combined a React client with Python services and OpenAI to turn transactions 
   {
     id: 10,
     slug: "case-study-taskflow",
-    title: "Case Study: TaskFlow — Offline‑First Project Management",
+    title: "Build Concept: TaskFlow - Offlineâ€‘First Project Management",
     excerpt:
       "Electron + Vue desktop app for AgileWorks: Kanban, sync when online, and a measurable productivity gain.",
     content: `
@@ -381,7 +381,7 @@ Electron shell, Vue UI, local-first storage with background sync and conflict ha
   {
     id: 11,
     slug: "case-study-edulearn",
-    title: "Case Study: EduLearn — Video Courses at 25K Students",
+    title: "Build Concept: EduLearn - Video Courses at 25K Students",
     excerpt:
       "Next.js e-learning with streaming, quizzes, and certificates for EduTech Academy.",
     content: `
@@ -413,7 +413,7 @@ Dashboards for content, cohorts, and basic analytics.
   {
     id: 12,
     slug: "case-study-safevault",
-    title: "Case Study: SafeVault — SOC2‑Ready Security Operations",
+    title: "Build Concept: SafeVault - SOC2â€‘Ready Security Operations",
     excerpt:
       "React + FastAPI threat dashboard for SecureNet: faster incident response and audit-ready reporting.",
     content: `
@@ -442,7 +442,7 @@ FastAPI services, React visualization, role-based access, and immutable audit lo
   {
     id: 13,
     slug: "case-study-realestatehub",
-    title: "Case Study: RealEstateHub — Listings & Virtual Tours",
+    title: "Build Concept: RealEstateHub - Listings & Virtual Tours",
     excerpt:
       "Laravel + Vue portal for PropertyPro: more leads, thousands of listings, and agent tooling.",
     content: `
@@ -470,9 +470,9 @@ Laravel APIs, Vue SPA-style modules, virtual tours, and agent CRM-lite features.
   {
     id: 14,
     slug: "case-study-foodieapp",
-    title: "Case Study: FoodieApp — Multi‑Restaurant Delivery",
+    title: "Build Concept: FoodieApp - Multiâ€‘Restaurant Delivery",
     excerpt:
-      "React Native + Firebase ordering with live tracking for Foodie Inc — 100K+ downloads.",
+      "React Native + Firebase ordering with live tracking for Foodie Inc - 100K+ downloads.",
     content: `
 ## Product
 
@@ -498,7 +498,7 @@ React Native, Firebase backend, real-time order state, and merchant configuratio
   {
     id: 15,
     slug: "case-study-smarthr",
-    title: "Case Study: SmartHR — HR ERP for 500+ Employees",
+    title: "Build Concept: SmartHR - HR ERP for 500+ Employees",
     excerpt:
       "React, Node.js, and MongoDB: payroll, attendance, and performance in one system for TalentCorp.",
     content: `
@@ -527,3 +527,5 @@ Roughly 80% reduction in manual HR processes after rollout.
     readTime: "8 min read",
   },
 ];
+
+export const blogPosts = allBlogPosts.filter((post) => post.tag !== 'case-study');

@@ -65,17 +65,10 @@ const trustPoints = [
   { icon: MessageSquare, label: "No sales pressure" },
 ];
 
-const whatsAppRecipients = [
-  { label: "7218378311", phone: "917218378311" },
-  { label: "7888154917", phone: "917888154917" },
-];
-
-type WhatsAppLink = (typeof whatsAppRecipients)[number] & { href: string };
-
 export default function ContactPage() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
-  const [whatsAppLinks, setWhatsAppLinks] = useState<WhatsAppLink[] | null>(null);
+  const [submissionError, setSubmissionError] = useState<string | null>(null);
 
   const {
     register,
@@ -87,15 +80,27 @@ export default function ContactPage() {
   });
 
   const onSubmit = async (data: FormData) => {
-    const message = buildWhatsAppMessage(data);
-    const links = whatsAppRecipients.map((recipient) => ({
-      ...recipient,
-      href: `https://wa.me/${recipient.phone}?text=${encodeURIComponent(message)}`,
-    }));
+    setSubmissionError(null);
 
-    setWhatsAppLinks(links);
+    try {
+      const response = await fetch("/api/contact-submissions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
 
-    await new Promise((r) => setTimeout(r, 1200));
+      if (!response.ok) {
+        const result = await response.json().catch(() => null);
+        setSubmissionError(result?.message || "Could not save your message. Please try again.");
+        return;
+      }
+    } catch {
+      setSubmissionError("Could not connect to the spreadsheet. Please try again.");
+      return;
+    }
+
     setIsSubmitted(true);
     reset();
   };
@@ -274,33 +279,17 @@ export default function ContactPage() {
                       <CheckCircle className="h-8 w-8" />
                     </div>
                     <h3 className="type-section-title mb-3 text-[var(--foreground)]">
-                      WhatsApp message ready
+                      Details saved
                     </h3>
                     <p className="type-lead mx-auto mb-8 max-w-md">
-                      Your project details are prepared. WhatsApp will open only when you choose
-                      one of the numbers below.
+                      Thanks for reaching out. Your project details have been saved into the
+                      contact submissions spreadsheet.
                     </p>
-                    {whatsAppLinks && (
-                      <div className="mb-6 flex flex-col justify-center gap-3 sm:flex-row">
-                        {whatsAppLinks.map((link) => (
-                          <a
-                            key={link.phone}
-                            href={link.href}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="type-ui inline-flex items-center justify-center gap-2 rounded-full bg-[#25D366] px-5 py-2.5 font-semibold text-white transition-all hover:-translate-y-0.5 hover:bg-[#20BD5A]"
-                          >
-                            <MessageSquare className="h-4 w-4" />
-                            WhatsApp {link.label}
-                          </a>
-                        ))}
-                      </div>
-                    )}
                     <button
                       type="button"
                       onClick={() => {
                         setIsSubmitted(false);
-                        setWhatsAppLinks(null);
+                        setSubmissionError(null);
                       }}
                       className="type-ui inline-flex items-center gap-2 rounded-full border border-[var(--border-strong)] bg-[var(--card)] px-5 py-2.5 text-[var(--foreground)] transition-colors hover:bg-[var(--card-soft)]"
                     >
@@ -410,6 +399,12 @@ export default function ContactPage() {
                       . We&apos;ll never share your information.
                     </p>
 
+                    {submissionError && (
+                      <p className="type-body mt-4 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-200">
+                        {submissionError}
+                      </p>
+                    )}
+
                     <button
                       type="submit"
                       disabled={isSubmitting}
@@ -418,12 +413,12 @@ export default function ContactPage() {
                       {isSubmitting ? (
                         <>
                           <Loader2 className="h-5 w-5 animate-spin" />
-                          Preparing...
+                          Saving...
                         </>
                       ) : (
                         <>
                           <Send className="h-4 w-4" />
-                          Prepare WhatsApp message
+                          Save to spreadsheet
                         </>
                       )}
                     </button>
@@ -502,24 +497,6 @@ export default function ContactPage() {
       </section>
     </div>
   );
-}
-
-function buildWhatsAppMessage(data: FormData) {
-  const value = (input?: string) => input?.trim() || "-";
-
-  return [
-    "New project enquiry from IshSwamiTech website",
-    "",
-    `Name: ${value(data.name)}`,
-    `Email: ${value(data.email)}`,
-    `Phone: ${value(data.phone)}`,
-    `Company: ${value(data.company)}`,
-    `Service: ${value(data.service)}`,
-    `Budget: ${value(data.budget)}`,
-    "",
-    "Project details:",
-    value(data.message),
-  ].join("\n");
 }
 
 function inputClass(hasError: boolean) {

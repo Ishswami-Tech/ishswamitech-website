@@ -8,8 +8,8 @@ export const siteConfig = {
   description:
     "IshSwamiTech Solutions builds high-performance web apps, mobile apps, AI products, cloud platforms, and UX systems for startups and growing businesses.",
   tagline: "Turning Vision Into Digital Reality",
-  email: "hello@ishswamitech.com",
-  phone: "+91-7218378311",
+  email: "info@ishswami.in",
+  phone: "+91-9226263215",
   ogImage: "/Assets/hero_img.jpg",
   locale: "en_US",
   keywords: [
@@ -32,6 +32,17 @@ export const siteConfig = {
     x: "https://twitter.com",
   },
 } as const;
+
+export const legalEntity = {
+  enterpriseName: "ISHSWAMI TECH",
+  displayName: "IshSwamiTech Solutions",
+  registeredEmail: "info@ishswami.in",
+  registeredPhone: "+91-9226263215",
+  publicLocation: "Pune, India",
+} as const;
+
+export const paymentCollectionDisclosure =
+  "Where enabled for a client platform, online payments may be collected by ISHSWAMI TECH as the technology and payment collection partner. The underlying healthcare, consultation, or clinic service is delivered by the respective service provider under its own professional responsibility.";
 
 export function absoluteUrl(path = "") {
   return path ? `${siteConfig.url}${path}` : siteConfig.url;

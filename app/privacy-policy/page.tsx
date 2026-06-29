@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowLeft, Shield } from "lucide-react";
-import { siteConfig } from "@/lib/site";
+import { paymentCollectionDisclosure, siteConfig } from "@/lib/site";
 
 const sections = [
   {
@@ -22,18 +22,23 @@ const sections = [
     body: `We may share your data with trusted service providers who assist us in operating our business — including hosting, analytics, and email infrastructure. These providers are contractually obligated to protect your data. We may also disclose information when legally required.`,
   },
   {
+    id: "patient-platform-data",
+    title: "4. Patient platform, appointment, and payment data",
+    body: `${paymentCollectionDisclosure} For healthcare client platforms, this may include patient profile details, phone/email verification status, video and in-person appointment bookings, invoices, payment transactions, refunds, support requests, and operational clinic records required to provide the booked service.`,
+  },
+  {
     id: "cookies",
-    title: "4. Cookies",
+    title: "5. Cookies",
     body: `We use cookies and similar technologies to enhance your experience, analyze site traffic, and personalize content. You can control cookie preferences through your browser settings. Essential cookies are necessary for the website to function properly.`,
   },
   {
     id: "rights",
-    title: "5. Your rights",
+    title: "6. Your rights",
     body: `Depending on your location, you may have the right to access, correct, delete, or port your personal data. You may also have the right to object to or restrict certain processing. To exercise these rights, contact us at the address below.`,
   },
   {
     id: "contact",
-    title: "6. Contact",
+    title: "7. Contact",
     body: `For questions about this Privacy Policy or our data practices, reach out to us anytime.`,
   },
 ];
@@ -63,7 +68,7 @@ export default function PrivacyPolicyPage() {
             <p className="type-eyebrow mb-3">Legal</p>
             <h1 className="type-page-title mb-3 text-[var(--foreground)]">Privacy Policy</h1>
             <p className="type-body text-[var(--text-muted)]">
-              Last updated: March 2025 · Effective immediately
+              Last updated: February 2026 - Effective immediately
             </p>
           </motion.div>
         </div>
@@ -134,3 +139,4 @@ export default function PrivacyPolicyPage() {
     </div>
   );
 }
+

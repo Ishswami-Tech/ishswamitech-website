@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowLeft, FileText } from "lucide-react";
-import { siteConfig } from "@/lib/site";
+import { paymentCollectionDisclosure, siteConfig } from "@/lib/site";
 
 const sections = [
   {
@@ -17,28 +17,33 @@ const sections = [
     body: `Payment terms are specified in each project agreement. Typically, we require a deposit to begin work, with milestone-based or final payment upon completion. Invoices are due within 30 days unless otherwise agreed in writing. Late payments may incur reasonable interest charges as permitted by law.`,
   },
   {
+    id: "client-platform-payments",
+    title: "3. Client-platform payments",
+    body: `${paymentCollectionDisclosure} Payment, refund, appointment, and service delivery rules may also be governed by the applicable client or service provider policy.`,
+  },
+  {
     id: "ip",
-    title: "3. Intellectual property",
+    title: "4. Intellectual property",
     body: `Upon full payment, you receive ownership of the custom deliverables created for your project. Pre-existing materials, tools, frameworks, and reusable components remain our property or the property of their respective licensors. We retain the right to use anonymized work for portfolio and marketing purposes unless otherwise agreed in writing.`,
   },
   {
     id: "liability",
-    title: "4. Limitation of liability",
+    title: "5. Limitation of liability",
     body: `To the maximum extent permitted by law, IshSwamiTech Solutions shall not be liable for any indirect, incidental, special, or consequential damages arising from the use of our services. Our total liability shall not exceed the amount paid by you for the specific project giving rise to the claim.`,
   },
   {
     id: "law",
-    title: "5. Governing law",
+    title: "6. Governing law",
     body: `These Terms shall be governed by and construed in accordance with the laws of the jurisdiction in which IshSwamiTech Solutions is registered, without regard to its conflict of law provisions. Any disputes shall be resolved in the courts of that jurisdiction.`,
   },
   {
     id: "changes",
-    title: "6. Changes to these terms",
+    title: "7. Changes to these terms",
     body: `We may revise these Terms at any time. The current version will always be available on this page, with an updated effective date. Continued use of our services after a change constitutes acceptance of the revised Terms.`,
   },
   {
     id: "contact",
-    title: "7. Contact",
+    title: "8. Contact",
     body: `For questions about these Terms, get in touch with us anytime.`,
   },
 ];
@@ -68,7 +73,7 @@ export default function TermsOfServicePage() {
             <p className="type-eyebrow mb-3">Legal</p>
             <h1 className="type-page-title mb-3 text-[var(--foreground)]">Terms of Service</h1>
             <p className="type-body text-[var(--text-muted)]">
-              Last updated: March 2025 · Effective immediately
+              Last updated: February 2026 - Effective immediately
             </p>
           </motion.div>
         </div>

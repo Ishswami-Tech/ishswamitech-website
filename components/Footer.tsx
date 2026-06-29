@@ -12,7 +12,7 @@ import {
   ArrowUpRight,
 } from "lucide-react";
 import ScrollToTop from "./ScrollToTop";
-import { siteConfig } from "@/lib/site";
+import { legalEntity, siteConfig } from "@/lib/site";
 
 const footerLinks = {
   company: [
@@ -31,6 +31,8 @@ const footerLinks = {
   legal: [
     { href: "/privacy-policy", label: "Privacy policy" },
     { href: "/terms-of-service", label: "Terms of service" },
+    { href: "/refund-cancellation", label: "Refund & cancellation" },
+    { href: "/shipping-delivery", label: "Shipping & delivery" },
     { href: "/privacy-policy#cookies", label: "Cookie policy" },
   ],
 };
@@ -194,7 +196,7 @@ export default function Footer() {
               </li>
               <li className="type-body inline-flex items-start gap-2 text-sm text-[var(--text-muted)]">
                 <MapPin className="mt-0.5 h-4 w-4 shrink-0" />
-                Pune, India
+                {legalEntity.publicLocation}
               </li>
             </ul>
           </div>

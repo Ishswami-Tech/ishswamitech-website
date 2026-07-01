@@ -3,97 +3,51 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowLeft, FileText } from "lucide-react";
-import { paymentCollectionDisclosure, siteConfig } from "@/lib/site";
-
-const sections = [
-  {
-    id: "agreement",
-    title: "1. Service agreement",
-    body: `By engaging Ishswami Tech for software development or related services, you agree to these Terms of Service. A separate project agreement or statement of work may specify additional terms for individual projects, and those will take precedence over these general terms where they conflict.`,
-  },
-  {
-    id: "payment",
-    title: "2. Payment terms",
-    body: `Payment terms are specified in each project agreement. Typically, we require a deposit to begin work, with milestone-based or final payment upon completion. Invoices are due within 30 days unless otherwise agreed in writing. Late payments may incur reasonable interest charges as permitted by law.`,
-  },
-  {
-    id: "client-platform-payments",
-    title: "3. Client-platform payments",
-    body: `${paymentCollectionDisclosure} Payment, refund, booking, subscription, cancellation, access, and service delivery rules may also be governed by the applicable client, merchant, or service provider policy.`,
-  },
-  {
-    id: "ip",
-    title: "4. Intellectual property",
-    body: `Upon full payment, you receive ownership of the custom deliverables created for your project. Pre-existing materials, tools, frameworks, and reusable components remain our property or the property of their respective licensors. We retain the right to use anonymized work for portfolio and marketing purposes unless otherwise agreed in writing.`,
-  },
-  {
-    id: "liability",
-    title: "5. Limitation of liability",
-    body: `To the maximum extent permitted by law, Ishswami Tech shall not be liable for any indirect, incidental, special, or consequential damages arising from the use of our services. Our total liability shall not exceed the amount paid by you for the specific project giving rise to the claim.`,
-  },
-  {
-    id: "law",
-    title: "6. Governing law",
-    body: `These Terms shall be governed by and construed in accordance with the laws of the jurisdiction in which Ishswami Tech is registered, without regard to its conflict of law provisions. Any disputes shall be resolved in the courts of that jurisdiction.`,
-  },
-  {
-    id: "changes",
-    title: "7. Changes to these terms",
-    body: `We may revise these Terms at any time. The current version will always be available on this page, with an updated effective date. Continued use of our services after a change constitutes acceptance of the revised Terms.`,
-  },
-  {
-    id: "contact",
-    title: "8. Contact",
-    body: `For questions about these Terms, get in touch with us anytime.`,
-  },
-];
+import { legalContacts, termsSections } from "@/lib/legal/policy-content";
 
 export default function TermsOfServicePage() {
   return (
     <div>
-      {/* HERO */}
       <section className="page-hero page-hero--compact">
-        <div className="container mx-auto px-4 max-w-4xl">
+        <div className="container mx-auto max-w-4xl px-4">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
             <nav className="type-ui text-[var(--text-muted)]">
-              <Link href="/" className="hover:text-[var(--accent)] transition-colors">Home</Link>
+              <Link href="/" className="transition-colors hover:text-[var(--accent)]">
+                Home
+              </Link>
               <span className="mx-2">/</span>
               <span className="text-[var(--foreground)]">Terms</span>
             </nav>
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-          >
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
             <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--card-soft)] text-[var(--accent)]">
               <FileText className="h-6 w-6" />
             </div>
             <p className="type-eyebrow mb-3">Legal</p>
-            <h1 className="type-page-title mb-3 text-[var(--foreground)]">Terms of Service</h1>
-            <p className="type-body text-[var(--text-muted)]">
-              Last updated: February 2026 - Effective immediately
+            <h1 className="type-page-title mb-3 text-[var(--foreground)]">Terms and Conditions</h1>
+            <p className="type-body text-[var(--text-muted)]">Last updated: February 2026 - Effective immediately</p>
+            <p className="type-body mt-4 leading-relaxed text-[var(--text-muted)]">
+              This document is an electronic record and is intended to serve as a formal reference for website, payment gateway, and compliance use.
             </p>
           </motion.div>
         </div>
       </section>
 
-      {/* SECTIONS */}
       <section className="site-section--tight site-section--no-top">
-        <div className="container mx-auto px-4 max-w-4xl">
+        <div className="container mx-auto max-w-4xl px-4">
           <div className="grid gap-8 lg:grid-cols-[0.3fr_1fr]">
             <aside className="hidden lg:block">
               <div className="sticky top-28">
                 <p className="type-band-label mb-3 text-[var(--text-muted)]">On this page</p>
                 <ul className="space-y-2 border-l border-[var(--border)] pl-4">
-                  {sections.map((s) => (
-                    <li key={s.id}>
+                  {termsSections.map((section) => (
+                    <li key={section.id}>
                       <a
-                        href={`#${s.id}`}
+                        href={`#${section.id}`}
                         className="type-ui text-sm text-[var(--text-muted)] transition-colors hover:text-[var(--accent)]"
                       >
-                        {s.title.replace(/^\d+\.\s/, "")}
+                        {section.title.replace(/^\d+\.\s/, "")}
                       </a>
                     </li>
                   ))}
@@ -107,23 +61,24 @@ export default function TermsOfServicePage() {
               transition={{ delay: 0.15 }}
               className="space-y-10"
             >
-              {sections.map((s) => (
-                <div key={s.id} id={s.id} className="scroll-mt-28">
-                  <h2 className="type-panel-title mb-3 text-[var(--foreground)]">{s.title}</h2>
-                  <p className="type-body leading-relaxed text-[var(--text-muted)]">{s.body}</p>
-                  {s.id === "contact" && (
+              {termsSections.map((section) => (
+                <section key={section.id} id={section.id} className="scroll-mt-28">
+                  <h2 className="type-panel-title mb-3 text-[var(--foreground)]">{section.title}</h2>
+                  <p className="type-body leading-relaxed text-[var(--text-muted)]">{section.body}</p>
+                  {section.id === "contact" && (
                     <p className="type-body mt-3 text-[var(--text-muted)]">
                       Email us at{" "}
-                      <a
-                        href={`mailto:${siteConfig.email}`}
-                        className="text-[var(--accent)] hover:underline"
-                      >
-                        {siteConfig.email}
+                      <a href={`mailto:${legalContacts.supportEmail}`} className="text-[var(--accent)] hover:underline">
+                        {legalContacts.supportEmail}
+                      </a>{" "}
+                      or call{" "}
+                      <a href={`tel:${legalContacts.supportPhone}`} className="text-[var(--accent)] hover:underline">
+                        {legalContacts.supportPhone}
                       </a>
                       .
                     </p>
                   )}
-                </div>
+                </section>
               ))}
             </motion.article>
           </div>
@@ -131,11 +86,8 @@ export default function TermsOfServicePage() {
       </section>
 
       <section className="site-section--tight site-section--no-top">
-        <div className="container mx-auto px-4 max-w-4xl">
-          <Link
-            href="/"
-            className="type-ui inline-flex items-center gap-2 text-[var(--accent)] hover:text-[var(--link-emphasis)]"
-          >
+        <div className="container mx-auto max-w-4xl px-4">
+          <Link href="/" className="type-ui inline-flex items-center gap-2 text-[var(--accent)] hover:text-[var(--link-emphasis)]">
             <ArrowLeft className="h-4 w-4" />
             Back to home
           </Link>

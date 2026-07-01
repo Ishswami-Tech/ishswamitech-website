@@ -3,30 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowLeft, RotateCcw } from "lucide-react";
-import { legalEntity, paymentCollectionDisclosure, siteConfig } from "@/lib/site";
-
-const sections = [
-  {
-    title: "1. Software and technology services",
-    body: "Refunds for custom software, app development, website development, maintenance, and consulting services are governed by the signed proposal, statement of work, or invoice terms. Work already delivered, approved, or consumed is generally not refundable unless separately agreed in writing.",
-  },
-  {
-    title: "2. Client-platform payments",
-    body: "For client platforms, Ishswami Tech may collect online payments as the technology and payment collection partner. The actual service, product, booking, subscription, consultation, event, digital content, or deliverable is provided by the respective client or service provider.",
-  },
-  {
-    title: "3. Cancellations, no-shows, and service-specific rules",
-    body: "Cancellation and refund eligibility depends on the type of service being purchased and the client/provider policy shown for that service. For healthcare video appointments, payment is non-refundable once completed because the selected provider slot is reserved. Missed video appointments require a fresh booking unless the provider separately approves rescheduling.",
-  },
-  {
-    title: "4. Approved refund timelines",
-    body: "If a refund is approved, it will be initiated to the original payment method where possible. Bank, card, UPI, or payment gateway settlement timelines may take 5 to 7 business days after initiation.",
-  },
-  {
-    title: "5. Gateway and processing charges",
-    body: "Payment gateway, bank, or platform charges may be non-refundable where they have already been charged by the payment processor or bank.",
-  },
-];
+import { legalContacts, refundSections } from "@/lib/legal/policy-content";
 
 export default function RefundCancellationPage() {
   return (
@@ -35,7 +12,9 @@ export default function RefundCancellationPage() {
         <div className="container mx-auto max-w-4xl px-4">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
             <nav className="type-ui text-[var(--text-muted)]">
-              <Link href="/" className="transition-colors hover:text-[var(--accent)]">Home</Link>
+              <Link href="/" className="transition-colors hover:text-[var(--accent)]">
+                Home
+              </Link>
               <span className="mx-2">/</span>
               <span className="text-[var(--foreground)]">Refund & cancellation</span>
             </nav>
@@ -46,11 +25,10 @@ export default function RefundCancellationPage() {
               <RotateCcw className="h-6 w-6" />
             </div>
             <p className="type-eyebrow mb-3">Legal</p>
-            <h1 className="type-page-title mb-3 text-[var(--foreground)]">
-              Refund & Cancellation Policy
-            </h1>
-            <p className="type-body text-[var(--text-muted)]">
-              Last updated: February 2026 - Effective immediately
+            <h1 className="type-page-title mb-3 text-[var(--foreground)]">Refund & Cancellation Policy</h1>
+            <p className="type-body text-[var(--text-muted)]">Last updated: February 2026 - Effective immediately</p>
+            <p className="type-body mt-4 leading-relaxed text-[var(--text-muted)]">
+              This policy applies to service bookings, digital services, and client-platform payments handled through Ishswami Tech.
             </p>
           </motion.div>
         </div>
@@ -64,13 +42,7 @@ export default function RefundCancellationPage() {
             transition={{ delay: 0.15 }}
             className="space-y-8"
           >
-            <div className="rounded-2xl border border-[var(--border)] bg-[var(--card)] p-6">
-              <p className="type-body leading-relaxed text-[var(--text-muted)]">
-                {paymentCollectionDisclosure}
-              </p>
-            </div>
-
-            {sections.map((section) => (
+            {refundSections.map((section) => (
               <section key={section.title}>
                 <h2 className="type-panel-title mb-3 text-[var(--foreground)]">{section.title}</h2>
                 <p className="type-body leading-relaxed text-[var(--text-muted)]">{section.body}</p>
@@ -78,15 +50,15 @@ export default function RefundCancellationPage() {
             ))}
 
             <section className="rounded-2xl border border-[var(--border)] bg-[var(--card-soft)] p-6">
-              <h2 className="type-panel-title mb-3 text-[var(--foreground)]">Contact for refund support</h2>
+              <h2 className="type-panel-title mb-3 text-[var(--foreground)]">Refund support</h2>
               <p className="type-body leading-relaxed text-[var(--text-muted)]">
                 Email{" "}
-                <a href={`mailto:${siteConfig.email}`} className="text-[var(--accent)] hover:underline">
-                  {siteConfig.email}
+                <a href={`mailto:${legalContacts.supportEmail}`} className="text-[var(--accent)] hover:underline">
+                  {legalContacts.supportEmail}
                 </a>{" "}
                 or call{" "}
-                <a href={`tel:${legalEntity.registeredPhone}`} className="text-[var(--accent)] hover:underline">
-                  {legalEntity.registeredPhone}
+                <a href={`tel:${legalContacts.supportPhone}`} className="text-[var(--accent)] hover:underline">
+                  {legalContacts.supportPhone}
                 </a>
                 .
               </p>

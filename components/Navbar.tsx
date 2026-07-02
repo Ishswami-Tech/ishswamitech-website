@@ -40,79 +40,6 @@ export default function Navbar() {
 
   return (
     <>
-<<<<<<< Updated upstream
-      <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled
-            ? "border-b border-[var(--border)] bg-[var(--navbar-bg)] py-2.5 shadow-[var(--navbar-shadow)] backdrop-blur-xl"
-            : "bg-transparent py-4"
-        }`}
-      >
-        <nav className="container mx-auto flex items-center justify-between px-4">
-          <Link href="/" className="group flex items-center gap-3" aria-label="Ishswami Tech home">
-            <div className="flex items-center justify-center overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--card)] p-1.5 shadow-[0_10px_30px_rgba(0,0,0,0.08)] transition-colors group-hover:bg-[var(--card-soft)]">
-              <Image
-                src="/Assets/brand/logo-mark.svg"
-                alt=""
-                width={40}
-                height={40}
-                sizes="40px"
-                unoptimized
-                className="h-10 w-10 object-contain"
-              />
-            </div>
-            <div className="flex flex-col leading-none">
-              <span className="font-heading text-xl font-bold gradient-text">Ishswami</span>
-              <span className="type-ui text-[10px] uppercase tracking-[0.18em] text-[var(--text-muted)]">
-                Tech
-              </span>
-            </div>
-          </Link>
-
-          <div className="hidden items-center gap-1 rounded-full border border-[var(--border)] bg-[var(--nav-pill-bg)] px-2 py-1.5 backdrop-blur-xl lg:flex">
-            {navLinks.map((link) => {
-              const active = isActive(link.href);
-              return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={`relative rounded-full px-4 py-2 text-sm font-medium transition-all ${
-                    active
-                      ? "text-white"
-                      : "text-[var(--text-muted)] hover:text-[var(--foreground)]"
-                  }`}
-                >
-                  {active && (
-                    <motion.span
-                      layoutId="nav-active"
-                      className="absolute inset-0 rounded-full bg-[var(--accent)]"
-                      transition={{ type: "spring", bounce: 0.25, duration: 0.5 }}
-                    />
-                  )}
-                  <span className="relative">{link.label}</span>
-                </Link>
-              );
-            })}
-          </div>
-
-          <div className="hidden items-center gap-2.5 lg:flex">
-            <Link
-              href="/contact"
-              className="group inline-flex items-center gap-1.5 rounded-full bg-[var(--button-gradient)] px-5 py-2.5 text-sm font-semibold text-white shadow-[var(--button-shadow)] transition-all hover:-translate-y-0.5"
-            >
-              Get a quote
-              <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:rotate-45" />
-            </Link>
-          </div>
-
-          <button
-            type="button"
-            className="rounded-full border border-[var(--border)] bg-[var(--card)] p-2.5 text-[var(--foreground)] transition-colors hover:bg-[var(--card-soft)] lg:hidden"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
-            aria-expanded={isMobileMenuOpen}
-            aria-controls="mobile-nav"
-=======
       <header className="fixed left-0 right-0 top-3 z-50 transition-all duration-300">
         <nav className="container mx-auto px-4">
           <div
@@ -121,7 +48,6 @@ export default function Navbar() {
                 ? "border-[var(--border-strong)] bg-[var(--navbar-bg)] shadow-[var(--navbar-shadow)] backdrop-blur-2xl"
                 : "border-white/10 bg-[#06101d]/78 shadow-[0_16px_46px_rgba(0,0,0,0.24)] backdrop-blur-xl"
             }`}
->>>>>>> Stashed changes
           >
             <Link href="/" className="group flex items-center gap-3" aria-label={`${siteConfig.shortName} home`}>
               <div className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-xl border border-[var(--border-strong)] bg-[linear-gradient(135deg,rgba(66,232,244,0.12),rgba(255,184,77,0.08))] p-1 shadow-[0_10px_30px_rgba(66,232,244,0.12)] transition-all group-hover:-translate-y-0.5 group-hover:shadow-[var(--button-shadow)]">
@@ -219,23 +145,12 @@ export default function Navbar() {
                   <Image
                     src="/Assets/brand/logo-mark.svg"
                     alt=""
-<<<<<<< Updated upstream
-                    width={36}
-                    height={36}
-                    sizes="36px"
-                    unoptimized
-                    className="h-9 w-9 object-contain"
-                  />
-                  <span className="font-heading text-base font-bold gradient-text">
-                    Ishswami Tech
-=======
                     width={28}
                     height={28}
                     className="h-7 w-7"
                   />
                   <span className="font-heading text-base font-bold gradient-text">
                     {siteConfig.shortName}
->>>>>>> Stashed changes
                   </span>
                 </Link>
                 <button

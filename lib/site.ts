@@ -1,21 +1,12 @@
 import type { Metadata } from "next";
 
 export const siteConfig = {
-<<<<<<< Updated upstream
-  name: "Ishswami Tech",
-  shortName: "Ishswami",
-  url: "https://ishswami.in",
-  title: "Ishswami Tech | Custom Software, AI, Cloud & Product Design",
-  description:
-    "Ishswami Tech builds high-performance web apps, mobile apps, AI products, cloud platforms, and UX systems for startups, clinics, creators, and growing businesses.",
-=======
   name: "IshSwamiTech",
   shortName: "IshSwamiTech",
   url: "https://ishswami.in",
   title: "IshSwamiTech | Custom Software, AI, Cloud & Product Design",
   description:
     "IshSwamiTech builds high-performance web apps, mobile apps, AI products, cloud platforms, and UX systems for startups and growing businesses.",
->>>>>>> Stashed changes
   tagline: "Turning Vision Into Digital Reality",
   email: "info@ishswami.in",
   phone: "+91-7218378311",
@@ -47,15 +38,15 @@ export const siteConfig = {
 } as const;
 
 export const legalEntity = {
-  enterpriseName: "ISHSWAMI TECH",
-  displayName: "Ishswami Tech",
+  enterpriseName: "ISHSWAMITECH",
+  displayName: "IshSwamiTech",
   registeredEmail: "info@ishswami.in",
   registeredPhone: "+91-7218378311",
   publicLocation: "Pune, India",
 } as const;
 
 export const paymentCollectionDisclosure =
-  "Where enabled for a client platform, online payments may be collected by ISHSWAMI TECH as the technology and payment collection partner. The underlying service, product, booking, subscription, consultation, event, or digital deliverable is provided by the respective client, merchant, clinic, creator, educator, consultant, or service provider under its own responsibility.";
+  "Where enabled for a client platform, online payments may be collected by IshSwamiTech as the technology and payment collection partner. The underlying service, product, booking, subscription, consultation, event, or digital deliverable is provided by the respective client, merchant, clinic, creator, educator, consultant, or service provider under its own responsibility.";
 
 export function absoluteUrl(path = "") {
   return path ? `${siteConfig.url}${path}` : siteConfig.url;
@@ -105,4 +96,3 @@ export function createPageMetadata({
     },
   };
 }
-

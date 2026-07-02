@@ -148,12 +148,8 @@ export default function PricingPage() {
             </h1>
             <p className="type-lead mx-auto mb-10 max-w-2xl">
               Honest ranges, fixed-scope quotes, and the flexibility to mix project and retainer
-<<<<<<< Updated upstream
-              work. Every engagement starts with a free discovery call - no commitment required.
-=======
               work. Every IshSwamiTech engagement starts with a free discovery call — no
               commitment required.
->>>>>>> Stashed changes
             </p>
 
             <div className="inline-flex items-center gap-1 rounded-full border border-[var(--border)] bg-[var(--card)] p-1 backdrop-blur-xl">

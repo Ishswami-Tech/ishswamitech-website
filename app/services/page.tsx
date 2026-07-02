@@ -109,29 +109,18 @@ export default function ServicesPage() {
                 Software services, end-to-end and under one roof
               </h1>
               <p className="type-lead max-w-2xl">
-<<<<<<< Updated upstream
-                From idea to launch - and the long tail of iteration after. We design, engineer,
-                deploy, and maintain modern digital products across every major platform.
-=======
                 From idea to launch — and the long tail of iteration after. IshSwamiTech designs,
                 engineers, deploys, and maintains modern digital products across every major
                 platform.
->>>>>>> Stashed changes
               </p>
             </div>
 
             <div className="glass rounded-2xl border border-[var(--border)] p-6">
               <p className="type-eyebrow mb-3 text-[var(--secondary)]">10 capabilities</p>
               <p className="type-body text-[var(--foreground)]">
-<<<<<<< Updated upstream
-                One team, ten core capabilities. No outsourcing, no handoffs, no &ldquo;that&apos;s
-                not our scope&rdquo; - just senior people who can take your project from zero to
-                production.
-=======
                 One IshSwamiTech team, ten core capabilities. No outsourcing, no handoffs, no
                 &ldquo;that&apos;s not our scope&rdquo; — just senior people who can take your project
                 from zero to production.
->>>>>>> Stashed changes
               </p>
             </div>
           </motion.div>

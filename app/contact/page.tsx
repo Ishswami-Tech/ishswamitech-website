@@ -136,14 +136,9 @@ export default function ContactPage() {
                 Let&apos;s build something worth talking about
               </h1>
               <p className="type-lead max-w-2xl">
-<<<<<<< Updated upstream
-                Tell us about your project and we&apos;ll get back within one business day. Every
-                conversation starts with a free 30-minute discovery - no commitment, no scripts.
-=======
                 Tell the IshSwamiTech team about your project and we&apos;ll get back within one
                 business day. Every conversation starts with a free 30-minute discovery — no
                 commitment, no scripts.
->>>>>>> Stashed changes
               </p>
             </div>
 

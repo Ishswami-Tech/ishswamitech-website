@@ -76,11 +76,7 @@ export default async function BlogPostPage({
       name: siteConfig.name,
       logo: {
         "@type": "ImageObject",
-<<<<<<< Updated upstream
         url: absoluteUrl(siteConfig.logo),
-=======
-        url: absoluteUrl("/Assets/brand/logo-mark.svg"),
->>>>>>> Stashed changes
       },
     },
     mainEntityOfPage: absoluteUrl(`/blog/${post.slug}`),

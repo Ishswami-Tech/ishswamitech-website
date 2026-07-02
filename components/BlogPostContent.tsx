@@ -210,11 +210,7 @@ export default function BlogPostContent({ post, relatedPosts }: BlogPostContentP
                 <p className="type-eyebrow mb-1 text-[var(--text-muted)]">Written by</p>
                 <h3 className="type-card-title text-[var(--foreground)]">{post.author}</h3>
                 <p className="type-body text-sm text-[var(--text-muted)]">
-<<<<<<< Updated upstream
-                  Engineer & writer at Ishswami Tech
-=======
                   Engineer & writer at {siteConfig.name}
->>>>>>> Stashed changes
                 </p>
               </div>
             </div>

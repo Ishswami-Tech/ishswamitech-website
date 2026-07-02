@@ -1,8 +1,4 @@
-<<<<<<< Updated upstream
-﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 80" role="img" aria-label="IshSwamiTech Solutions">
-=======
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 430 96" role="img" aria-label="IshSwamiTech">
->>>>>>> Stashed changes
   <defs>
     <linearGradient id="ist-w-bg" x1="12" y1="8" x2="84" y2="88" gradientUnits="userSpaceOnUse">
       <stop offset="0" stop-color="#10263a"/>

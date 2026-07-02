@@ -3,49 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowLeft, FileText } from "lucide-react";
-<<<<<<< Updated upstream
 import { legalContacts, termsSections } from "@/lib/legal/policy-content";
-=======
-import { siteConfig } from "@/lib/site";
-
-const sections = [
-  {
-    id: "agreement",
-    title: "1. Service agreement",
-    body: `By engaging IshSwamiTech for software development or related services, you agree to these Terms & Conditions. A separate project agreement or statement of work may specify additional terms for individual projects, and those will take precedence over these general terms where they conflict.`,
-  },
-  {
-    id: "payment",
-    title: "2. Payment terms",
-    body: `Payment terms are specified in each project agreement. Typically, we require a deposit to begin work, with milestone-based or final payment upon completion. Invoices are due within 30 days unless otherwise agreed in writing. Late payments may incur reasonable interest charges as permitted by law.`,
-  },
-  {
-    id: "ip",
-    title: "3. Intellectual property",
-    body: `Upon full payment, you receive ownership of the custom deliverables created for your project. Pre-existing materials, tools, frameworks, and reusable components remain our property or the property of their respective licensors. We retain the right to use anonymized work for portfolio and marketing purposes unless otherwise agreed in writing.`,
-  },
-  {
-    id: "liability",
-    title: "4. Limitation of liability",
-    body: `To the maximum extent permitted by law, IshSwamiTech shall not be liable for any indirect, incidental, special, or consequential damages arising from the use of our services. Our total liability shall not exceed the amount paid by you for the specific project giving rise to the claim.`,
-  },
-  {
-    id: "law",
-    title: "5. Governing law",
-    body: `These Terms shall be governed by and construed in accordance with the laws of the jurisdiction in which IshSwamiTech is registered, without regard to its conflict of law provisions. Any disputes shall be resolved in the courts of that jurisdiction.`,
-  },
-  {
-    id: "changes",
-    title: "6. Changes to these terms",
-    body: `We may revise these Terms & Conditions at any time. The current version will always be available on this page, with an updated effective date. Continued use of our services after a change constitutes acceptance of the revised terms.`,
-  },
-  {
-    id: "contact",
-    title: "7. Contact",
-    body: `For questions about these Terms & Conditions, get in touch with us anytime.`,
-  },
-];
->>>>>>> Stashed changes
 
 export default function TermsOfServicePage() {
   return (
@@ -66,18 +24,11 @@ export default function TermsOfServicePage() {
             <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--card-soft)] text-[var(--accent)]">
               <FileText className="h-6 w-6" />
             </div>
-<<<<<<< Updated upstream
             <p className="type-eyebrow mb-3">Legal</p>
             <h1 className="type-page-title mb-3 text-[var(--foreground)]">Terms and Conditions</h1>
             <p className="type-body text-[var(--text-muted)]">Last updated: February 2026 - Effective immediately</p>
             <p className="type-body mt-4 leading-relaxed text-[var(--text-muted)]">
               This document is an electronic record and is intended to serve as a formal reference for website, payment gateway, and compliance use.
-=======
-            <p className="type-eyebrow mb-3">IshSwamiTech legal</p>
-            <h1 className="type-page-title mb-3 text-[var(--foreground)]">Terms &amp; Conditions</h1>
-            <p className="type-body text-[var(--text-muted)]">
-              Last updated: March 2025 · Effective immediately
->>>>>>> Stashed changes
             </p>
           </motion.div>
         </div>

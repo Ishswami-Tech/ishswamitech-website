@@ -131,13 +131,19 @@ export default function ContactPage() {
             className="grid items-end gap-8 lg:grid-cols-[1.2fr_1fr]"
           >
             <div>
-              <p className="type-eyebrow mb-4">Get in touch</p>
+              <p className="type-eyebrow mb-4">Contact {siteConfig.shortName}</p>
               <h1 className="type-page-title mb-5 text-[var(--foreground)]">
                 Let&apos;s build something worth talking about
               </h1>
               <p className="type-lead max-w-2xl">
+<<<<<<< Updated upstream
                 Tell us about your project and we&apos;ll get back within one business day. Every
                 conversation starts with a free 30-minute discovery - no commitment, no scripts.
+=======
+                Tell the IshSwamiTech team about your project and we&apos;ll get back within one
+                business day. Every conversation starts with a free 30-minute discovery — no
+                commitment, no scripts.
+>>>>>>> Stashed changes
               </p>
             </div>
 
@@ -408,7 +414,7 @@ export default function ContactPage() {
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-[var(--button-gradient)] px-7 py-3.5 font-semibold text-white shadow-[var(--button-shadow)] transition-all hover:-translate-y-0.5 disabled:opacity-70 sm:w-auto"
+                      className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full [background:var(--button-gradient)] px-7 py-3.5 font-semibold text-[var(--button-foreground)] shadow-[var(--button-shadow)] transition-all hover:-translate-y-0.5 disabled:opacity-70 sm:w-auto"
                     >
                       {isSubmitting ? (
                         <>

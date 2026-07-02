@@ -24,6 +24,7 @@ import {
   Check,
 } from "lucide-react";
 import { services } from "@/data/services";
+import { siteConfig } from "@/lib/site";
 
 const iconMap: Record<string, React.ElementType> = {
   Globe,
@@ -103,22 +104,34 @@ export default function ServicesPage() {
             className="grid items-end gap-10 lg:grid-cols-[1.2fr_1fr]"
           >
             <div>
-              <p className="type-eyebrow mb-4">What we deliver</p>
+              <p className="type-eyebrow mb-4">{siteConfig.shortName} services</p>
               <h1 className="type-page-title mb-5 text-[var(--foreground)]">
                 Software services, end-to-end and under one roof
               </h1>
               <p className="type-lead max-w-2xl">
+<<<<<<< Updated upstream
                 From idea to launch - and the long tail of iteration after. We design, engineer,
                 deploy, and maintain modern digital products across every major platform.
+=======
+                From idea to launch — and the long tail of iteration after. IshSwamiTech designs,
+                engineers, deploys, and maintains modern digital products across every major
+                platform.
+>>>>>>> Stashed changes
               </p>
             </div>
 
             <div className="glass rounded-2xl border border-[var(--border)] p-6">
               <p className="type-eyebrow mb-3 text-[var(--secondary)]">10 capabilities</p>
               <p className="type-body text-[var(--foreground)]">
+<<<<<<< Updated upstream
                 One team, ten core capabilities. No outsourcing, no handoffs, no &ldquo;that&apos;s
                 not our scope&rdquo; - just senior people who can take your project from zero to
                 production.
+=======
+                One IshSwamiTech team, ten core capabilities. No outsourcing, no handoffs, no
+                &ldquo;that&apos;s not our scope&rdquo; — just senior people who can take your project
+                from zero to production.
+>>>>>>> Stashed changes
               </p>
             </div>
           </motion.div>
@@ -212,7 +225,7 @@ export default function ServicesPage() {
 
                         <Link
                           href="/contact"
-                          className="inline-flex items-center gap-2 rounded-full bg-[var(--button-gradient)] px-5 py-2.5 text-sm font-semibold text-white shadow-[var(--button-shadow)] transition-all hover:-translate-y-0.5"
+                          className="inline-flex items-center gap-2 rounded-full [background:var(--button-gradient)] px-5 py-2.5 text-sm font-semibold text-[var(--button-foreground)] shadow-[var(--button-shadow)] transition-all hover:-translate-y-0.5"
                         >
                           Get a quote <ArrowUpRight className="h-4 w-4" />
                         </Link>
@@ -317,7 +330,7 @@ export default function ServicesPage() {
                 <div className="flex flex-col gap-3 sm:flex-row">
                   <Link
                     href="/contact"
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-[var(--button-gradient)] px-7 py-3.5 font-semibold text-white shadow-[var(--button-shadow)] transition-all hover:-translate-y-0.5"
+                    className="inline-flex items-center justify-center gap-2 rounded-full [background:var(--button-gradient)] px-7 py-3.5 font-semibold text-[var(--button-foreground)] shadow-[var(--button-shadow)] transition-all hover:-translate-y-0.5"
                   >
                     Book free consultation <ArrowUpRight className="h-4 w-4" />
                   </Link>

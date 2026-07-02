@@ -4,9 +4,14 @@ const organizationSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
   name: siteConfig.name,
+  legalName: siteConfig.name,
   alternateName: siteConfig.shortName,
   url: siteConfig.url,
+<<<<<<< Updated upstream
   logo: absoluteUrl(siteConfig.logo),
+=======
+  logo: absoluteUrl("/Assets/brand/logo-mark.svg"),
+>>>>>>> Stashed changes
   email: siteConfig.email,
   telephone: siteConfig.phone,
   sameAs: Object.values(siteConfig.social).filter(Boolean),

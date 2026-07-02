@@ -13,6 +13,7 @@ import {
   Mail,
 } from "lucide-react";
 import ShareButtons from "./ShareButtons";
+import { absoluteUrl, siteConfig } from "@/lib/site";
 
 interface BlogPost {
   id: number;
@@ -101,7 +102,7 @@ function renderContent(content: string) {
 }
 
 export default function BlogPostContent({ post, relatedPosts }: BlogPostContentProps) {
-  const shareUrl = `https://ishswamitech.com/blog/${post.slug}`;
+  const shareUrl = absoluteUrl(`/blog/${post.slug}`);
 
   return (
     <div>
@@ -209,7 +210,11 @@ export default function BlogPostContent({ post, relatedPosts }: BlogPostContentP
                 <p className="type-eyebrow mb-1 text-[var(--text-muted)]">Written by</p>
                 <h3 className="type-card-title text-[var(--foreground)]">{post.author}</h3>
                 <p className="type-body text-sm text-[var(--text-muted)]">
+<<<<<<< Updated upstream
                   Engineer & writer at Ishswami Tech
+=======
+                  Engineer & writer at {siteConfig.name}
+>>>>>>> Stashed changes
                 </p>
               </div>
             </div>
@@ -294,7 +299,7 @@ export default function BlogPostContent({ post, relatedPosts }: BlogPostContentP
                 />
                 <button
                   type="submit"
-                  className="rounded-full bg-[var(--button-gradient)] px-6 py-3 font-semibold text-white shadow-[var(--button-shadow)] transition-all hover:-translate-y-0.5"
+                  className="rounded-full [background:var(--button-gradient)] px-6 py-3 font-semibold text-[var(--button-foreground)] shadow-[var(--button-shadow)] transition-all hover:-translate-y-0.5"
                 >
                   Subscribe
                 </button>

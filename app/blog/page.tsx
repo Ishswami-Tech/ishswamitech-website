@@ -14,6 +14,7 @@ import {
   Mail,
 } from "lucide-react";
 import { blogPosts } from "@/data/blog";
+import { siteConfig } from "@/lib/site";
 
 const tags = ["All", "Case Study", "Web Dev", "Mobile", "AI/ML", "Design", "Cloud", "Business"];
 
@@ -74,13 +75,18 @@ export default function BlogPage() {
             className="grid items-end gap-8 lg:grid-cols-[1.3fr_1fr]"
           >
             <div>
-              <p className="type-eyebrow mb-4">Insights & resources</p>
+              <p className="type-eyebrow mb-4">{siteConfig.shortName} insights</p>
               <h1 className="type-page-title mb-5 text-[var(--foreground)]">
                 Practical writing on building modern software
               </h1>
               <p className="type-lead max-w-2xl">
+<<<<<<< Updated upstream
                 Field notes, deep dives, and case studies from our team - covering web
                 engineering, AI, mobile, design, and the operating model behind shipping
+=======
+                Field notes, deep dives, and case studies from the IshSwamiTech team — covering
+                web engineering, AI, mobile, design, and the operating model behind shipping
+>>>>>>> Stashed changes
                 products that grow.
               </p>
             </div>
@@ -119,7 +125,7 @@ export default function BlogPage() {
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
                         sizes="(max-width: 1024px) 100vw, 50vw"
                       />
-                      <div className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-[var(--button-gradient)] px-3 py-1 text-xs font-semibold text-white shadow-[var(--button-shadow)]">
+                      <div className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full [background:var(--button-gradient)] px-3 py-1 text-xs font-semibold text-[var(--button-foreground)] shadow-[var(--button-shadow)]">
                         Featured
                       </div>
                     </div>
@@ -179,7 +185,7 @@ export default function BlogPage() {
                 onClick={() => setActiveTag(tag)}
                 className={`type-ui rounded-full border px-4 py-2 transition-all ${
                   activeTag === tag
-                    ? "border-[var(--border-strong)] bg-[var(--accent)] text-white shadow-[var(--button-shadow)]"
+                    ? "border-[var(--border-strong)] bg-[var(--accent)] text-[var(--button-foreground)] shadow-[var(--button-shadow)]"
                     : "border-[var(--border)] bg-[var(--card)] text-[var(--text-muted)] hover:border-[var(--border-strong)] hover:text-[var(--foreground)]"
                 }`}
               >
@@ -318,7 +324,7 @@ export default function BlogPage() {
                     />
                     <button
                       type="submit"
-                      className="w-full rounded-full bg-[var(--button-gradient)] px-4 py-2.5 text-sm font-semibold text-white shadow-[var(--button-shadow)] transition-all hover:-translate-y-0.5"
+                      className="w-full rounded-full [background:var(--button-gradient)] px-4 py-2.5 text-sm font-semibold text-[var(--button-foreground)] shadow-[var(--button-shadow)] transition-all hover:-translate-y-0.5"
                     >
                       Subscribe
                     </button>

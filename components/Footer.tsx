@@ -19,6 +19,7 @@ const footerLinks = {
     { href: "/about", label: "About us" },
     { href: "/blog", label: "Insights" },
     { href: "/pricing", label: "Pricing" },
+    { href: "/contact", label: "Contact us" },
   ],
   services: [
     { href: "/services#web-development", label: "Web development" },
@@ -30,9 +31,14 @@ const footerLinks = {
   ],
   legal: [
     { href: "/privacy-policy", label: "Privacy policy" },
+<<<<<<< Updated upstream
     { href: "/terms-of-service", label: "Terms of service" },
     { href: "/refund-cancellation", label: "Refund & cancellation" },
     { href: "/shipping-delivery", label: "Shipping & delivery" },
+=======
+    { href: "/terms-and-conditions", label: "Terms & conditions" },
+    { href: "/refund-policy", label: "Refund policy" },
+>>>>>>> Stashed changes
     { href: "/privacy-policy#cookies", label: "Cookie policy" },
   ],
 };
@@ -63,7 +69,7 @@ export default function Footer() {
             <div className="flex flex-col gap-3 sm:flex-row md:justify-end">
               <Link
                 href="/contact"
-                className="inline-flex items-center justify-center gap-2 rounded-full bg-[var(--button-gradient)] px-6 py-3 font-semibold text-white shadow-[var(--button-shadow)] transition-all hover:-translate-y-0.5"
+                className="inline-flex items-center justify-center gap-2 rounded-full [background:var(--button-gradient)] px-6 py-3 font-semibold text-[var(--button-foreground)] shadow-[var(--button-shadow)] transition-all hover:-translate-y-0.5"
               >
                 Start a project
                 <ArrowUpRight className="h-4 w-4" />
@@ -85,26 +91,43 @@ export default function Footer() {
             <Link href="/" className="mb-5 flex items-center gap-3">
               <div className="flex items-center justify-center overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--card)] p-1.5">
                 <Image
+<<<<<<< Updated upstream
                   src={siteConfig.logo}
                   alt=""
                   width={40}
                   height={40}
                   sizes="40px"
                   unoptimized
+=======
+                  src="/Assets/brand/logo-mark.svg"
+                  alt=""
+                  width={32}
+                  height={32}
+                  className="h-8 w-8"
+>>>>>>> Stashed changes
                 />
               </div>
               <div className="flex flex-col leading-none">
                 <span className="font-heading text-xl font-bold gradient-text">
+<<<<<<< Updated upstream
                   Ishswami
                 </span>
                 <span className="type-ui text-[10px] uppercase tracking-[0.18em] text-[var(--text-muted)]">
                   Tech
+=======
+                  {siteConfig.shortName}
+>>>>>>> Stashed changes
                 </span>
               </div>
             </Link>
             <p className="type-body mb-5 max-w-sm text-sm text-[var(--text-muted)]">
+<<<<<<< Updated upstream
               We turn vision into digital reality - product engineering, AI integration, cloud
               delivery, and UX systems that help businesses ship faster.
+=======
+              IshSwamiTech turns vision into digital reality with product engineering, AI
+              integration, cloud delivery, and UX systems that help businesses ship faster.
+>>>>>>> Stashed changes
             </p>
             <p className="type-ui mb-6 text-xs uppercase tracking-[0.24em] text-[var(--accent)]">
               Web · Mobile · AI / ML · Cloud · Design
@@ -204,7 +227,11 @@ export default function Footer() {
 
         <div className="mt-12 flex flex-col items-start justify-between gap-4 border-t border-[var(--border)] pt-8 md:flex-row md:items-center">
           <p className="type-body text-sm text-[var(--text-muted)]">
+<<<<<<< Updated upstream
             © {new Date().getFullYear()} Ishswami Tech. All rights reserved.
+=======
+            © {new Date().getFullYear()} {siteConfig.name}. All rights reserved.
+>>>>>>> Stashed changes
           </p>
           <p className="type-body text-xs text-[var(--text-muted)]">
             Crafted with care for founders, product teams, and ambitious builders.

@@ -1,27 +1,44 @@
+<<<<<<< Updated upstream
 ﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 80" role="img" aria-label="IshSwamiTech Solutions">
+=======
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 430 96" role="img" aria-label="IshSwamiTech">
+>>>>>>> Stashed changes
   <defs>
-    <linearGradient id="ist-brand-w" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#2563eb"/>
-      <stop offset="50%" stop-color="#06b6d4"/>
-      <stop offset="100%" stop-color="#ec4899"/>
+    <linearGradient id="ist-w-bg" x1="12" y1="8" x2="84" y2="88" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#10263a"/>
+      <stop offset="0.54" stop-color="#071321"/>
+      <stop offset="1" stop-color="#041019"/>
     </linearGradient>
-    <linearGradient id="ist-text" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#2563eb"/>
-      <stop offset="55%" stop-color="#06b6d4"/>
-      <stop offset="100%" stop-color="#ec4899"/>
+    <linearGradient id="ist-w-accent" x1="18" y1="16" x2="78" y2="82" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#74f0ff"/>
+      <stop offset="0.52" stop-color="#3dd9eb"/>
+      <stop offset="1" stop-color="#ffcc73"/>
+    </linearGradient>
+    <linearGradient id="ist-w-text" x1="112" y1="24" x2="388" y2="54" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f6fbff"/>
+      <stop offset="0.58" stop-color="#74f0ff"/>
+      <stop offset="1" stop-color="#ffcc73"/>
     </linearGradient>
   </defs>
-  <!-- Mark -->
-  <rect x="0" y="0" width="80" height="80" rx="20" fill="url(#ist-brand-w)"/>
-  <circle cx="24" cy="24" r="5" fill="#ffffff"/>
-  <rect x="20" y="36" width="8" height="32" rx="3" fill="#ffffff"/>
-  <path d="M58 24 H 44 a8 8 0 0 0 0 16 h 6 a8 8 0 0 1 0 16 H 36"
-        stroke="#ffffff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-  <!-- Wordmark -->
-  <text x="100" y="46" font-family="Inter, system-ui, sans-serif"
-        font-size="28" font-weight="700" letter-spacing="-0.6"
-        fill="url(#ist-text)">IshSwamiTech</text>
-  <text x="100" y="66" font-family="Inter, system-ui, sans-serif"
-        font-size="11" font-weight="600" letter-spacing="3"
-        fill="#64748b">SOLUTIONS</text>
+
+  <rect x="6" y="6" width="84" height="84" rx="22" fill="url(#ist-w-bg)"/>
+  <rect x="7.5" y="7.5" width="81" height="81" rx="20.5" fill="none" stroke="url(#ist-w-accent)" stroke-opacity="0.72" stroke-width="3"/>
+  <path d="M22 69V27" stroke="url(#ist-w-accent)" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="22" cy="18.5" r="4.5" fill="#74f0ff"/>
+  <path
+    d="M65 26H48.5C41.6 26 37 30.1 37 35.7c0 5.9 4.7 9.4 11.3 10.2l6.7.8C62.2 47.6 67 51.2 67 57.5 67 64.6 61.1 69 52.2 69H36"
+    fill="none"
+    stroke="url(#ist-w-accent)"
+    stroke-width="8"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  <path d="M72 29l7-7M73 67l7 7M50 18v-8M50 86v-8" stroke="url(#ist-w-accent)" stroke-width="3.5" stroke-linecap="round"/>
+  <circle cx="81" cy="20" r="3.2" fill="#ffcc73"/>
+  <circle cx="82" cy="76" r="3.2" fill="#74f0ff"/>
+  <circle cx="50" cy="8" r="2.8" fill="#3dd9eb"/>
+  <circle cx="50" cy="88" r="2.8" fill="#ffb547"/>
+
+  <text x="112" y="48" font-family="Inter, system-ui, -apple-system, Segoe UI, sans-serif" font-size="29" font-weight="800" letter-spacing="-0.7" fill="url(#ist-w-text)">IshSwamiTech</text>
+  <path d="M114 78h152" stroke="#3dd9eb" stroke-opacity="0.45" stroke-width="2" stroke-linecap="round"/>
 </svg>

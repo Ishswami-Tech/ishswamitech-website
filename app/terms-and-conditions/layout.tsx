@@ -2,17 +2,12 @@ import type { Metadata } from "next";
 import { createPageMetadata } from "@/lib/site";
 
 export const metadata: Metadata = createPageMetadata({
-<<<<<<< Updated upstream
-  title: "Terms of Service",
-  description: "Terms and conditions for using Ishswami Tech services and deliverables.",
-=======
   title: "Terms & Conditions",
   description: "Terms and conditions for using IshSwamiTech services and deliverables.",
->>>>>>> Stashed changes
-  path: "/terms-of-service",
+  path: "/terms-and-conditions",
 });
 
-export default function TermsLayout({
+export default function TermsAndConditionsLayout({
   children,
 }: {
   children: React.ReactNode;

@@ -18,6 +18,7 @@ import {
   Briefcase,
 } from "lucide-react";
 import { pricingFaq } from "@/data/faq";
+import { siteConfig } from "@/lib/site";
 
 const plans = [
   {
@@ -141,13 +142,18 @@ export default function PricingPage() {
             transition={{ delay: 0.1 }}
             className="text-center"
           >
-            <p className="type-eyebrow mb-4">Transparent pricing</p>
+            <p className="type-eyebrow mb-4">{siteConfig.shortName} pricing</p>
             <h1 className="type-page-title mb-5 text-[var(--foreground)]">
               Plans that scale with your stage
             </h1>
             <p className="type-lead mx-auto mb-10 max-w-2xl">
               Honest ranges, fixed-scope quotes, and the flexibility to mix project and retainer
+<<<<<<< Updated upstream
               work. Every engagement starts with a free discovery call - no commitment required.
+=======
+              work. Every IshSwamiTech engagement starts with a free discovery call — no
+              commitment required.
+>>>>>>> Stashed changes
             </p>
 
             <div className="inline-flex items-center gap-1 rounded-full border border-[var(--border)] bg-[var(--card)] p-1 backdrop-blur-xl">
@@ -156,7 +162,7 @@ export default function PricingPage() {
                 onClick={() => setBilling("project")}
                 className={`type-ui rounded-full px-5 py-2 transition-all ${
                   billing === "project"
-                    ? "bg-[var(--accent)] text-white shadow-[var(--button-shadow)]"
+                    ? "bg-[var(--accent)] text-[var(--button-foreground)] shadow-[var(--button-shadow)]"
                     : "text-[var(--text-muted)] hover:text-[var(--foreground)]"
                 }`}
               >
@@ -167,7 +173,7 @@ export default function PricingPage() {
                 onClick={() => setBilling("monthly")}
                 className={`type-ui rounded-full px-5 py-2 transition-all ${
                   billing === "monthly"
-                    ? "bg-[var(--accent)] text-white shadow-[var(--button-shadow)]"
+                    ? "bg-[var(--accent)] text-[var(--button-foreground)] shadow-[var(--button-shadow)]"
                     : "text-[var(--text-muted)] hover:text-[var(--foreground)]"
                 }`}
               >
@@ -197,7 +203,7 @@ export default function PricingPage() {
                   }`}
                 >
                   {plan.popular && (
-                    <div className="absolute -top-3 left-1/2 inline-flex -translate-x-1/2 items-center gap-1.5 rounded-full bg-[var(--button-gradient)] px-3 py-1 text-xs font-semibold text-white shadow-[var(--button-shadow)]">
+                    <div className="absolute -top-3 left-1/2 inline-flex -translate-x-1/2 items-center gap-1.5 rounded-full [background:var(--button-gradient)] px-3 py-1 text-xs font-semibold text-[var(--button-foreground)] shadow-[var(--button-shadow)]">
                       <Sparkles className="h-3.5 w-3.5" />
                       Most popular
                     </div>
@@ -242,7 +248,7 @@ export default function PricingPage() {
                     href="/contact"
                     className={`inline-flex w-full items-center justify-center gap-2 rounded-full px-6 py-3 font-semibold transition-all ${
                       plan.popular
-                        ? "bg-[var(--button-gradient)] text-white shadow-[var(--button-shadow)] hover:-translate-y-0.5"
+                        ? "[background:var(--button-gradient)] text-[var(--button-foreground)] shadow-[var(--button-shadow)] hover:-translate-y-0.5"
                         : "border border-[var(--border-strong)] bg-[var(--card)] text-[var(--foreground)] hover:bg-[var(--card-soft)]"
                     }`}
                   >
@@ -416,7 +422,7 @@ export default function PricingPage() {
               </p>
               <Link
                 href="/contact"
-                className="inline-flex items-center justify-center gap-2 rounded-full bg-[var(--button-gradient)] px-7 py-3.5 font-semibold text-white shadow-[var(--button-shadow)] transition-all hover:-translate-y-0.5"
+                className="inline-flex items-center justify-center gap-2 rounded-full [background:var(--button-gradient)] px-7 py-3.5 font-semibold text-[var(--button-foreground)] shadow-[var(--button-shadow)] transition-all hover:-translate-y-0.5"
               >
                 Book free consultation
                 <ArrowUpRight className="h-4 w-4" />

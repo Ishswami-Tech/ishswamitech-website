@@ -46,6 +46,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${BASE_URL}/privacy-policy`,
       lastModified: new Date(),
       changeFrequency: "yearly",
+<<<<<<< Updated upstream
       priority: 0.5,
     },
     {
@@ -65,6 +66,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
       changeFrequency: "yearly",
       priority: 0.5,
+=======
+      priority: 0.4,
+    },
+    {
+      url: `${BASE_URL}/terms-and-conditions`,
+      lastModified: new Date(),
+      changeFrequency: "yearly",
+      priority: 0.4,
+    },
+    {
+      url: `${BASE_URL}/refund-policy`,
+      lastModified: new Date(),
+      changeFrequency: "yearly",
+      priority: 0.4,
+>>>>>>> Stashed changes
     },
   ];
 

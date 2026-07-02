@@ -147,25 +147,35 @@ export default function HomePage() {
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#3dd9eb] opacity-60" />
                   <span className="relative inline-flex h-2 w-2 rounded-full bg-[#3dd9eb]" />
                 </span>
+<<<<<<< Updated upstream
                 Accepting new projects · Senior-led delivery
+=======
+                IshSwamiTech · Accepting Q3 projects · Senior-led delivery
+>>>>>>> Stashed changes
               </div>
 
               <h1 className="type-hero mb-6 text-white">
-                Software that{" "}
+                IshSwamiTech builds software that{" "}
                 <span className="gradient-text">looks sharp, loads fast,</span>
                 <br className="hidden md:block" /> and{" "}
                 <span className="gradient-text">earns its keep</span>.
               </h1>
               <p className="type-lead mb-10 max-w-xl text-[#c4d4e8] md:text-xl md:leading-relaxed">
+<<<<<<< Updated upstream
                 We design and build websites, SaaS platforms, mobile apps, AI features, and cloud
                 systems for ambitious founders and growing teams - with the engineering depth to
                 ship, and the product taste to make it feel inevitable.
+=======
+                At IshSwamiTech, we design and build websites, SaaS platforms, mobile apps, AI
+                features, and cloud systems for ambitious founders and growing teams — with the
+                engineering depth to ship, and the product taste to make it feel inevitable.
+>>>>>>> Stashed changes
               </p>
 
               <div className="mb-12 flex flex-col gap-3 sm:flex-row sm:gap-4">
                 <Link
                   href="/contact"
-                  className="group inline-flex items-center justify-center gap-2 rounded-full bg-[#3dd9eb] px-7 py-3.5 font-semibold text-[#041019] shadow-[0_18px_42px_rgba(61,217,235,0.32)] transition-all hover:-translate-y-0.5 hover:bg-[#5ce4f3]"
+                  className="group inline-flex items-center justify-center gap-2 rounded-full bg-[var(--accent)] px-7 py-3.5 font-semibold text-[var(--button-foreground)] shadow-[var(--button-shadow)] transition-all hover:-translate-y-0.5 hover:bg-[var(--link-emphasis)]"
                 >
                   Start your project
                   <ArrowUpRight className="h-4 w-4 transition-transform group-hover:rotate-45" />
@@ -675,7 +685,7 @@ export default function HomePage() {
                 <div className="flex flex-col gap-3 sm:flex-row">
                   <Link
                     href="/contact"
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-[var(--button-gradient)] px-7 py-3.5 font-semibold text-white shadow-[var(--button-shadow)] transition-all hover:-translate-y-0.5"
+                    className="inline-flex items-center justify-center gap-2 rounded-full [background:var(--button-gradient)] px-7 py-3.5 font-semibold text-[var(--button-foreground)] shadow-[var(--button-shadow)] transition-all hover:-translate-y-0.5"
                   >
                     Book a discovery call
                     <ArrowUpRight className="h-4 w-4" />

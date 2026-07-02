@@ -1,12 +1,21 @@
 import type { Metadata } from "next";
 
 export const siteConfig = {
+<<<<<<< Updated upstream
   name: "Ishswami Tech",
   shortName: "Ishswami",
   url: "https://ishswami.in",
   title: "Ishswami Tech | Custom Software, AI, Cloud & Product Design",
   description:
     "Ishswami Tech builds high-performance web apps, mobile apps, AI products, cloud platforms, and UX systems for startups, clinics, creators, and growing businesses.",
+=======
+  name: "IshSwamiTech",
+  shortName: "IshSwamiTech",
+  url: "https://ishswami.in",
+  title: "IshSwamiTech | Custom Software, AI, Cloud & Product Design",
+  description:
+    "IshSwamiTech builds high-performance web apps, mobile apps, AI products, cloud platforms, and UX systems for startups and growing businesses.",
+>>>>>>> Stashed changes
   tagline: "Turning Vision Into Digital Reality",
   email: "info@ishswami.in",
   phone: "+91-7218378311",
@@ -24,6 +33,9 @@ export const siteConfig = {
     "React development company",
     "startup product development",
     "software outsourcing India",
+    "IshSwamiTech",
+    "Ish Swami Tech",
+    "ishswamitech",
   ],
   social: {
     linkedin: "",

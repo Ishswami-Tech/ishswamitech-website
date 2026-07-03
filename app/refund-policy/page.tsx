@@ -34,7 +34,7 @@ const sections = [
   {
     id: "requests",
     title: "6. Refund requests",
-    body: `To request a refund review, email us with your project name, invoice number, reason for the request, and any supporting details. We aim to review refund requests within 7 business days.`,
+    body: `To request a refund review, email us with your project name, invoice number, reason for the request, and any supporting details. We aim to review refund requests within 7 - 10 business days. once the refund is approved it will be processed to the original source within 7 -10 days `,
   },
   {
     id: "contact",

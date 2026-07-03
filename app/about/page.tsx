@@ -90,6 +90,9 @@ export default function AboutPage() {
                 ideas into shipped products. We blend practical product engineering, AI capability,
                 and a design eye that respects both pixels and conversion rates.
               </p>
+              <p className="type-body mt-4 max-w-2xl text-[var(--text-muted)]">
+                Founder's name: Manisha Santosh Bhujbal
+              </p>
             </div>
 
             <div className="glass rounded-2xl border border-[var(--border)] p-6">

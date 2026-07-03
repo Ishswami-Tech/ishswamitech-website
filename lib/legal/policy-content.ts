@@ -165,7 +165,11 @@ export const refundSections = [
     body: "If a refund is approved, it will be initiated to the original payment method where possible. Bank, card, UPI, or payment gateway settlement timelines depend on the payment processor and banking network.",
   },
   {
-    title: "6. Gateway and processing charges",
+    title: "6. Refund requests",
+    body: "To request a refund review, email us with your project name, invoice number, reason for the request, and any supporting details. We aim to review refund requests within 7 - 10 business days. Once the refund is approved, it will be processed to the original source within 7 - 10 days.",
+  },
+  {
+    title: "7. Gateway and processing charges",
     body: "Payment gateway, bank, or platform charges may be non-refundable where they have already been charged by the payment processor or bank.",
   },
 ] as const;

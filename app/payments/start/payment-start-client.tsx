@@ -240,10 +240,14 @@ async function createPaymentIntentFromBridge(
   provider: string
 ): Promise<Record<string, unknown>> {
   const request = buildPaymentIntentEndpoint(payload, provider);
+  const controller = new AbortController();
+  const timeoutId = window.setTimeout(() => controller.abort(), 12000);
+
   const response = await fetch(request.url, {
     method: "POST",
     credentials: "include",
     mode: "cors",
+    signal: controller.signal,
     headers: {
       "Content-Type": "application/json",
       "X-Clinic-ID": payload.clinicId,
@@ -251,9 +255,13 @@ async function createPaymentIntentFromBridge(
     body: request.body,
   });
 
+  window.clearTimeout(timeoutId);
+
   if (!response.ok) {
     const text = await response.text();
-    throw new Error(text || "Failed to create payment intent.");
+    throw new Error(
+      text || `HTTP ${response.status} ${response.statusText} while creating payment intent from ${request.url}.`
+    );
   }
 
   const json = (await response.json()) as Record<string, unknown>;
@@ -266,7 +274,9 @@ async function createPaymentIntentFromBridge(
 
 export default function PaymentStartClient({ payloadParam }: { payloadParam: string }) {
   const [status, setStatus] = useState<"loading" | "error">("loading");
+  const [statusLabel, setStatusLabel] = useState("Preparing secure checkout...");
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const [errorDetails, setErrorDetails] = useState<string>("");
   const [resolvedPayloadParam, setResolvedPayloadParam] = useState(payloadParam);
   const startedRef = useRef(false);
 
@@ -276,6 +286,7 @@ export default function PaymentStartClient({ payloadParam }: { payloadParam: str
     if (!payload) {
       setStatus("error");
       setErrorMessage("Invalid payment payload. Please reopen the payment link.");
+      setErrorDetails("The payment payload could not be decoded from the URL.");
       return;
     }
 
@@ -285,17 +296,20 @@ export default function PaymentStartClient({ payloadParam }: { payloadParam: str
     if (!payload.clinicId || !payload.appointmentId) {
       setStatus("error");
       setErrorMessage("Payment payload is missing clinic or appointment details.");
+      setErrorDetails(JSON.stringify(payload, null, 2));
       return;
     }
 
     if (!Number.isFinite(amount) || amount <= 0) {
       setStatus("error");
       setErrorMessage("Payment amount is invalid or missing.");
+      setErrorDetails(JSON.stringify(payload, null, 2));
       return;
     }
 
     try {
       setStatus("loading");
+      setStatusLabel("Connecting to payment gateway...");
       setErrorMessage("");
 
       const paymentIntent = (
@@ -330,6 +344,7 @@ export default function PaymentStartClient({ payloadParam }: { payloadParam: str
       const callbackUrl = getAllowedRedirectUrl(String(paymentIntent.callbackUrl || payload.callbackUrl || "")) || "";
 
       if (provider === "razorpay") {
+        setStatusLabel("Opening Razorpay checkout...");
         const razorpayKeyId = String(paymentIntent.razorpayKeyId || process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "");
         if (!razorpayKeyId) {
           throw new Error("Razorpay key is not configured.");
@@ -400,6 +415,7 @@ export default function PaymentStartClient({ payloadParam }: { payloadParam: str
         throw new Error("Gateway redirect URL is missing.");
       }
 
+      setStatusLabel("Redirecting to payment gateway...");
       window.location.replace(gatewayRedirectUrl);
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
@@ -410,41 +426,60 @@ export default function PaymentStartClient({ payloadParam }: { payloadParam: str
         message,
       });
       setErrorMessage(message || "Payment gateway could not be opened.");
+      setErrorDetails(
+        [
+          `provider=${payload?.provider || ""}`,
+          `appointmentId=${payload?.appointmentId || ""}`,
+          `clinicId=${payload?.clinicId || ""}`,
+          `status=${status}`,
+          `message=${message}`,
+        ].join("\n")
+      );
       setStatus("error");
     }
   };
 
   useEffect(() => {
-    if (startedRef.current) {
-      return;
-    }
-    startedRef.current = true;
-
     if (!resolvedPayloadParam && typeof window !== "undefined") {
       const browserPayload = new URLSearchParams(window.location.search).get("payload") || "";
       if (browserPayload) {
         setResolvedPayloadParam(browserPayload);
-        return;
       }
     }
+  }, [resolvedPayloadParam]);
 
-    if ((payload?.provider || "").toLowerCase() === "razorpay") {
+  useEffect(() => {
+    if (startedRef.current || !payload) {
+      return;
+    }
+
+    startedRef.current = true;
+
+    if ((payload.provider || "").toLowerCase() === "razorpay") {
       ensurePreconnect("https://checkout.razorpay.com");
     }
 
     void openGateway();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [payload, resolvedPayloadParam]);
+  }, [payload]);
 
   return (
     <div className="flex min-h-[60vh] items-center justify-center px-4 py-16">
       {status === "loading" ? (
         <div className="flex flex-col items-center gap-4 text-center">
           <Loader2 className="h-7 w-7 animate-spin text-emerald-400" />
+          <p className="text-sm text-white/70">{statusLabel}</p>
         </div>
       ) : (
-        <div className="max-w-sm rounded-2xl border border-red-500/30 bg-red-500/10 px-5 py-4 text-center text-sm text-red-200">
-          {errorMessage || "Payment gateway could not be opened. Please go back and try again."}
+        <div className="max-w-lg rounded-2xl border border-red-500/30 bg-red-500/10 px-5 py-4 text-left text-sm text-red-200">
+          <p className="text-center font-medium">
+            {errorMessage || "Payment gateway could not be opened. Please go back and try again."}
+          </p>
+          {errorDetails ? (
+            <pre className="mt-3 max-h-64 overflow-auto rounded-xl bg-black/30 p-3 text-xs leading-5 text-red-100/90 whitespace-pre-wrap">
+              {errorDetails}
+            </pre>
+          ) : null}
         </div>
       )}
     </div>

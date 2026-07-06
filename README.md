@@ -1,5 +1,13 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Payment bridge
+
+This repository also contains the Ishswami payment bridge used by Viddhakarma for gateway handoff and payment callback verification.
+
+- Bridge overview: [docs/payment-bridge.md](docs/payment-bridge.md)
+- Start route: `/payments/start`
+- Callback route: `/payment/callback`
+
 ## Getting Started
 
 First, run the development server:

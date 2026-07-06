@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import PaymentCallbackClient from "./payment-callback-client";
 
 export const metadata: Metadata = {
-  title: "Payment Callback",
-  description: "Verifying payment and returning to Viddhakarma.",
+  title: "Payment",
+  description: "Verifying payment.",
   robots: {
     index: false,
     follow: false,

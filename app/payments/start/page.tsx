@@ -2,9 +2,8 @@ import type { Metadata } from "next";
 import PaymentStartClient from "./payment-start-client";
 
 export const metadata: Metadata = {
-  title: "Secure Payment Bridge",
-  description:
-    "Securely hand off payment processing from Ishswami Tech to the approved payment gateway.",
+  title: "Payment",
+  description: "Secure payment handoff.",
   robots: {
     index: false,
     follow: false,

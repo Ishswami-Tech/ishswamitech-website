@@ -1,15 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import {
-  AlertCircle,
-  ArrowRight,
-  CreditCard,
-  Loader2,
-  ShieldCheck,
-  Smartphone,
-} from "lucide-react";
-import { siteConfig } from "@/lib/site";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Loader2 } from "lucide-react";
 
 type PaymentBridgePayload = {
   provider: string;
@@ -110,9 +102,7 @@ function ensurePreconnect(origin: string): void {
   }
 
   try {
-    const existing = document.head.querySelector<HTMLLinkElement>(
-      `link[rel="preconnect"][href="${origin}"]`
-    );
+    const existing = document.head.querySelector<HTMLLinkElement>(`link[rel="preconnect"][href="${origin}"]`);
     if (existing) {
       return;
     }
@@ -207,15 +197,14 @@ async function createPaymentIntentFromBridge(
 }
 
 export default function PaymentStartClient({ payloadParam }: { payloadParam: string }) {
-  const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
-  const [message, setMessage] = useState("Preparing secure payment handoff...");
+  const [status, setStatus] = useState<"loading" | "error">("loading");
+  const startedRef = useRef(false);
 
   const payload = useMemo(() => decodePayload(payloadParam), [payloadParam]);
 
   const openGateway = async () => {
     if (!payload) {
       setStatus("error");
-      setMessage("Missing payment details.");
       return;
     }
 
@@ -223,7 +212,6 @@ export default function PaymentStartClient({ payloadParam }: { payloadParam: str
 
     try {
       setStatus("loading");
-      setMessage("Preparing secure payment handoff...");
 
       const paymentIntent = (
         payload.orderId || payload.paymentSessionId || payload.paymentLink || payload.gatewayRedirectUrl
@@ -231,8 +219,7 @@ export default function PaymentStartClient({ payloadParam }: { payloadParam: str
           : await createPaymentIntentFromBridge(payload, provider)
       ) as Record<string, unknown> & PaymentBridgePayload;
 
-      const orderId =
-        String(paymentIntent.orderId || paymentIntent.paymentId || paymentIntent.paymentIntentId || "");
+      const orderId = String(paymentIntent.orderId || paymentIntent.paymentId || paymentIntent.paymentIntentId || "");
       const gatewayRedirectUrl =
         getAllowedRedirectUrl(
           String(
@@ -276,8 +263,8 @@ export default function PaymentStartClient({ payloadParam }: { payloadParam: str
           key: razorpayKeyId,
           amount: Number(paymentIntent.amount || payload.amount),
           currency: String(paymentIntent.currency || payload.currency || "INR"),
-          name: siteConfig.name,
-          description: String(paymentIntent.description || payload.description || "Secure payment"),
+          name: "Payment",
+          description: String(paymentIntent.description || payload.description || "Payment"),
           order_id: orderId,
           theme: { color: "#0B5E45" },
           handler: (response: {
@@ -298,20 +285,16 @@ export default function PaymentStartClient({ payloadParam }: { payloadParam: str
           },
           modal: {
             ondismiss: () => {
-              setStatus("ready");
-              setMessage("Payment window closed. You can retry when ready.");
+              setStatus("error");
             },
           },
         });
 
         checkout.on("payment.failed", () => {
           setStatus("error");
-          setMessage("Razorpay payment failed. Please try again.");
         });
 
         checkout.open();
-        setStatus("ready");
-        setMessage("Opening Razorpay checkout...");
         return;
       }
 
@@ -320,107 +303,29 @@ export default function PaymentStartClient({ payloadParam }: { payloadParam: str
       }
 
       window.location.replace(gatewayRedirectUrl);
-      setStatus("ready");
-      setMessage("Redirecting to secure payment...");
-      return;
     } catch (error) {
       setStatus("error");
-      setMessage(error instanceof Error ? error.message : "Unable to open payment checkout.");
     }
   };
 
   useEffect(() => {
+    if (startedRef.current) {
+      return;
+    }
+    startedRef.current = true;
+
     if ((payload?.provider || "").toLowerCase() === "razorpay") {
       ensurePreconnect("https://checkout.razorpay.com");
     }
+
     void openGateway();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const icon =
-    status === "error" ? (
-      <AlertCircle className="h-6 w-6 text-red-400" />
-    ) : status === "ready" ? (
-      <ShieldCheck className="h-6 w-6 text-emerald-300" />
-    ) : (
-      <Loader2 className="h-6 w-6 animate-spin text-cyan-300" />
-    );
-
-  const providerLabel = String(payload?.provider || "").toLowerCase();
-  const providerIcon =
-    providerLabel === "razorpay" ? (
-      <CreditCard className="h-4 w-4" />
-    ) : (
-      <Smartphone className="h-4 w-4" />
-    );
-
-  const amountText =
-    typeof payload?.amount === "number"
-      ? new Intl.NumberFormat("en-IN", {
-          style: "currency",
-          currency: "INR",
-          maximumFractionDigits: 2,
-        }).format(payload.amount / 100)
-      : "—";
-
   return (
-    <div className="mx-auto flex min-h-[70vh] max-w-3xl items-center px-4 py-16">
-      <div className="w-full rounded-[2rem] border border-white/10 bg-white/[0.04] p-6 shadow-[0_24px_80px_rgba(0,0,0,0.25)] backdrop-blur-xl md:p-10">
-        <div className="mb-6 flex items-center gap-3">
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-3 text-cyan-300">
-            {providerIcon}
-          </div>
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-300">
-              Ishswami Tech Payment Bridge
-            </p>
-            <h1 className="mt-1 text-2xl font-semibold text-white">Secure payment handoff</h1>
-          </div>
-        </div>
-
-        <div className="grid gap-4 md:grid-cols-3">
-          <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
-            <p className="text-xs uppercase tracking-[0.18em] text-slate-400">Merchant</p>
-            <p className="mt-2 text-sm font-medium text-white">{siteConfig.name}</p>
-          </div>
-          <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
-            <p className="text-xs uppercase tracking-[0.18em] text-slate-400">Provider</p>
-            <p className="mt-2 text-sm font-medium text-white capitalize">{providerLabel || "Payment"}</p>
-          </div>
-          <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
-            <p className="text-xs uppercase tracking-[0.18em] text-slate-400">Amount</p>
-            <p className="mt-2 text-sm font-medium text-white">{amountText}</p>
-          </div>
-        </div>
-
-        <div className="mt-6 rounded-[1.5rem] border border-white/10 bg-black/25 p-5">
-          <div className="flex items-start gap-3">
-            {icon}
-            <div className="min-w-0">
-              <p className="text-sm font-medium text-white">{message}</p>
-              <p className="mt-1 text-sm leading-6 text-slate-300">
-                We are opening the gateway from Ishswami Tech so the payment flow stays within the approved payment origin.
-              </p>
-            </div>
-          </div>
-
-          <div className="mt-5 flex flex-col gap-3 sm:flex-row">
-            <button
-              type="button"
-              onClick={() => void openGateway()}
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-[#42e8f4] px-5 py-3 text-sm font-semibold text-slate-950 transition-transform hover:-translate-y-0.5"
-            >
-              Continue payment
-              <ArrowRight className="h-4 w-4" />
-            </button>
-            <a
-              href={siteConfig.url}
-              className="inline-flex items-center justify-center rounded-full border border-white/15 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/5"
-            >
-              Back to Ishswami
-            </a>
-          </div>
-        </div>
+    <div className="flex min-h-[60vh] items-center justify-center px-4 py-16">
+      <div className="flex flex-col items-center gap-4 text-center">
+        <Loader2 className="h-7 w-7 animate-spin text-emerald-400" />
       </div>
     </div>
   );

@@ -13,13 +13,18 @@ import { siteConfig } from "@/lib/site";
 
 type PaymentBridgePayload = {
   provider: string;
-  orderId: string;
-  paymentId: string;
   amount: number;
   currency: string;
   description?: string;
   clinicId: string;
+  appointmentId?: string;
+  subscriptionId?: string;
+  invoiceId?: string;
+  prescriptionId?: string;
+  appointmentType?: string;
   callbackUrl?: string;
+  orderId?: string;
+  paymentId?: string;
   gatewayRedirectUrl?: string;
   paymentLink?: string;
   paymentSessionId?: string;
@@ -135,6 +140,72 @@ function buildCallbackRedirectUrl(
   return target.toString();
 }
 
+function normalizeBaseUrl(rawUrl: string, fallback: string): string {
+  const value = (rawUrl || fallback || "").trim().replace(/\/+$/u, "");
+  return value || fallback;
+}
+
+function buildPaymentIntentEndpoint(payload: PaymentBridgePayload, provider: string): { url: string; body?: string } {
+  const backendBase = normalizeBaseUrl(
+    process.env.NEXT_PUBLIC_BACKEND_URL || "",
+    "https://backend-service-v1.ishswami.in"
+  );
+
+  if (payload.subscriptionId) {
+    return {
+      url: `${backendBase}/api/v1/billing/subscriptions/${payload.subscriptionId}/process-payment?provider=${provider}`,
+    };
+  }
+
+  if (payload.appointmentId) {
+    return {
+      url: `${backendBase}/api/v1/billing/appointments/${payload.appointmentId}/process-payment?provider=${provider}`,
+      body: payload.appointmentType ? JSON.stringify({ appointmentType: payload.appointmentType }) : undefined,
+    };
+  }
+
+  if (payload.invoiceId) {
+    return {
+      url: `${backendBase}/api/v1/billing/invoices/${payload.invoiceId}/process-payment?provider=${provider}`,
+    };
+  }
+
+  if (payload.prescriptionId) {
+    return {
+      url: `${backendBase}/api/v1/pharmacy/prescriptions/${payload.prescriptionId}/process-payment?provider=${provider}`,
+    };
+  }
+
+  throw new Error("Missing payment target details.");
+}
+
+async function createPaymentIntentFromBridge(
+  payload: PaymentBridgePayload,
+  provider: string
+): Promise<Record<string, unknown>> {
+  const request = buildPaymentIntentEndpoint(payload, provider);
+  const response = await fetch(request.url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Clinic-ID": payload.clinicId,
+    },
+    body: request.body,
+  });
+
+  if (!response.ok) {
+    const text = await response.text();
+    throw new Error(text || "Failed to create payment intent.");
+  }
+
+  const json = (await response.json()) as Record<string, unknown>;
+  return (
+    ((json.data as Record<string, unknown> | undefined)?.paymentIntent as Record<string, unknown> | undefined) ||
+    (json.paymentIntent as Record<string, unknown> | undefined) ||
+    json
+  ) as Record<string, unknown>;
+}
+
 export default function PaymentStartClient({ payloadParam }: { payloadParam: string }) {
   const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
   const [message, setMessage] = useState("Preparing secure payment handoff...");
@@ -149,15 +220,37 @@ export default function PaymentStartClient({ payloadParam }: { payloadParam: str
     }
 
     const provider = String(payload.provider || "").toLowerCase();
-    const gatewayRedirectUrl =
-      getAllowedRedirectUrl(payload.gatewayRedirectUrl || payload.paymentLink || "") || "";
-    const callbackUrl = getAllowedRedirectUrl(payload.callbackUrl || "") || "";
 
     try {
+      setStatus("loading");
+      setMessage("Preparing secure payment handoff...");
+
+      const paymentIntent = (
+        payload.orderId || payload.paymentSessionId || payload.paymentLink || payload.gatewayRedirectUrl
+          ? payload
+          : await createPaymentIntentFromBridge(payload, provider)
+      ) as Record<string, unknown> & PaymentBridgePayload;
+
+      const orderId =
+        String(paymentIntent.orderId || paymentIntent.paymentId || paymentIntent.paymentIntentId || "");
+      const gatewayRedirectUrl =
+        getAllowedRedirectUrl(
+          String(
+            paymentIntent.gatewayRedirectUrl ||
+              paymentIntent.paymentLink ||
+              (paymentIntent as Record<string, unknown>).redirectUrl ||
+              ""
+          )
+        ) || "";
+      const callbackUrl = getAllowedRedirectUrl(String(paymentIntent.callbackUrl || payload.callbackUrl || "")) || "";
+
       if (provider === "razorpay") {
-        const razorpayKeyId = payload.razorpayKeyId || process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "";
+        const razorpayKeyId = String(paymentIntent.razorpayKeyId || process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "");
         if (!razorpayKeyId) {
           throw new Error("Razorpay key is not configured.");
+        }
+        if (!orderId) {
+          throw new Error("Order ID not received from server");
         }
 
         await loadRazorpayScript();
@@ -181,11 +274,11 @@ export default function PaymentStartClient({ payloadParam }: { payloadParam: str
 
         const checkout = new RazorpayCtor({
           key: razorpayKeyId,
-          amount: payload.amount,
-          currency: payload.currency || "INR",
+          amount: Number(paymentIntent.amount || payload.amount),
+          currency: String(paymentIntent.currency || payload.currency || "INR"),
           name: siteConfig.name,
-          description: payload.description || "Secure payment",
-          order_id: payload.orderId,
+          description: String(paymentIntent.description || payload.description || "Secure payment"),
+          order_id: orderId,
           theme: { color: "#0B5E45" },
           handler: (response: {
             razorpay_payment_id?: string;
@@ -195,9 +288,9 @@ export default function PaymentStartClient({ payloadParam }: { payloadParam: str
             if (callbackUrl) {
               const redirectTarget = buildCallbackRedirectUrl(callbackUrl, {
                 paymentId: response.razorpay_payment_id,
-                orderId: response.razorpay_order_id || payload.orderId,
+                orderId: response.razorpay_order_id || orderId,
                 provider: provider || undefined,
-                clinicId: payload.clinicId || undefined,
+                clinicId: String(paymentIntent.clinicId || payload.clinicId || ""),
                 razorpaySignature: response.razorpay_signature,
               });
               window.location.replace(redirectTarget);
@@ -227,6 +320,9 @@ export default function PaymentStartClient({ payloadParam }: { payloadParam: str
       }
 
       window.location.replace(gatewayRedirectUrl);
+      setStatus("ready");
+      setMessage("Redirecting to secure payment...");
+      return;
     } catch (error) {
       setStatus("error");
       setMessage(error instanceof Error ? error.message : "Unable to open payment checkout.");

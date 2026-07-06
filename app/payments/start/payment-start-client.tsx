@@ -29,16 +29,36 @@ function decodePayload(rawPayload: string): PaymentBridgePayload | null {
     return null;
   }
 
+  const candidates = new Set<string>([rawPayload.trim()]);
+
   try {
-    const normalized = rawPayload.replace(/-/g, "+").replace(/_/g, "/");
-    const padded = normalized.padEnd(Math.ceil(normalized.length / 4) * 4, "=");
-    const binary = window.atob(padded);
-    const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0));
-    const json = new TextDecoder().decode(bytes);
-    return JSON.parse(json) as PaymentBridgePayload;
+    candidates.add(decodeURIComponent(rawPayload.trim()));
   } catch {
-    return null;
+    // Ignore URI decoding failures and continue with the original candidate.
   }
+
+  for (const candidate of candidates) {
+    try {
+      if (candidate.startsWith("{")) {
+        return JSON.parse(candidate) as PaymentBridgePayload;
+      }
+
+      const cleaned = candidate
+        .replace(/^payload=/i, "")
+        .replace(/\s+/gu, "")
+        .replace(/-/g, "+")
+        .replace(/_/g, "/");
+      const padded = cleaned.padEnd(Math.ceil(cleaned.length / 4) * 4, "=");
+      const binary = window.atob(padded);
+      const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0));
+      const json = new TextDecoder().decode(bytes);
+      return JSON.parse(json) as PaymentBridgePayload;
+    } catch {
+      // Try the next candidate.
+    }
+  }
+
+  return null;
 }
 
 function getAllowedRedirectUrl(candidate: string): string | null {
@@ -254,11 +274,24 @@ export default function PaymentStartClient({ payloadParam }: { payloadParam: str
   const openGateway = async () => {
     if (!payload) {
       setStatus("error");
-      setErrorMessage("Invalid payment payload.");
+      setErrorMessage("Invalid payment payload. Please reopen the payment link.");
       return;
     }
 
     const provider = String(payload.provider || "").toLowerCase();
+    const amount = Number(payload.amount);
+
+    if (!payload.clinicId || !payload.appointmentId) {
+      setStatus("error");
+      setErrorMessage("Payment payload is missing clinic or appointment details.");
+      return;
+    }
+
+    if (!Number.isFinite(amount) || amount <= 0) {
+      setStatus("error");
+      setErrorMessage("Payment amount is invalid or missing.");
+      return;
+    }
 
     try {
       setStatus("loading");

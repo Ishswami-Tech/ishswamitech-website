@@ -267,9 +267,10 @@ async function createPaymentIntentFromBridge(
 export default function PaymentStartClient({ payloadParam }: { payloadParam: string }) {
   const [status, setStatus] = useState<"loading" | "error">("loading");
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const [resolvedPayloadParam, setResolvedPayloadParam] = useState(payloadParam);
   const startedRef = useRef(false);
 
-  const payload = useMemo(() => decodePayload(payloadParam), [payloadParam]);
+  const payload = useMemo(() => decodePayload(resolvedPayloadParam), [resolvedPayloadParam]);
 
   const openGateway = async () => {
     if (!payload) {
@@ -419,13 +420,21 @@ export default function PaymentStartClient({ payloadParam }: { payloadParam: str
     }
     startedRef.current = true;
 
+    if (!resolvedPayloadParam && typeof window !== "undefined") {
+      const browserPayload = new URLSearchParams(window.location.search).get("payload") || "";
+      if (browserPayload) {
+        setResolvedPayloadParam(browserPayload);
+        return;
+      }
+    }
+
     if ((payload?.provider || "").toLowerCase() === "razorpay") {
       ensurePreconnect("https://checkout.razorpay.com");
     }
 
     void openGateway();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [payload, resolvedPayloadParam]);
 
   return (
     <div className="flex min-h-[60vh] items-center justify-center px-4 py-16">

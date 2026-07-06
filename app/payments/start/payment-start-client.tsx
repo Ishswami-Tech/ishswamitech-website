@@ -178,6 +178,43 @@ function getFirstString(...values: Array<unknown>): string {
   return "";
 }
 
+function getRedirectUrlCandidate(source: Record<string, unknown> | undefined): string {
+  if (!source) {
+    return "";
+  }
+
+  const nestedData = source.data as Record<string, unknown> | undefined;
+  const nestedResult = source.result as Record<string, unknown> | undefined;
+  const nestedResponse = source.response as Record<string, unknown> | undefined;
+
+  return getFirstString(
+    source.gatewayRedirectUrl,
+    source.paymentLink,
+    source.redirectUrl,
+    source.redirect_url,
+    source.checkoutUrl,
+    source.url,
+    nestedData?.redirectUrl,
+    nestedData?.redirect_url,
+    nestedData?.paymentLink,
+    nestedData?.payment_link,
+    nestedData?.checkoutUrl,
+    nestedData?.url,
+    nestedResult?.redirectUrl,
+    nestedResult?.redirect_url,
+    nestedResult?.paymentLink,
+    nestedResult?.payment_link,
+    nestedResult?.checkoutUrl,
+    nestedResult?.url,
+    nestedResponse?.redirectUrl,
+    nestedResponse?.redirect_url,
+    nestedResponse?.paymentLink,
+    nestedResponse?.payment_link,
+    nestedResponse?.checkoutUrl,
+    nestedResponse?.url
+  );
+}
+
 async function createPaymentIntentFromBridge(
   payload: PaymentBridgePayload,
   provider: string
@@ -209,6 +246,7 @@ async function createPaymentIntentFromBridge(
 
 export default function PaymentStartClient({ payloadParam }: { payloadParam: string }) {
   const [status, setStatus] = useState<"loading" | "error">("loading");
+  const [errorMessage, setErrorMessage] = useState<string>("");
   const startedRef = useRef(false);
 
   const payload = useMemo(() => decodePayload(payloadParam), [payloadParam]);
@@ -216,6 +254,7 @@ export default function PaymentStartClient({ payloadParam }: { payloadParam: str
   const openGateway = async () => {
     if (!payload) {
       setStatus("error");
+      setErrorMessage("Invalid payment payload.");
       return;
     }
 
@@ -223,6 +262,7 @@ export default function PaymentStartClient({ payloadParam }: { payloadParam: str
 
     try {
       setStatus("loading");
+      setErrorMessage("");
 
       const paymentIntent = (
         payload.orderId || payload.paymentSessionId || payload.paymentLink || payload.gatewayRedirectUrl
@@ -239,15 +279,18 @@ export default function PaymentStartClient({ payloadParam }: { payloadParam: str
             paymentIntent.gatewayRedirectUrl,
             paymentIntent.paymentLink,
             (paymentIntent as Record<string, unknown>).redirectUrl,
+            getRedirectUrlCandidate(paymentIntent as Record<string, unknown>),
             metadata.redirectUrl,
             metadata.gatewayRedirectUrl,
             metadata.paymentLink,
+            getRedirectUrlCandidate(metadata as Record<string, unknown>),
             providerResponse.redirectUrl,
             providerResponse.redirect_url,
             providerResponse.paymentLink,
             providerResponse.payment_link,
             providerResponse.checkoutUrl,
-            providerResponse.url
+            providerResponse.url,
+            getRedirectUrlCandidate(providerResponse)
           )
         ) || "";
       const callbackUrl = getAllowedRedirectUrl(String(paymentIntent.callbackUrl || payload.callbackUrl || "")) || "";
@@ -325,6 +368,14 @@ export default function PaymentStartClient({ payloadParam }: { payloadParam: str
 
       window.location.replace(gatewayRedirectUrl);
     } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      console.error("[PaymentStartClient] Failed to open gateway", {
+        provider: payload?.provider,
+        appointmentId: payload?.appointmentId,
+        clinicId: payload?.clinicId,
+        message,
+      });
+      setErrorMessage(message || "Payment gateway could not be opened.");
       setStatus("error");
     }
   };
@@ -351,7 +402,7 @@ export default function PaymentStartClient({ payloadParam }: { payloadParam: str
         </div>
       ) : (
         <div className="max-w-sm rounded-2xl border border-red-500/30 bg-red-500/10 px-5 py-4 text-center text-sm text-red-200">
-          Payment gateway could not be opened. Please go back and try again.
+          {errorMessage || "Payment gateway could not be opened. Please go back and try again."}
         </div>
       )}
     </div>

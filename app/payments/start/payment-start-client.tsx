@@ -169,6 +169,15 @@ function buildPaymentIntentEndpoint(payload: PaymentBridgePayload, provider: str
   throw new Error("Missing payment target details.");
 }
 
+function getFirstString(...values: Array<unknown>): string {
+  for (const value of values) {
+    if (typeof value === "string" && value.trim()) {
+      return value;
+    }
+  }
+  return "";
+}
+
 async function createPaymentIntentFromBridge(
   payload: PaymentBridgePayload,
   provider: string
@@ -219,14 +228,24 @@ export default function PaymentStartClient({ payloadParam }: { payloadParam: str
           : await createPaymentIntentFromBridge(payload, provider)
       ) as Record<string, unknown> & PaymentBridgePayload;
 
+      const metadata = (paymentIntent.metadata as Record<string, unknown> | undefined) || {};
+      const providerResponse = (paymentIntent.providerResponse as Record<string, unknown> | undefined) || {};
       const orderId = String(paymentIntent.orderId || paymentIntent.paymentId || paymentIntent.paymentIntentId || "");
       const gatewayRedirectUrl =
         getAllowedRedirectUrl(
-          String(
-            paymentIntent.gatewayRedirectUrl ||
-              paymentIntent.paymentLink ||
-              (paymentIntent as Record<string, unknown>).redirectUrl ||
-              ""
+          getFirstString(
+            paymentIntent.gatewayRedirectUrl,
+            paymentIntent.paymentLink,
+            (paymentIntent as Record<string, unknown>).redirectUrl,
+            metadata.redirectUrl,
+            metadata.gatewayRedirectUrl,
+            metadata.paymentLink,
+            providerResponse.redirectUrl,
+            providerResponse.redirect_url,
+            providerResponse.paymentLink,
+            providerResponse.payment_link,
+            providerResponse.checkoutUrl,
+            providerResponse.url
           )
         ) || "";
       const callbackUrl = getAllowedRedirectUrl(String(paymentIntent.callbackUrl || payload.callbackUrl || "")) || "";

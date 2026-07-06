@@ -185,6 +185,8 @@ async function createPaymentIntentFromBridge(
   const request = buildPaymentIntentEndpoint(payload, provider);
   const response = await fetch(request.url, {
     method: "POST",
+    credentials: "include",
+    mode: "cors",
     headers: {
       "Content-Type": "application/json",
       "X-Clinic-ID": payload.clinicId,
@@ -343,9 +345,15 @@ export default function PaymentStartClient({ payloadParam }: { payloadParam: str
 
   return (
     <div className="flex min-h-[60vh] items-center justify-center px-4 py-16">
-      <div className="flex flex-col items-center gap-4 text-center">
-        <Loader2 className="h-7 w-7 animate-spin text-emerald-400" />
-      </div>
+      {status === "loading" ? (
+        <div className="flex flex-col items-center gap-4 text-center">
+          <Loader2 className="h-7 w-7 animate-spin text-emerald-400" />
+        </div>
+      ) : (
+        <div className="max-w-sm rounded-2xl border border-red-500/30 bg-red-500/10 px-5 py-4 text-center text-sm text-red-200">
+          Payment gateway could not be opened. Please go back and try again.
+        </div>
+      )}
     </div>
   );
 }

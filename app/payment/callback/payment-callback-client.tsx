@@ -69,6 +69,8 @@ export default function PaymentCallbackClient({ queryString }: { queryString: st
       try {
         const response = await fetch(`${backendBase}/api/v1/payments/callback?${callbackQuery.toString()}`, {
           method: "POST",
+          credentials: "include",
+          mode: "cors",
           headers: {
             "Content-Type": "application/json",
             "X-Clinic-ID": clinicId,

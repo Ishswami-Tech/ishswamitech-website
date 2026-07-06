@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import CookieConsent from "@/components/CookieConsent";
 import StructuredData from "@/components/StructuredData";
+import RouteChrome from "@/components/RouteChrome";
 import { siteConfig } from "@/lib/site";
 
 const inter = Inter({
@@ -96,12 +94,10 @@ export default function RootLayout({
           <div className="site-grid-mask" />
           <div className="site-noise" />
         </div>
-        <Navbar />
+        <RouteChrome />
         <main id="main-content" className="min-h-screen">
           {children}
         </main>
-        <Footer />
-        <CookieConsent />
       </body>
     </html>
   );

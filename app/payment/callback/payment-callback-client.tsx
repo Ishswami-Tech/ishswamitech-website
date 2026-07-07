@@ -16,6 +16,42 @@ export default function PaymentCallbackClient({ queryString }: { queryString: st
 
   const query = useMemo(() => new URLSearchParams(queryString), [queryString]);
 
+  const buildSuccessRedirectUrl = (params: {
+    appointmentType: string;
+    appointmentId: string;
+    orderId: string;
+    paymentId: string;
+    provider: string;
+    clinicId: string;
+  }): string => {
+    const viddhakarmaBase = normalizeBaseUrl(
+      process.env.NEXT_PUBLIC_VIDDHAKARMA_URL || "",
+      "https://www.viddhakarma.com"
+    );
+    const redirectPath =
+      params.appointmentType === "VIDEO_CALL" || params.appointmentId
+        ? "/patient/appointments"
+        : "/patient/payments?tab=payments";
+    const target = new URL(`${viddhakarmaBase}${redirectPath}`);
+    target.searchParams.set("paymentVerified", "1");
+    if (params.appointmentId) {
+      target.searchParams.set("appointmentId", params.appointmentId);
+    }
+    if (params.orderId) {
+      target.searchParams.set("orderId", params.orderId);
+    }
+    if (params.paymentId) {
+      target.searchParams.set("paymentId", params.paymentId);
+    }
+    if (params.provider) {
+      target.searchParams.set("provider", params.provider);
+    }
+    if (params.clinicId) {
+      target.searchParams.set("clinicId", params.clinicId);
+    }
+    return target.toString();
+  };
+
   const fallbackRedirectUrl = useMemo(() => {
     const viddhakarmaBase = normalizeBaseUrl(
       process.env.NEXT_PUBLIC_VIDDHAKARMA_URL || "",
@@ -39,8 +75,9 @@ export default function PaymentCallbackClient({ queryString }: { queryString: st
       const provider = query.get("provider") || "cashfree";
       const appointmentId = query.get("appointmentId") || "";
       const appointmentType = query.get("appointmentType") || "";
+      const handoffToken = query.get("handoff_token") || "";
 
-      if (!clinicId || !orderId) {
+      if (!handoffToken && (!clinicId || !orderId)) {
         setState("error");
         window.location.replace(fallbackRedirectUrl);
         return;
@@ -51,29 +88,42 @@ export default function PaymentCallbackClient({ queryString }: { queryString: st
         "https://backend-service-v1.ishswami.in"
       );
 
-      const callbackQuery = new URLSearchParams({
-        clinicId,
-        orderId,
-        provider,
-      });
-      if (paymentId) {
-        callbackQuery.set("paymentId", paymentId);
-      }
-      if (appointmentId) {
-        callbackQuery.set("appointmentId", appointmentId);
-      }
-      if (appointmentType) {
-        callbackQuery.set("appointmentType", appointmentType);
+      const callbackQuery = new URLSearchParams();
+      if (handoffToken) {
+        callbackQuery.set("handoff_token", handoffToken);
+        if (orderId) {
+          callbackQuery.set("order_id", orderId);
+        }
+        if (paymentId) {
+          callbackQuery.set("payment_id", paymentId);
+        }
+        if (provider) {
+          callbackQuery.set("provider", provider);
+        }
+      } else {
+        callbackQuery.set("clinicId", clinicId);
+        callbackQuery.set("orderId", orderId);
+        callbackQuery.set("provider", provider);
+        if (paymentId) {
+          callbackQuery.set("paymentId", paymentId);
+        }
+        if (appointmentId) {
+          callbackQuery.set("appointmentId", appointmentId);
+        }
+        if (appointmentType) {
+          callbackQuery.set("appointmentType", appointmentType);
+        }
       }
 
       try {
-        const response = await fetch(`${backendBase}/api/v1/payments/callback?${callbackQuery.toString()}`, {
+        const callbackPath = handoffToken ? "/api/v1/payments/callback/handoff" : "/api/v1/payments/callback";
+        const response = await fetch(`${backendBase}${callbackPath}?${callbackQuery.toString()}`, {
           method: "POST",
           credentials: "include",
           mode: "cors",
           headers: {
             "Content-Type": "application/json",
-            "X-Clinic-ID": clinicId,
+            ...(clinicId ? { "X-Clinic-ID": clinicId } : {}),
           },
           body: JSON.stringify({ orderId }),
         });
@@ -83,9 +133,29 @@ export default function PaymentCallbackClient({ queryString }: { queryString: st
           throw new Error(text || "Payment verification failed");
         }
 
-        const targetUrl = new URL(fallbackRedirectUrl);
-        targetUrl.search = callbackQuery.toString();
-        window.location.replace(targetUrl.toString());
+        const responseBody = (await response.json().catch(() => ({}))) as Record<string, unknown>;
+      if (handoffToken) {
+        const resolvedClinicId = String(responseBody.clinicId || clinicId || "");
+        const resolvedOrderId = String(responseBody.orderId || orderId || "");
+        const resolvedPaymentId = String(responseBody.paymentId || paymentId || "");
+        const resolvedProvider = String(responseBody.provider || provider || "");
+        const resolvedAppointmentId = String(responseBody.appointmentId || appointmentId || "");
+        const resolvedAppointmentType = String(responseBody.appointmentType || appointmentType || "");
+        window.location.replace(
+          buildSuccessRedirectUrl({
+            appointmentType: resolvedAppointmentType,
+            appointmentId: resolvedAppointmentId,
+            orderId: resolvedOrderId,
+            paymentId: resolvedPaymentId,
+            provider: resolvedProvider,
+            clinicId: resolvedClinicId,
+          })
+        );
+        } else {
+          const targetUrl = new URL(fallbackRedirectUrl);
+          targetUrl.search = callbackQuery.toString();
+          window.location.replace(targetUrl.toString());
+        }
       } catch (error) {
         setState("error");
         window.location.replace(fallbackRedirectUrl);

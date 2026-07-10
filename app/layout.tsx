@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import StructuredData from "@/components/StructuredData";
-import RouteChrome from "@/components/RouteChrome";
+import RouteChrome, { FooterChrome } from "@/components/RouteChrome";
 import { siteConfig } from "@/lib/site";
+
 
 const inter = Inter({
   subsets: ["latin"],
@@ -98,6 +99,7 @@ export default function RootLayout({
         <main id="main-content" className="min-h-screen">
           {children}
         </main>
+        <FooterChrome />
       </body>
     </html>
   );

@@ -284,29 +284,30 @@ export default function PaymentStartClient({ payloadParam }: { payloadParam: str
   const payload = useMemo(() => decodePayload(resolvedPayloadParam), [resolvedPayloadParam]);
 
   const openGateway = async () => {
-    if (!payload) {
+    const currentPayload = payload;
+    if (!currentPayload) {
       setStatus("error");
       setErrorMessage("Invalid payment payload. Please reopen the payment link.");
       setErrorDetails("The payment payload could not be decoded from the URL.");
       return;
     }
 
-    const provider = String(payload.provider || "").toLowerCase();
-    const amount = Number(payload.amount);
-    const backendDisplayAmount = String(payload.displayAmount || "");
+    const provider = String(currentPayload.provider || "").toLowerCase();
+    const amount = Number(currentPayload.amount);
+    const backendDisplayAmount = String(currentPayload.displayAmount || "");
     const displayAmount = backendDisplayAmount;
 
-    if (!payload.clinicId || !payload.appointmentId) {
+    if (!currentPayload.clinicId || !currentPayload.appointmentId) {
       setStatus("error");
       setErrorMessage("Payment payload is missing clinic or appointment details.");
-      setErrorDetails(JSON.stringify(payload, null, 2));
+      setErrorDetails(JSON.stringify(currentPayload, null, 2));
       return;
     }
 
     if (!Number.isFinite(amount) || amount <= 0) {
       setStatus("error");
       setErrorMessage("Payment amount is invalid or missing.");
-      setErrorDetails(JSON.stringify(payload, null, 2));
+      setErrorDetails(JSON.stringify(currentPayload, null, 2));
       return;
     }
 
@@ -320,9 +321,12 @@ export default function PaymentStartClient({ payloadParam }: { payloadParam: str
       setErrorMessage("");
 
       const paymentIntent = (
-        payload.orderId || payload.paymentSessionId || payload.paymentLink || payload.gatewayRedirectUrl
-          ? payload
-          : await createPaymentIntentFromBridge(payload, provider)
+        currentPayload.orderId ||
+        currentPayload.paymentSessionId ||
+        currentPayload.paymentLink ||
+        currentPayload.gatewayRedirectUrl
+          ? currentPayload
+          : await createPaymentIntentFromBridge(currentPayload, provider)
       ) as Record<string, unknown> & PaymentBridgePayload;
 
       const metadata = (paymentIntent.metadata as Record<string, unknown> | undefined) || {};
@@ -348,7 +352,9 @@ export default function PaymentStartClient({ payloadParam }: { payloadParam: str
             getRedirectUrlCandidate(providerResponse)
           )
         ) || "";
-      const callbackUrl = getAllowedRedirectUrl(String(paymentIntent.callbackUrl || payload.callbackUrl || "")) || "";
+      const callbackUrl = getAllowedRedirectUrl(
+        String(paymentIntent.callbackUrl || currentPayload.callbackUrl || "")
+      ) || "";
 
       if (provider === "razorpay") {
         setStatusLabel("Opening Razorpay checkout...");
@@ -381,10 +387,10 @@ export default function PaymentStartClient({ payloadParam }: { payloadParam: str
 
         const checkout = new RazorpayCtor({
           key: razorpayKeyId,
-          amount: Number(paymentIntent.amount || payload.amount),
-          currency: String(paymentIntent.currency || payload.currency || "INR"),
+          amount: Number(paymentIntent.amount || currentPayload.amount),
+          currency: String(paymentIntent.currency || currentPayload.currency || "INR"),
           name: "Payment",
-          description: String(paymentIntent.description || payload.description || "Payment"),
+          description: String(paymentIntent.description || currentPayload.description || "Payment"),
           order_id: orderId,
           theme: { color: "#0B5E45" },
           handler: (response: {
@@ -397,7 +403,7 @@ export default function PaymentStartClient({ payloadParam }: { payloadParam: str
                 paymentId: response.razorpay_payment_id,
                 orderId: response.razorpay_order_id || orderId,
                 provider: provider || undefined,
-                clinicId: String(paymentIntent.clinicId || payload.clinicId || ""),
+                clinicId: String(paymentIntent.clinicId || currentPayload.clinicId || ""),
                 razorpaySignature: response.razorpay_signature,
               });
               window.location.replace(redirectTarget);
@@ -427,17 +433,17 @@ export default function PaymentStartClient({ payloadParam }: { payloadParam: str
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
       console.error("[PaymentStartClient] Failed to open gateway", {
-        provider: payload?.provider,
-        appointmentId: payload?.appointmentId,
-        clinicId: payload?.clinicId,
+        provider: currentPayload.provider,
+        appointmentId: currentPayload.appointmentId,
+        clinicId: currentPayload.clinicId,
         message,
       });
       setErrorMessage(message || "Payment gateway could not be opened.");
       setErrorDetails(
         [
-          `provider=${payload?.provider || ""}`,
-          `appointmentId=${payload?.appointmentId || ""}`,
-          `clinicId=${payload?.clinicId || ""}`,
+          `provider=${currentPayload.provider || ""}`,
+          `appointmentId=${currentPayload.appointmentId || ""}`,
+          `clinicId=${currentPayload.clinicId || ""}`,
           `status=${status}`,
           `message=${message}`,
         ].join("\n")
@@ -456,7 +462,19 @@ export default function PaymentStartClient({ payloadParam }: { payloadParam: str
   }, [resolvedPayloadParam]);
 
   useEffect(() => {
-    if (startedRef.current || !payload) {
+    if (startedRef.current) {
+      return;
+    }
+
+    if (!resolvedPayloadParam) {
+      return;
+    }
+
+    if (!payload) {
+      startedRef.current = true;
+      setStatus("error");
+      setErrorMessage("Invalid payment payload. Please reopen the payment link.");
+      setErrorDetails("The payment payload could not be decoded from the URL.");
       return;
     }
 

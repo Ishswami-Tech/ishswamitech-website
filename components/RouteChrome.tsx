@@ -15,15 +15,18 @@ export default function RouteChrome() {
   const pathname = usePathname();
   const hideChrome = shouldHideChrome(pathname);
 
-  if (hideChrome) {
-    return null;
-  }
+  if (hideChrome) return null;
 
   return (
     <>
       <Navbar />
-      <Footer />
       <CookieConsent />
     </>
   );
+}
+
+export function FooterChrome() {
+  const pathname = usePathname();
+  if (shouldHideChrome(pathname)) return null;
+  return <Footer />;
 }

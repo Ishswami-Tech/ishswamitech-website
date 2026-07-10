@@ -6,6 +6,7 @@ import { Loader2 } from "lucide-react";
 type PaymentBridgePayload = {
   provider: string;
   amount: number;
+  displayAmount?: string;
   currency: string;
   description?: string;
   clinicId: string;
@@ -292,6 +293,8 @@ export default function PaymentStartClient({ payloadParam }: { payloadParam: str
 
     const provider = String(payload.provider || "").toLowerCase();
     const amount = Number(payload.amount);
+    const backendDisplayAmount = String(payload.displayAmount || "");
+    const displayAmount = backendDisplayAmount;
 
     if (!payload.clinicId || !payload.appointmentId) {
       setStatus("error");
@@ -309,7 +312,11 @@ export default function PaymentStartClient({ payloadParam }: { payloadParam: str
 
     try {
       setStatus("loading");
-      setStatusLabel("Connecting to payment gateway...");
+      setStatusLabel(
+        displayAmount
+          ? `Connecting to payment gateway for ₹${displayAmount}...`
+          : "Connecting to payment gateway..."
+      );
       setErrorMessage("");
 
       const paymentIntent = (

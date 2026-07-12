@@ -79,7 +79,6 @@ export default function PaymentCallbackClient({ queryString }: { queryString: st
 
       if (!handoffToken && (!clinicId || !orderId)) {
         setState("error");
-        window.location.replace(fallbackRedirectUrl);
         return;
       }
 
@@ -134,23 +133,23 @@ export default function PaymentCallbackClient({ queryString }: { queryString: st
         }
 
         const responseBody = (await response.json().catch(() => ({}))) as Record<string, unknown>;
-      if (handoffToken) {
-        const resolvedClinicId = String(responseBody.clinicId || clinicId || "");
-        const resolvedOrderId = String(responseBody.orderId || orderId || "");
-        const resolvedPaymentId = String(responseBody.paymentId || paymentId || "");
-        const resolvedProvider = String(responseBody.provider || provider || "");
-        const resolvedAppointmentId = String(responseBody.appointmentId || appointmentId || "");
-        const resolvedAppointmentType = String(responseBody.appointmentType || appointmentType || "");
-        window.location.replace(
-          buildSuccessRedirectUrl({
-            appointmentType: resolvedAppointmentType,
-            appointmentId: resolvedAppointmentId,
-            orderId: resolvedOrderId,
-            paymentId: resolvedPaymentId,
-            provider: resolvedProvider,
-            clinicId: resolvedClinicId,
-          })
-        );
+        if (handoffToken) {
+          const resolvedClinicId = String(responseBody.clinicId || clinicId || "");
+          const resolvedOrderId = String(responseBody.orderId || orderId || "");
+          const resolvedPaymentId = String(responseBody.paymentId || paymentId || "");
+          const resolvedProvider = String(responseBody.provider || provider || "");
+          const resolvedAppointmentId = String(responseBody.appointmentId || appointmentId || "");
+          const resolvedAppointmentType = String(responseBody.appointmentType || appointmentType || "");
+          window.location.replace(
+            buildSuccessRedirectUrl({
+              appointmentType: resolvedAppointmentType,
+              appointmentId: resolvedAppointmentId,
+              orderId: resolvedOrderId,
+              paymentId: resolvedPaymentId,
+              provider: resolvedProvider,
+              clinicId: resolvedClinicId,
+            })
+          );
         } else {
           const targetUrl = new URL(fallbackRedirectUrl);
           targetUrl.search = callbackQuery.toString();
@@ -158,7 +157,6 @@ export default function PaymentCallbackClient({ queryString }: { queryString: st
         }
       } catch (error) {
         setState("error");
-        window.location.replace(fallbackRedirectUrl);
       }
     };
 
@@ -167,9 +165,26 @@ export default function PaymentCallbackClient({ queryString }: { queryString: st
 
   return (
     <div className="flex min-h-[70vh] items-center justify-center px-4 py-16">
-      <div className="flex flex-col items-center gap-4 text-center">
-        <Loader2 className="h-7 w-7 animate-spin text-emerald-400" />
-      </div>
+      {state === "verifying" ? (
+        <div className="flex flex-col items-center gap-4 text-center">
+          <Loader2 className="h-7 w-7 animate-spin text-emerald-400" />
+        </div>
+      ) : (
+        <div className="max-w-lg rounded-2xl border border-red-500/30 bg-red-500/10 px-5 py-4 text-left text-sm text-red-200">
+          <p className="text-center font-medium">
+            Payment verification failed. Please go back and try again.
+          </p>
+          <div className="mt-3 flex justify-center">
+            <button
+              type="button"
+              onClick={() => window.location.replace(fallbackRedirectUrl)}
+              className="rounded-xl border border-red-400/30 bg-white/10 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-white/15"
+            >
+              Go back to Viddhakarma
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

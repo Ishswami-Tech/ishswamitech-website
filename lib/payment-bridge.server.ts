@@ -32,6 +32,116 @@ function normalizeBaseUrl(rawUrl: string, fallback: string): string {
   return value || fallback;
 }
 
+function uniqueCandidates(values: Array<string | undefined | null>): string[] {
+  const seen = new Set<string>();
+  const result: string[] = [];
+
+  for (const value of values) {
+    const candidate = typeof value === "string" ? value.trim() : "";
+    if (!candidate || seen.has(candidate)) {
+      continue;
+    }
+    seen.add(candidate);
+    result.push(candidate);
+  }
+
+  return result;
+}
+
+function decodeRepeatedly(value: string, maxRounds = 3): string[] {
+  const candidates: string[] = [value];
+  let current = value;
+
+  for (let index = 0; index < maxRounds; index += 1) {
+    try {
+      const decoded = decodeURIComponent(current);
+      if (!decoded || decoded === current) {
+        break;
+      }
+      candidates.push(decoded);
+      current = decoded;
+    } catch {
+      break;
+    }
+  }
+
+  return uniqueCandidates(candidates);
+}
+
+function extractNestedPayloadCandidates(value: string): string[] {
+  const extracted: string[] = [];
+
+  const collectFromSearchParams = (query: string): void => {
+    try {
+      const params = new URLSearchParams(query.startsWith("?") ? query.slice(1) : query);
+      for (const key of ["payload", "data", "token"]) {
+        const nested = params.get(key);
+        if (nested) {
+          extracted.push(nested);
+        }
+      }
+    } catch {
+      // Ignore malformed query strings and continue with the raw candidate.
+    }
+  };
+
+  if (value.includes("://")) {
+    try {
+      const url = new URL(value);
+      collectFromSearchParams(url.search);
+      collectFromSearchParams(url.searchParams.toString());
+    } catch {
+      // Ignore invalid URLs and fall back to generic parsing.
+    }
+  }
+
+  if (value.includes("=") || value.includes("&") || value.startsWith("?")) {
+    collectFromSearchParams(value);
+  }
+
+  return extracted;
+}
+
+function parsePaymentBridgePayloadCandidate(candidate: string): PaymentBridgePayload | null {
+  const normalized = candidate
+    .trim()
+    .replace(/^payload=/i, "")
+    .replace(/^data=/i, "")
+    .replace(/^token=/i, "")
+    .replace(/^["']|["']$/gu, "")
+    .replace(/\s+/gu, "");
+
+  if (!normalized) {
+    return null;
+  }
+
+  if (normalized.startsWith("{") || normalized.startsWith("[")) {
+    try {
+      return JSON.parse(normalized) as PaymentBridgePayload;
+    } catch {
+      // Continue to base64/base64url decoding.
+    }
+  }
+
+  const safeBase64 = normalized
+    .replace(/-/g, "+")
+    .replace(/_/g, "/")
+    .replace(/ /g, "+");
+  const padded = safeBase64.padEnd(Math.ceil(safeBase64.length / 4) * 4, "=");
+
+  try {
+    const binary = Buffer.from(padded, "base64").toString("utf8");
+    const decoded = binary.trim().replace(/^payload=/i, "");
+    if (decoded.startsWith("{")) {
+      return JSON.parse(decoded) as PaymentBridgePayload;
+    }
+  } catch {
+    // Ignore and return null below.
+  }
+
+  return null;
+}
+
 function getBackendBaseUrl(): string {
   return normalizeBaseUrl(process.env.NEXT_PUBLIC_BACKEND_URL || "", DEFAULT_BACKEND_BASE_URL);
 }
@@ -45,34 +155,29 @@ export function decodePaymentBridgePayload(rawPayload: string): PaymentBridgePay
     return null;
   }
 
-  const candidates = new Set<string>([rawPayload.trim()]);
-
-  try {
-    candidates.add(decodeURIComponent(rawPayload.trim()));
-  } catch {
-    // Ignore URI decoding failures and continue with the original candidate.
-  }
+  const candidates = uniqueCandidates([
+    rawPayload.trim(),
+    ...decodeRepeatedly(rawPayload.trim(), 3),
+    ...extractNestedPayloadCandidates(rawPayload.trim()),
+    ...decodeRepeatedly(decodeURIComponentSafe(rawPayload.trim()), 2),
+  ]);
 
   for (const candidate of candidates) {
-    try {
-      if (candidate.startsWith("{")) {
-        return JSON.parse(candidate) as PaymentBridgePayload;
-      }
-
-      const cleaned = candidate
-        .replace(/^payload=/i, "")
-        .replace(/\s+/gu, "")
-        .replace(/-/g, "+")
-        .replace(/_/g, "/");
-      const padded = cleaned.padEnd(Math.ceil(cleaned.length / 4) * 4, "=");
-      const binary = Buffer.from(padded, "base64").toString("utf8");
-      return JSON.parse(binary) as PaymentBridgePayload;
-    } catch {
-      // Try the next candidate.
+    const parsed = parsePaymentBridgePayloadCandidate(candidate);
+    if (parsed) {
+      return parsed;
     }
   }
 
   return null;
+}
+
+function decodeURIComponentSafe(value: string): string {
+  try {
+    return decodeURIComponent(value);
+  } catch {
+    return value;
+  }
 }
 
 export function getAllowedRedirectUrl(candidate: string): string | null {

@@ -1,5 +1,10 @@
 import type { Metadata } from "next";
-import PaymentCallbackClient from "./payment-callback-client";
+import { redirect } from "next/navigation";
+import {
+  buildFallbackCallbackUrl,
+  buildViddhakarmaRedirectUrl,
+  verifyPaymentCallbackOnServer,
+} from "@/lib/payment-bridge.server";
 
 export const metadata: Metadata = {
   title: "Payment",
@@ -13,7 +18,15 @@ export const metadata: Metadata = {
 
 type SearchParams = Record<string, string | string[] | undefined>;
 
-export default function PaymentCallbackPage({
+function getSearchParam(searchParams: SearchParams, key: string): string {
+  const value = searchParams[key];
+  if (Array.isArray(value)) {
+    return value[0] || "";
+  }
+  return value || "";
+}
+
+export default async function PaymentCallbackPage({
   searchParams,
 }: {
   searchParams: SearchParams;
@@ -34,5 +47,46 @@ export default function PaymentCallbackPage({
     }
   }
 
-  return <PaymentCallbackClient queryString={normalizedSearchParams.toString()} />;
+  const clinicId = getSearchParam(searchParams, "clinicId");
+  const orderId = getSearchParam(searchParams, "orderId");
+  const paymentId = getSearchParam(searchParams, "paymentId") || orderId;
+  const provider = getSearchParam(searchParams, "provider") || "cashfree";
+  const appointmentId = getSearchParam(searchParams, "appointmentId");
+  const appointmentType = getSearchParam(searchParams, "appointmentType");
+  const handoffToken = getSearchParam(searchParams, "handoff_token");
+  const queryString = normalizedSearchParams.toString();
+  const verifiedQueryString = queryString ? `${queryString}&paymentVerified=1` : "paymentVerified=1";
+  const failedQueryString = queryString ? `${queryString}&paymentVerified=0` : "paymentVerified=0";
+
+  try {
+    const response = await verifyPaymentCallbackOnServer({
+      clinicId,
+      orderId,
+      paymentId,
+      provider,
+      handoffToken,
+    });
+
+    if (handoffToken) {
+      if (response.success) {
+        redirect(
+          buildViddhakarmaRedirectUrl({
+            appointmentType: response.appointmentType || appointmentType,
+            appointmentId: response.appointmentId || appointmentId,
+            orderId: response.orderId || orderId,
+            paymentId: response.paymentId || paymentId,
+            provider: response.provider || provider,
+            clinicId: response.clinicId || clinicId,
+            paymentVerified: "1",
+          })
+        );
+      }
+
+      redirect(buildFallbackCallbackUrl(failedQueryString));
+    }
+
+    redirect(buildFallbackCallbackUrl(verifiedQueryString));
+  } catch {
+    redirect(buildFallbackCallbackUrl(failedQueryString));
+  }
 }

@@ -50,20 +50,20 @@ function renderError(message: string, details: string, fallbackUrl: string) {
   );
 }
 
-export default async function PaymentStartPage({
-  searchParams,
-}: {
-  searchParams: SearchParams;
+export default async function PaymentStartPage(props: {
+  searchParams: Promise<SearchParams>;
 }) {
+  const searchParams = await props.searchParams;
   const payloadParam = getSearchParam(searchParams, "payload");
   const fallbackUrl = buildFallbackCallbackUrl(payloadParam ? `payload=${encodeURIComponent(payloadParam)}` : "");
+  const invalidPayloadFallbackUrl = buildFallbackCallbackUrl("paymentError=invalid_payload&paymentVerified=0");
   const payload = decodePaymentBridgePayload(payloadParam);
 
   if (!payload) {
     return renderError(
       "Invalid payment payload. Please reopen the payment link.",
       "The payment payload could not be decoded from the URL.",
-      fallbackUrl
+      invalidPayloadFallbackUrl
     );
   }
 

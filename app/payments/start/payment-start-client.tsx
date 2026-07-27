@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Loader2 } from "lucide-react";
 
 type PaymentBridgePayload = {
@@ -27,6 +27,14 @@ type PaymentBridgePayload = {
 
 type PaymentIntentRecord = Record<string, unknown>;
 
+type PaymentIntentResolveResponse = {
+  success: boolean;
+  payload?: PaymentBridgePayload;
+  paymentIntent?: PaymentIntentRecord;
+  error?: string;
+  message?: string;
+};
+
 function getAllowedRedirectUrl(candidate: string): string | null {
   if (!candidate) {
     return null;
@@ -47,7 +55,9 @@ function getAllowedRedirectUrl(candidate: string): string | null {
       "www.viddhakarma.com",
       "viddhakarma.com",
     ];
-    const isAllowed = allowedHosts.some((allowedHost) => host === allowedHost || host.endsWith(`.${allowedHost}`));
+    const isAllowed = allowedHosts.some(
+      (allowedHost) => host === allowedHost || host.endsWith(`.${allowedHost}`),
+    );
     return isAllowed ? url.toString() : null;
   } catch {
     return null;
@@ -96,7 +106,7 @@ function getRedirectUrlCandidate(source: Record<string, unknown> | undefined): s
     nestedResponse?.paymentLink,
     nestedResponse?.payment_link,
     nestedResponse?.checkoutUrl,
-    nestedResponse?.url
+    nestedResponse?.url,
   );
 }
 
@@ -130,7 +140,7 @@ function loadRazorpayScript(): Promise<void> {
 
 function buildCallbackRedirectUrl(
   callbackUrl: string,
-  params: Record<string, string | undefined>
+  params: Record<string, string | undefined>,
 ): string {
   const target = new URL(callbackUrl);
   for (const [key, value] of Object.entries(params)) {
@@ -141,18 +151,67 @@ function buildCallbackRedirectUrl(
   return target.toString();
 }
 
+
+
+function collectRawPayloadCandidates(initialRawPayload?: string): string[] {
+  const candidates = new Set<string>();
+
+  const addCandidate = (value?: string | null) => {
+    if (value && value.trim()) {
+      candidates.add(value.trim());
+    }
+  };
+
+  addCandidate(initialRawPayload);
+
+  const searchParams = new URLSearchParams(window.location.search);
+  for (const key of ["payload", "data", "token"]) {
+    addCandidate(searchParams.get(key));
+  }
+
+  const hashValue = window.location.hash.startsWith("#")
+    ? window.location.hash.slice(1)
+    : window.location.hash;
+  if (hashValue && hashValue.trim()) {
+    const hashParams = new URLSearchParams(hashValue);
+    for (const key of ["payload", "data", "token"]) {
+      addCandidate(hashParams.get(key));
+    }
+    if (!hashValue.includes("=")) {
+      addCandidate(hashValue);
+    }
+  }
+
+  return Array.from(candidates);
+}
+
 export default function PaymentStartClient({
   payload,
   paymentIntent,
+  initialRawPayload,
+  fallbackUrl,
 }: {
-  payload: PaymentBridgePayload;
+  payload: PaymentBridgePayload | null;
   paymentIntent: PaymentIntentRecord | null;
+  initialRawPayload?: string;
+  fallbackUrl?: string;
 }) {
   const [status, setStatus] = useState<"loading" | "error">("loading");
   const [statusLabel, setStatusLabel] = useState("Preparing secure checkout...");
   const [errorMessage, setErrorMessage] = useState("");
   const [errorDetails, setErrorDetails] = useState("");
   const startedRef = useRef(false);
+
+  const resolvedFallbackUrl = useMemo(() => {
+    if (fallbackUrl) {
+      return fallbackUrl;
+    }
+
+    const viddhakarmaBase = (
+      process.env.NEXT_PUBLIC_VIDDHAKARMA_URL || "https://www.viddhakarma.com"
+    ).trim().replace(/\/+$/u, "");
+    return `${viddhakarmaBase}/payment/callback`;
+  }, [fallbackUrl]);
 
   useEffect(() => {
     if (startedRef.current) {
@@ -161,56 +220,114 @@ export default function PaymentStartClient({
     startedRef.current = true;
 
     const openGateway = async () => {
-      if (!payload) {
+      let resolvedPayload = payload;
+      let resolvedPaymentIntent = paymentIntent;
+
+      if (!resolvedPayload || !resolvedPaymentIntent) {
+        const rawPayloadCandidates = collectRawPayloadCandidates(initialRawPayload);
+        if (!rawPayloadCandidates.length) {
+          setStatus("error");
+          setErrorMessage("Invalid payment payload. Please reopen the payment link.");
+          setErrorDetails("The payment payload could not be decoded from the URL.");
+          return;
+        }
+
+        setStatusLabel("Recovering payment session...");
+        let lastErrorMessage = "";
+
+        for (const rawPayload of rawPayloadCandidates) {
+          const resolveResponse = await fetch("/api/payment-intents/resolve", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ rawPayload }),
+          });
+
+          const resolved = (await resolveResponse.json().catch(() => null)) as
+            | PaymentIntentResolveResponse
+            | null;
+
+          if (resolveResponse.ok && resolved?.success && resolved.payload && resolved.paymentIntent) {
+            resolvedPayload = resolved.payload;
+            resolvedPaymentIntent = resolved.paymentIntent;
+            lastErrorMessage = "";
+            break;
+          }
+
+          lastErrorMessage =
+            resolved?.error ||
+            resolved?.message ||
+            (await resolveResponse.text().catch(() => "")) ||
+            "Invalid payment payload. Please reopen the payment link.";
+        }
+
+        if (!resolvedPayload || !resolvedPaymentIntent) {
+          throw new Error(lastErrorMessage || "Invalid payment payload. Please reopen the payment link.");
+        }
+      }
+
+      if (!resolvedPayload) {
         setStatus("error");
         setErrorMessage("Invalid payment payload. Please reopen the payment link.");
         setErrorDetails("The payment payload could not be decoded from the URL.");
         return;
       }
 
-      if (!paymentIntent) {
+      if (!resolvedPaymentIntent) {
         setStatus("error");
         setErrorMessage("Unable to prepare payment session.");
         setErrorDetails("The backend did not return a payment intent.");
         return;
       }
 
-      const provider = String(payload.provider || "").toLowerCase();
-      const amount = Number(paymentIntent.amount || payload.amount);
-      const displayAmount = String(payload.displayAmount || "");
+      const provider = String(resolvedPayload.provider || "").toLowerCase();
+      const amount = Number(resolvedPaymentIntent.amount || resolvedPayload.amount);
+      const displayAmount = String(resolvedPayload.displayAmount || "");
       const orderId = String(
-        paymentIntent.orderId ||
-          paymentIntent.paymentId ||
-          paymentIntent.paymentIntentId ||
-          payload.orderId ||
-          ""
+        resolvedPaymentIntent.orderId ||
+          resolvedPaymentIntent.paymentId ||
+          resolvedPaymentIntent.paymentIntentId ||
+          resolvedPayload.orderId ||
+          "",
       );
       const gatewayRedirectUrl =
         getAllowedRedirectUrl(
           getFirstString(
-            paymentIntent.gatewayRedirectUrl,
-            paymentIntent.paymentLink,
-            getRedirectUrlCandidate(paymentIntent),
-            getRedirectUrlCandidate((paymentIntent.metadata as Record<string, unknown> | undefined) || undefined),
-            getRedirectUrlCandidate((paymentIntent.providerResponse as Record<string, unknown> | undefined) || undefined)
-          )
+            resolvedPaymentIntent.gatewayRedirectUrl,
+            resolvedPaymentIntent.paymentLink,
+            getRedirectUrlCandidate(resolvedPaymentIntent),
+            getRedirectUrlCandidate(
+              (resolvedPaymentIntent.metadata as Record<string, unknown> | undefined) ||
+                undefined,
+            ),
+            getRedirectUrlCandidate(
+              (resolvedPaymentIntent.providerResponse as Record<string, unknown> | undefined) ||
+                undefined,
+            ),
+          ),
         ) || "";
       const callbackUrl =
-        getAllowedRedirectUrl(String(paymentIntent.callbackUrl || payload.callbackUrl || "")) || "";
+        getAllowedRedirectUrl(
+          String(resolvedPaymentIntent.callbackUrl || resolvedPayload.callbackUrl || ""),
+        ) || "";
 
       try {
         setStatus("loading");
         setStatusLabel(
           displayAmount
             ? `Connecting to payment gateway for INR ${displayAmount}...`
-            : "Connecting to payment gateway..."
+            : "Connecting to payment gateway...",
         );
         setErrorMessage("");
 
         if (provider === "razorpay") {
           setStatusLabel("Opening Razorpay checkout...");
           const razorpayKeyId = String(
-            paymentIntent.razorpayKeyId || payload.razorpayKeyId || process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || ""
+            resolvedPaymentIntent.razorpayKeyId ||
+              resolvedPayload.razorpayKeyId ||
+              process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID ||
+              "",
           );
           if (!razorpayKeyId) {
             throw new Error("Razorpay key is not configured.");
@@ -241,9 +358,15 @@ export default function PaymentStartClient({
           const checkout = new RazorpayCtor({
             key: razorpayKeyId,
             amount,
-            currency: String(paymentIntent.currency || payload.currency || "INR"),
+            currency: String(
+              resolvedPaymentIntent.currency || resolvedPayload.currency || "INR",
+            ),
             name: "Payment",
-            description: String(paymentIntent.description || payload.description || "Payment"),
+            description: String(
+              resolvedPaymentIntent.description ||
+                resolvedPayload.description ||
+                "Payment",
+            ),
             order_id: orderId,
             theme: { color: "#0B5E45" },
             handler: (response: {
@@ -256,7 +379,9 @@ export default function PaymentStartClient({
                   paymentId: response.razorpay_payment_id,
                   orderId: response.razorpay_order_id || orderId,
                   provider: provider || undefined,
-                  clinicId: String(paymentIntent.clinicId || payload.clinicId || ""),
+                  clinicId: String(
+                    resolvedPaymentIntent.clinicId || resolvedPayload.clinicId || "",
+                  ),
                   razorpaySignature: response.razorpay_signature,
                 });
                 window.location.replace(redirectTarget);
@@ -288,19 +413,19 @@ export default function PaymentStartClient({
         setErrorMessage(message || "Payment gateway could not be opened.");
         setErrorDetails(
           [
-            `provider=${payload.provider || ""}`,
-            `appointmentId=${payload.appointmentId || ""}`,
-            `clinicId=${payload.clinicId || ""}`,
+            `provider=${resolvedPayload?.provider || ""}`,
+            `appointmentId=${resolvedPayload?.appointmentId || ""}`,
+            `clinicId=${resolvedPayload?.clinicId || ""}`,
             `status=${status}`,
             `message=${message}`,
-          ].join("\n")
+          ].join("\n"),
         );
         setStatus("error");
       }
     };
 
     void openGateway();
-  }, [paymentIntent, payload, status]);
+  }, [initialRawPayload, paymentIntent, payload, status]);
 
   return (
     <div className="flex min-h-[60vh] items-center justify-center px-4 py-16">
@@ -319,6 +444,15 @@ export default function PaymentStartClient({
               {errorDetails}
             </pre>
           ) : null}
+          <div className="mt-3 flex justify-center">
+            <button
+              type="button"
+              onClick={() => window.location.replace(resolvedFallbackUrl)}
+              className="rounded-xl border border-red-400/30 bg-white/10 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-white/15"
+            >
+              Go back to Viddhakarma
+            </button>
+          </div>
         </div>
       )}
     </div>

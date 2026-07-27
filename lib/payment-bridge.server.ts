@@ -130,13 +130,14 @@ function parsePaymentBridgePayloadCandidate(candidate: string): PaymentBridgePay
   const padded = safeBase64.padEnd(Math.ceil(safeBase64.length / 4) * 4, "=");
 
   try {
-    const binary = Buffer.from(padded, "base64").toString("utf8");
-    const decoded = binary.trim().replace(/^payload=/i, "");
+    const binary = atob(padded);
+    const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0));
+    const decoded = new TextDecoder().decode(bytes).trim().replace(/^payload=/i, "");
     if (decoded.startsWith("{")) {
       return JSON.parse(decoded) as PaymentBridgePayload;
     }
-  } catch {
-    // Ignore and return null below.
+  } catch (error) {
+    console.error("[PaymentBridge] Failed to decode payload candidate:", error);
   }
 
   return null;

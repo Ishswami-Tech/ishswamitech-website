@@ -69,7 +69,7 @@ export default async function PaymentStartPage(props: {
   } catch {
     return (
       <PaymentStartClient
-        payload={null}
+        payload={payload}
         paymentIntent={null}
         initialRawPayload={payloadParam}
         fallbackUrl={fallbackUrl}

@@ -110,6 +110,35 @@ function getRedirectUrlCandidate(source: Record<string, unknown> | undefined): s
   );
 }
 
+function hasPrebuiltGatewayTarget(
+  payload: PaymentBridgePayload | PaymentIntentRecord | null | undefined,
+): boolean {
+  if (!payload || typeof payload !== "object") {
+    return false;
+  }
+
+  const record = payload as Record<string, unknown>;
+  return Boolean(
+    getAllowedRedirectUrl(
+      getFirstString(
+        record.gatewayRedirectUrl,
+        record.paymentLink,
+        record.redirectUrl,
+        record.redirect_url,
+        record.checkoutUrl,
+        record.url,
+        getRedirectUrlCandidate(record),
+        getRedirectUrlCandidate(record.data as Record<string, unknown> | undefined),
+        getRedirectUrlCandidate(record.result as Record<string, unknown> | undefined),
+        getRedirectUrlCandidate(record.response as Record<string, unknown> | undefined),
+      ),
+    ) ||
+      record.orderId ||
+      record.paymentSessionId ||
+      record.paymentIntentId,
+  );
+}
+
 function loadRazorpayScript(): Promise<void> {
   return new Promise((resolve, reject) => {
     if ((window as Window & { Razorpay?: unknown }).Razorpay) {
@@ -222,6 +251,7 @@ export default function PaymentStartClient({
     const openGateway = async () => {
       let resolvedPayload = payload;
       let resolvedPaymentIntent = paymentIntent;
+      let lastErrorMessage = "";
 
       if (!resolvedPayload || !resolvedPaymentIntent) {
         const rawPayloadCandidates = collectRawPayloadCandidates(initialRawPayload);
@@ -233,7 +263,6 @@ export default function PaymentStartClient({
         }
 
         setStatusLabel("Recovering payment session...");
-        let lastErrorMessage = "";
 
         for (const rawPayload of rawPayloadCandidates) {
           const resolveResponse = await fetch("/api/payment-intents/resolve", {
@@ -262,8 +291,15 @@ export default function PaymentStartClient({
             "Invalid payment payload. Please reopen the payment link.";
         }
 
-        if (!resolvedPayload || !resolvedPaymentIntent) {
-          throw new Error(lastErrorMessage || "Invalid payment payload. Please reopen the payment link.");
+      }
+
+      if (!resolvedPayload || !resolvedPaymentIntent) {
+        if (resolvedPayload && hasPrebuiltGatewayTarget(resolvedPayload)) {
+          resolvedPaymentIntent = resolvedPayload as PaymentIntentRecord;
+        } else {
+          throw new Error(
+            lastErrorMessage || "Invalid payment payload. Please reopen the payment link.",
+          );
         }
       }
 
@@ -275,10 +311,14 @@ export default function PaymentStartClient({
       }
 
       if (!resolvedPaymentIntent) {
-        setStatus("error");
-        setErrorMessage("Unable to prepare payment session.");
-        setErrorDetails("The backend did not return a payment intent.");
-        return;
+        if (hasPrebuiltGatewayTarget(resolvedPayload)) {
+          resolvedPaymentIntent = resolvedPayload as PaymentIntentRecord;
+        } else {
+          setStatus("error");
+          setErrorMessage("Unable to prepare payment session.");
+          setErrorDetails("The backend did not return a payment intent.");
+          return;
+        }
       }
 
       const provider = String(resolvedPayload.provider || "").toLowerCase();

@@ -12,6 +12,7 @@ function normalizeBaseUrl(rawUrl: string, fallback: string): string {
 
 export default function PaymentCallbackClient({ queryString }: { queryString: string }) {
   const [state, setState] = useState<CallbackState>("verifying");
+  const [redirectCountdown, setRedirectCountdown] = useState(5);
   const startedRef = useRef(false);
 
   const query = useMemo(() => new URLSearchParams(queryString), [queryString]);
@@ -57,7 +58,7 @@ export default function PaymentCallbackClient({ queryString }: { queryString: st
       process.env.NEXT_PUBLIC_VIDDHAKARMA_URL || "",
       "https://www.viddhakarma.com"
     );
-    const targetUrl = new URL(`${viddhakarmaBase}/payment/callback`);
+    const targetUrl = new URL(`${viddhakarmaBase}/patient/appointments`);
     targetUrl.search = query.toString();
     return targetUrl.toString();
   }, [query]);
@@ -163,6 +164,26 @@ export default function PaymentCallbackClient({ queryString }: { queryString: st
     void run();
   }, [fallbackRedirectUrl, query]);
 
+  useEffect(() => {
+    if (state !== "error") {
+      return;
+    }
+
+    setRedirectCountdown(5);
+    const timer = window.setInterval(() => {
+      setRedirectCountdown((current) => {
+        if (current <= 1) {
+          window.clearInterval(timer);
+          window.location.replace(fallbackRedirectUrl);
+          return 0;
+        }
+        return current - 1;
+      });
+    }, 1000);
+
+    return () => window.clearInterval(timer);
+  }, [fallbackRedirectUrl, state]);
+
   return (
     <div className="flex min-h-[70vh] items-center justify-center px-4 py-16">
       {state === "verifying" ? (
@@ -172,7 +193,7 @@ export default function PaymentCallbackClient({ queryString }: { queryString: st
       ) : (
         <div className="max-w-lg rounded-2xl border border-red-500/30 bg-red-500/10 px-5 py-4 text-left text-sm text-red-200">
           <p className="text-center font-medium">
-            Payment verification failed. Please go back and try again.
+            Payment failed or could not be verified. Redirecting to appointments in {redirectCountdown} seconds.
           </p>
           <div className="mt-3 flex justify-center">
             <button
@@ -180,7 +201,7 @@ export default function PaymentCallbackClient({ queryString }: { queryString: st
               onClick={() => window.location.replace(fallbackRedirectUrl)}
               className="rounded-xl border border-red-400/30 bg-white/10 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-white/15"
             >
-              Go back to Viddhakarma
+              Go to appointments now
             </button>
           </div>
         </div>

@@ -1,24 +1,14 @@
 import { createSign } from "node:crypto";
 import { NextResponse } from "next/server";
-import { z } from "zod";
+import { contactFormSchema } from "@/lib/contact-schema";
 
 export const runtime = "nodejs";
 
-const submissionSchema = z.object({
-  name: z.string().min(2),
-  email: z.string().email(),
-  phone: z.string().optional(),
-  company: z.string().optional(),
-  service: z.string().optional(),
-  budget: z.string().optional(),
-  message: z.string().min(10),
-});
-
-const spreadsheetId =
-  process.env.CONTACT_GOOGLE_SHEET_ID || "1w2JhRg0DNtOEx9AA3vZQS7jcSCwcCg7wjkNM_Lf_eXQ";
+const spreadsheetId = process.env.CONTACT_GOOGLE_SHEET_ID;
 const appendRange = process.env.CONTACT_GOOGLE_SHEET_RANGE || "A:H";
 const headerRange = process.env.CONTACT_GOOGLE_SHEET_HEADER_RANGE || "A1:H1";
 const appsScriptUrl = process.env.CONTACT_GOOGLE_APPS_SCRIPT_URL;
+
 const spreadsheetHeaders = [
   "Submitted At",
   "Name",
@@ -30,15 +20,77 @@ const spreadsheetHeaders = [
   "Message",
 ];
 
+const GENERIC_ERROR = "We couldn't send your message right now. Please try again shortly.";
+
+/**
+ * Best-effort in-process rate limit. Serverless instances don't share memory,
+ * so this throttles bursts from a single instance rather than acting as a hard
+ * global guarantee; move to a shared store if abuse becomes a problem.
+ */
+const RATE_LIMIT_MAX = 5;
+const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
+const submissionLog = new Map<string, number[]>();
+
+function isRateLimited(key: string): boolean {
+  const now = Date.now();
+  const recent = (submissionLog.get(key) ?? []).filter(
+    (timestamp) => now - timestamp < RATE_LIMIT_WINDOW_MS
+  );
+
+  if (recent.length >= RATE_LIMIT_MAX) {
+    submissionLog.set(key, recent);
+    return true;
+  }
+
+  recent.push(now);
+  submissionLog.set(key, recent);
+
+  // Opportunistic cleanup so the map can't grow without bound.
+  if (submissionLog.size > 5000) {
+    for (const [entryKey, timestamps] of submissionLog) {
+      if (timestamps.every((timestamp) => now - timestamp >= RATE_LIMIT_WINDOW_MS)) {
+        submissionLog.delete(entryKey);
+      }
+    }
+  }
+
+  return false;
+}
+
+function clientKey(request: Request): string {
+  const forwarded = request.headers.get("x-forwarded-for");
+  if (forwarded) return forwarded.split(",")[0]!.trim();
+  return request.headers.get("x-real-ip") ?? "unknown";
+}
+
 export async function POST(request: Request) {
+  if (isRateLimited(clientKey(request))) {
+    return NextResponse.json(
+      { message: "Too many submissions. Please try again in a few minutes." },
+      { status: 429 }
+    );
+  }
+
   const body = await request.json().catch(() => null);
-  const parsed = submissionSchema.safeParse(body);
+  const parsed = contactFormSchema.safeParse(body);
 
   if (!parsed.success) {
     return NextResponse.json(
       { message: "Please check the form fields and try again." },
       { status: 400 }
     );
+  }
+
+  // Honeypot tripped. Report success so bots don't learn they were filtered.
+  if (parsed.data.website) {
+    return NextResponse.json({ message: "Message received." });
+  }
+
+  if (!appsScriptUrl && !spreadsheetId) {
+    console.error(
+      "Contact submissions are not configured: set CONTACT_GOOGLE_APPS_SCRIPT_URL, or CONTACT_GOOGLE_SHEET_ID with service account credentials."
+    );
+    return NextResponse.json({ message: GENERIC_ERROR }, { status: 500 });
   }
 
   try {
@@ -54,21 +106,19 @@ export async function POST(request: Request) {
     ];
 
     if (appsScriptUrl) {
-      await appendViaAppsScript(row);
-      return NextResponse.json({ message: "Saved to Google Sheet." });
+      await appendViaAppsScript(appsScriptUrl, row);
+      return NextResponse.json({ message: "Message received." });
     }
 
     const accessToken = await getGoogleAccessToken();
-    await ensureSheetHeader(accessToken);
-    await appendSheetRow(accessToken, row);
+    await ensureSheetHeader(accessToken, spreadsheetId!);
+    await appendSheetRow(accessToken, spreadsheetId!, row);
 
-    return NextResponse.json({ message: "Saved to Google Sheet." });
+    return NextResponse.json({ message: "Message received." });
   } catch (error) {
+    // Logged server-side only; upstream errors can contain account details.
     console.error("Failed to save contact submission", error);
-    return NextResponse.json(
-      { message: "Could not save your message to the spreadsheet. Please try again." },
-      { status: 500 }
-    );
+    return NextResponse.json({ message: GENERIC_ERROR }, { status: 500 });
   }
 }
 
@@ -83,10 +133,7 @@ async function getGoogleAccessToken() {
   }
 
   const now = Math.floor(Date.now() / 1000);
-  const header = {
-    alg: "RS256",
-    typ: "JWT",
-  };
+  const header = { alg: "RS256", typ: "JWT" };
   const claim = {
     iss: serviceAccountEmail,
     scope: "https://www.googleapis.com/auth/spreadsheets",
@@ -94,6 +141,7 @@ async function getGoogleAccessToken() {
     iat: now,
     exp: now + 3600,
   };
+
   const unsignedToken = `${toBase64Url(JSON.stringify(header))}.${toBase64Url(
     JSON.stringify(claim)
   )}`;
@@ -102,9 +150,7 @@ async function getGoogleAccessToken() {
 
   const response = await fetch("https://oauth2.googleapis.com/token", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
     body: new URLSearchParams({
       grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
       assertion,
@@ -120,18 +166,11 @@ async function getGoogleAccessToken() {
   return result.access_token as string;
 }
 
-async function appendViaAppsScript(row: string[]) {
-  if (!appsScriptUrl) return;
-
-  const response = await fetch(appsScriptUrl, {
+async function appendViaAppsScript(url: string, row: string[]) {
+  const response = await fetch(url, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      headers: spreadsheetHeaders,
-      values: row,
-    }),
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ headers: spreadsheetHeaders, values: row }),
   });
 
   if (!response.ok) {
@@ -140,48 +179,36 @@ async function appendViaAppsScript(row: string[]) {
   }
 }
 
-async function ensureSheetHeader(accessToken: string) {
+async function ensureSheetHeader(accessToken: string, sheetId: string) {
   const firstRow = await googleSheetsFetch(
     accessToken,
-    `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${encodeURIComponent(
+    `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${encodeURIComponent(
       headerRange
     )}`
   );
 
-  if (Array.isArray(firstRow.values) && firstRow.values.length > 0) {
-    return;
-  }
+  if (Array.isArray(firstRow.values) && firstRow.values.length > 0) return;
 
   await googleSheetsFetch(
     accessToken,
-    `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${encodeURIComponent(
+    `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${encodeURIComponent(
       headerRange
     )}?valueInputOption=USER_ENTERED`,
-    {
-      method: "PUT",
-      body: JSON.stringify({ values: [spreadsheetHeaders] }),
-    }
+    { method: "PUT", body: JSON.stringify({ values: [spreadsheetHeaders] }) }
   );
 }
 
-async function appendSheetRow(accessToken: string, row: string[]) {
+async function appendSheetRow(accessToken: string, sheetId: string, row: string[]) {
   await googleSheetsFetch(
     accessToken,
-    `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${encodeURIComponent(
+    `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${encodeURIComponent(
       appendRange
     )}:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS`,
-    {
-      method: "POST",
-      body: JSON.stringify({ values: [row] }),
-    }
+    { method: "POST", body: JSON.stringify({ values: [row] }) }
   );
 }
 
-async function googleSheetsFetch(
-  accessToken: string,
-  url: string,
-  init: RequestInit = {}
-) {
+async function googleSheetsFetch(accessToken: string, url: string, init: RequestInit = {}) {
   const response = await fetch(url, {
     ...init,
     headers: {
@@ -190,6 +217,7 @@ async function googleSheetsFetch(
       ...init.headers,
     },
   });
+
   const result = await response.json().catch(() => null);
 
   if (!response.ok) {

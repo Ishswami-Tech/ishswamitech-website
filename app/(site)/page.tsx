@@ -92,11 +92,22 @@ export default function HomePage() {
             sizes="100vw"
             placeholder="blur"
             blurDataURL="data:image/webp;base64,UklGRkIAAABXRUJQVlA4IDYAAADwAQCdASoQAAsAA8BgJagC7AEO+51yuwAA/vhOjxjazHsxMANMIrfztD9iarjpziH37PjgAAA="
-            /* Biased right of centre: the hero is wider than the 3:2 source on
-               desktop so nothing is cropped horizontally there, but a phone
-               crops to roughly a third of the width and centring it would show
-               empty sky instead of the laptop. */
-            className="object-cover object-[62%_50%]"
+            /*
+               Contained and right-aligned from lg up. The hero is wider than
+               the 3:2 source there, so covering it would scale the render up
+               and slice the top of the arc and the base of the rock off — the
+               scene reads as cropped rather than composed. Fitting it to the
+               height keeps the whole composition and lands the laptop clear of
+               the copy; the strip of page colour it leaves on the left is
+               within a few points of the render's own backdrop and sits under
+               the heaviest part of the scrim, so no seam shows.
+
+               Below lg the hero is taller than it is wide and fitting would
+               strand the artwork in a thin band, so it covers instead —
+               positioned right of centre, because a phone crops to roughly a
+               third of the width and centring would show empty sky.
+             */
+            className="object-cover object-[62%_50%] lg:object-contain lg:object-right"
           />
 
           {/*

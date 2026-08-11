@@ -40,13 +40,25 @@ export const siteConfig = {
 export const legalEntity = {
   enterpriseName: "ISHSWAMITECH",
   displayName: "IshSwamiTech",
-  registeredEmail: "info@ishswami.in",
-  registeredPhone: "+91-7218378311",
+  registeredEmail: siteConfig.email,
+  registeredPhone: siteConfig.phone,
   publicLocation: "Pune, India",
 } as const;
 
 export const paymentCollectionDisclosure =
   "Where enabled for a client platform, online payments may be collected by IshSwamiTech as the technology and payment collection partner. The underlying service, product, booking, subscription, consultation, event, or digital deliverable is provided by the respective client, merchant, clinic, creator, educator, consultant, or service provider under its own responsibility.";
+
+export type SocialPlatform = keyof typeof siteConfig.social;
+
+/**
+ * Only platforms with a configured URL. Consumers must use this rather than
+ * reading `siteConfig.social` directly, so unconfigured profiles never render
+ * as empty-href links.
+ */
+export const activeSocialLinks: ReadonlyArray<{ platform: SocialPlatform; href: string }> =
+  (Object.entries(siteConfig.social) as Array<[SocialPlatform, string]>)
+    .filter(([, href]) => href.length > 0)
+    .map(([platform, href]) => ({ platform, href }));
 
 export function absoluteUrl(path = "") {
   return path ? `${siteConfig.url}${path}` : siteConfig.url;

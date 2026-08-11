@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import {
+  ArrowRight,
   Clock,
   Github,
   Instagram,
@@ -18,7 +19,7 @@ import { Section, SectionHeader } from "@/components/ui/section";
 import { Card, CardIcon } from "@/components/ui/card";
 import { Accordion } from "@/components/ui/accordion";
 import { PageHero } from "@/components/ui/page-hero";
-import { Reveal } from "@/components/motion/reveal";
+import { Stagger, StaggerItem } from "@/components/motion/stagger";
 import { ContactForm } from "@/components/contact/contact-form";
 import {
   activeSocialLinks,
@@ -42,6 +43,30 @@ const trustPoints = [
   { icon: MessageSquare, label: "No sales pressure" },
 ];
 
+const contactChannels = [
+  {
+    icon: Mail,
+    label: "Email us",
+    value: siteConfig.email,
+    detail: "For new projects, partnerships, and general questions",
+    href: `mailto:${siteConfig.email}`,
+  },
+  {
+    icon: Phone,
+    label: "Call us",
+    value: siteConfig.phone,
+    detail: "Mon – Fri, 10:00 AM – 7:00 PM IST",
+    href: `tel:${siteConfig.phone}`,
+  },
+  {
+    icon: MapPin,
+    label: "Office",
+    value: legalEntity.publicLocation,
+    detail: "Working with clients across India, the US, UK, and UAE",
+    href: undefined,
+  },
+];
+
 const socialMeta: Record<SocialPlatform, { label: string; icon: React.ElementType }> = {
   linkedin: { label: "LinkedIn", icon: Linkedin },
   github: { label: "GitHub", icon: Github },
@@ -58,16 +83,17 @@ export default function ContactPage() {
         eyebrow={`Contact ${siteConfig.shortName}`}
         title="Let's build something worth talking about"
         lead="Tell us about your project and we'll get back within one business day. Every conversation starts with a free 30-minute discovery — no commitment, no scripts."
+        background="aurora"
         aside={
           <ul className="flex flex-col gap-2.5">
             {trustPoints.map((point) => (
               <li
                 key={point.label}
-                className="type-body flex items-center gap-3 rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface-raised)] px-4 py-3 backdrop-blur-xl"
+                className="flex items-center gap-3 rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface-glass)] px-4 py-3 text-[var(--text-base)] text-[var(--text-secondary)] backdrop-blur-md"
               >
-                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[var(--radius-sm)] bg-[var(--surface-tint)] text-[var(--accent)]">
+                <CardIcon size="sm">
                   <point.icon className="h-4 w-4" aria-hidden />
-                </span>
+                </CardIcon>
                 {point.label}
               </li>
             ))}
@@ -77,106 +103,87 @@ export default function ContactPage() {
 
       <Section spacing="tight" className="pt-0">
         <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr]">
-          <Reveal className="space-y-4">
-            <a href={`mailto:${siteConfig.email}`} className="block">
-              <Card className="group flex items-start gap-4" interactive padding="md">
-                <CardIcon className="shrink-0">
-                  <Mail className="h-5 w-5" aria-hidden />
-                </CardIcon>
-                <div>
-                  <p className="type-eyebrow mb-1 text-[var(--text-secondary)]">Email us</p>
-                  <p className="type-card-title break-all text-[var(--foreground)] transition-colors group-hover:text-[var(--accent)]">
-                    {siteConfig.email}
-                  </p>
-                  <p className="type-body text-sm text-[var(--text-secondary)]">
-                    For new projects, partnerships, and general questions
-                  </p>
-                </div>
-              </Card>
-            </a>
+          <Stagger className="flex flex-col gap-3.5">
+            {contactChannels.map((channel) => {
+              const Wrapper = channel.href ? "a" : "div";
+              return (
+                <StaggerItem key={channel.label}>
+                  <Wrapper {...(channel.href ? { href: channel.href } : {})} className="block">
+                    <Card
+                      tone="solid"
+                      className="group flex items-start gap-4"
+                      interactive={Boolean(channel.href)}
+                      padding="md"
+                    >
+                      <CardIcon>
+                        <channel.icon className="h-5 w-5" aria-hidden />
+                      </CardIcon>
+                      <div>
+                        <p className="type-band-label mb-1">{channel.label}</p>
+                        <p className="type-card-title break-all text-[var(--foreground)] transition-colors duration-[var(--duration-fast)] group-hover:text-[var(--accent)]">
+                          {channel.value}
+                        </p>
+                        <p className="mt-0.5 text-[var(--text-base)] text-[var(--text-tertiary)]">
+                          {channel.detail}
+                        </p>
+                      </div>
+                    </Card>
+                  </Wrapper>
+                </StaggerItem>
+              );
+            })}
 
-            <a href={`tel:${siteConfig.phone}`} className="block">
-              <Card className="group flex items-start gap-4" interactive padding="md">
-                <CardIcon className="shrink-0">
-                  <Phone className="h-5 w-5" aria-hidden />
-                </CardIcon>
-                <div>
-                  <p className="type-eyebrow mb-1 text-[var(--text-secondary)]">Call us</p>
-                  <p className="type-card-title text-[var(--foreground)] transition-colors group-hover:text-[var(--accent)]">
-                    {siteConfig.phone}
-                  </p>
-                  <p className="type-body text-sm text-[var(--text-secondary)]">
-                    Mon – Fri, 10:00 AM – 7:00 PM IST
-                  </p>
-                </div>
-              </Card>
-            </a>
-
-            <Card className="flex items-start gap-4" padding="md">
-              <CardIcon className="shrink-0">
-                <MapPin className="h-5 w-5" aria-hidden />
-              </CardIcon>
-              <div>
-                <p className="type-eyebrow mb-1 text-[var(--text-secondary)]">Office</p>
-                <p className="type-card-title text-[var(--foreground)]">
-                  {legalEntity.publicLocation}
-                </p>
-                <p className="type-body text-sm text-[var(--text-secondary)]">
-                  Working with clients across India, the US, UK, and UAE
-                </p>
-              </div>
-            </Card>
-
-            <Card tone="highlight" className="relative overflow-hidden" padding="md">
-              <div
-                className="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-[var(--accent)]/15 blur-2xl"
-                aria-hidden
-              />
-              <div className="relative">
-                <CardIcon className="mb-3 h-10 w-10">
+            <StaggerItem>
+              <Card tone="highlight" padding="md">
+                <CardIcon className="mb-3">
                   <Sparkles className="h-5 w-5" aria-hidden />
                 </CardIcon>
                 <h2 className="type-card-title mb-2 text-[var(--foreground)]">
                   Prefer a real conversation?
                 </h2>
-                <p className="type-body mb-4 text-sm text-[var(--text-secondary)]">
-                  Book a free 30-minute discovery call. We&apos;ll talk scope, timeline, and
-                  whether we&apos;re a fit.
+                <p className="type-body mb-4 text-[var(--text-secondary)]">
+                  Book a free 30-minute discovery call. We&apos;ll talk scope, timeline, and whether
+                  we&apos;re a fit.
                 </p>
                 <a
                   href={`mailto:${siteConfig.email}?subject=Discovery%20call`}
-                  className="type-ui inline-flex items-center gap-2 text-[var(--accent)] transition-colors hover:text-[var(--accent-strong)]"
+                  className="type-ui group/link inline-flex items-center gap-1.5 text-[var(--accent)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--accent-strong)]"
                 >
                   Schedule a call
-                  <span aria-hidden>&rarr;</span>
+                  <ArrowRight
+                    className="h-3.5 w-3.5 transition-transform duration-[var(--duration-fast)] group-hover/link:translate-x-0.5"
+                    aria-hidden
+                  />
                 </a>
-              </div>
-            </Card>
+              </Card>
+            </StaggerItem>
 
             {activeSocialLinks.length > 0 && (
-              <div className="flex items-center gap-3 px-2 pt-2">
-                <span className="type-ui text-[var(--text-secondary)]">Or find us on:</span>
-                <ul className="flex items-center gap-2">
-                  {activeSocialLinks.map(({ platform, href }) => {
-                    const { label, icon: Icon } = socialMeta[platform];
-                    return (
-                      <li key={platform}>
-                        <a
-                          href={href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          aria-label={`${label} (opens in a new tab)`}
-                          className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--border)] bg-[var(--surface-raised)] text-[var(--text-secondary)] transition-colors hover:border-[var(--border-strong)] hover:text-[var(--accent)]"
-                        >
-                          <Icon size={16} aria-hidden />
-                        </a>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
+              <StaggerItem>
+                <div className="flex items-center gap-3 pt-1">
+                  <span className="type-band-label">Or find us on</span>
+                  <ul className="flex items-center gap-2">
+                    {activeSocialLinks.map(({ platform, href }) => {
+                      const { label, icon: Icon } = socialMeta[platform];
+                      return (
+                        <li key={platform}>
+                          <a
+                            href={href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label={`${label} (opens in a new tab)`}
+                            className="flex h-9 w-9 items-center justify-center rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface-raised)] text-[var(--text-tertiary)] transition-[color,border-color,transform] duration-[var(--duration-fast)] hover:-translate-y-0.5 hover:border-[var(--border-strong)] hover:text-[var(--accent)] motion-reduce:transform-none"
+                          >
+                            <Icon size={15} aria-hidden />
+                          </a>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              </StaggerItem>
             )}
-          </Reveal>
+          </Stagger>
 
           <div>
             <ContactForm />

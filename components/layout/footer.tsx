@@ -11,9 +11,9 @@ import {
   MapPin,
   ArrowUpRight,
 } from "lucide-react";
-import ScrollToTop from "./scroll-to-top";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
+import { AnimatedBackground } from "@/components/ui/animated-background";
 import { activeSocialLinks, legalEntity, siteConfig, type SocialPlatform } from "@/lib/site";
 
 const footerLinks = {
@@ -57,13 +57,13 @@ function LinkColumn({
 }) {
   return (
     <div>
-      <h2 className="type-band-label mb-4 text-[var(--foreground)]">{heading}</h2>
-      <ul className="space-y-3">
+      <h2 className="type-band-label mb-4">{heading}</h2>
+      <ul className="flex flex-col gap-2.5">
         {links.map((link) => (
           <li key={link.href}>
             <Link
               href={link.href}
-              className="type-body text-sm text-[var(--text-muted)] transition-colors hover:text-[var(--accent)]"
+              className="text-[var(--text-base)] text-[var(--text-secondary)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--foreground)]"
             >
               {link.label}
             </Link>
@@ -76,9 +76,10 @@ function LinkColumn({
 
 export default function Footer() {
   return (
-    <footer className="border-t border-[var(--border)] bg-[var(--surface)] backdrop-blur-xl">
-      <div className="border-b border-[var(--border)] bg-[var(--band)]">
-        <Container className="py-12">
+    <footer className="relative border-t border-[var(--border)] bg-[var(--surface)]">
+      <div className="relative overflow-hidden border-b border-[var(--border)]">
+        <AnimatedBackground variant="gradient" intensity="subtle" />
+        <Container className="relative z-10 py-14">
           <div className="grid items-center gap-8 md:grid-cols-[1.5fr_1fr]">
             <div>
               <p className="type-eyebrow mb-3">Let&apos;s build</p>
@@ -90,11 +91,11 @@ export default function Footer() {
               </p>
             </div>
             <div className="flex flex-col gap-3 sm:flex-row md:justify-end">
-              <Button href="/contact" size="md">
+              <Button href="/contact">
                 Start a project
                 <ArrowUpRight className="h-4 w-4" aria-hidden />
               </Button>
-              <Button href="/services" variant="secondary" size="md">
+              <Button href="/services" variant="secondary">
                 Browse services
               </Button>
             </div>
@@ -102,28 +103,22 @@ export default function Footer() {
         </Container>
       </div>
 
-      <Container className="py-16">
+      <Container className="py-14">
         <div className="grid grid-cols-2 gap-10 md:grid-cols-3 lg:grid-cols-6">
           <div className="col-span-2">
-            <Link href="/" className="mb-5 flex items-center gap-3">
-              <span className="flex items-center justify-center overflow-hidden rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--card)] p-1.5">
-                <Image
-                  src={siteConfig.logo}
-                  alt=""
-                  width={32}
-                  height={32}
-                  className="h-8 w-8"
-                />
+            <Link href="/" className="mb-5 flex w-fit items-center gap-2.5">
+              <span className="flex items-center justify-center overflow-hidden rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface-tint-strong)] p-1.5">
+                <Image src={siteConfig.logo} alt="" width={28} height={28} className="h-7 w-7" />
               </span>
-              <span className="font-heading text-xl font-bold gradient-text">
+              <span className="text-[var(--text-lg)] font-semibold tracking-[-0.02em] text-[var(--foreground)]">
                 {siteConfig.shortName}
               </span>
             </Link>
-            <p className="type-body mb-5 max-w-sm text-sm text-[var(--text-muted)]">
+            <p className="type-body mb-5 max-w-sm text-[var(--text-base)] text-[var(--text-secondary)]">
               {siteConfig.shortName} turns vision into digital reality with product engineering, AI
               integration, cloud delivery, and UX systems that help businesses ship faster.
             </p>
-            <p className="type-ui mb-6 text-xs uppercase tracking-[0.24em] text-[var(--accent)]">
+            <p className="type-band-label mb-6 text-[var(--accent)]">
               Web · Mobile · AI / ML · Cloud · Design
             </p>
 
@@ -137,10 +132,10 @@ export default function Footer() {
                         href={href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex h-10 w-10 items-center justify-center rounded-full border border-[var(--border)] bg-[var(--card)] text-[var(--text-muted)] transition-colors hover:border-[var(--border-strong)] hover:text-[var(--accent)]"
+                        className="flex h-9 w-9 items-center justify-center rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface-raised)] text-[var(--text-tertiary)] transition-[color,border-color,transform] duration-[var(--duration-fast)] hover:-translate-y-0.5 hover:border-[var(--border-strong)] hover:text-[var(--accent)] motion-reduce:transform-none"
                         aria-label={`${label} (opens in a new tab)`}
                       >
-                        <Icon size={16} aria-hidden />
+                        <Icon size={15} aria-hidden />
                       </a>
                     </li>
                   );
@@ -154,12 +149,12 @@ export default function Footer() {
           <LinkColumn heading="Legal" links={footerLinks.legal} />
 
           <div>
-            <h2 className="type-band-label mb-4 text-[var(--foreground)]">Get in touch</h2>
-            <ul className="space-y-3">
+            <h2 className="type-band-label mb-4">Get in touch</h2>
+            <ul className="flex flex-col gap-2.5">
               <li>
                 <a
                   href={`mailto:${siteConfig.email}`}
-                  className="type-body inline-flex items-start gap-2 text-sm text-[var(--text-muted)] transition-colors hover:text-[var(--accent)]"
+                  className="inline-flex items-start gap-2 text-[var(--text-base)] text-[var(--text-secondary)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--foreground)]"
                 >
                   <Mail className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
                   <span className="break-all">{siteConfig.email}</span>
@@ -168,13 +163,13 @@ export default function Footer() {
               <li>
                 <a
                   href={`tel:${siteConfig.phone}`}
-                  className="type-body inline-flex items-start gap-2 text-sm text-[var(--text-muted)] transition-colors hover:text-[var(--accent)]"
+                  className="inline-flex items-start gap-2 text-[var(--text-base)] text-[var(--text-secondary)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--foreground)]"
                 >
                   <Phone className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
                   {siteConfig.phone}
                 </a>
               </li>
-              <li className="type-body inline-flex items-start gap-2 text-sm text-[var(--text-muted)]">
+              <li className="inline-flex items-start gap-2 text-[var(--text-base)] text-[var(--text-secondary)]">
                 <MapPin className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
                 {legalEntity.publicLocation}
               </li>
@@ -182,17 +177,15 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col items-start justify-between gap-4 border-t border-[var(--border)] pt-8 md:flex-row md:items-center">
-          <p className="type-body text-sm text-[var(--text-muted)]">
+        <div className="mt-12 flex flex-col items-start justify-between gap-3 border-t border-[var(--border)] pt-7 md:flex-row md:items-center">
+          <p className="text-[var(--text-base)] text-[var(--text-tertiary)]">
             © {new Date().getFullYear()} {siteConfig.name}. All rights reserved.
           </p>
-          <p className="type-body text-xs text-[var(--text-subtle)]">
+          <p className="text-[var(--text-xs)] text-[var(--text-tertiary)]">
             Crafted for founders, product teams, and ambitious builders.
           </p>
         </div>
       </Container>
-
-      <ScrollToTop />
     </footer>
   );
 }

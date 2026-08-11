@@ -63,9 +63,9 @@ export default function ContactPage() {
             {trustPoints.map((point) => (
               <li
                 key={point.label}
-                className="type-body flex items-center gap-3 rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--card)] px-4 py-3 backdrop-blur-xl"
+                className="type-body flex items-center gap-3 rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface-raised)] px-4 py-3 backdrop-blur-xl"
               >
-                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[var(--radius-sm)] bg-[var(--card-soft)] text-[var(--accent)]">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[var(--radius-sm)] bg-[var(--surface-tint)] text-[var(--accent)]">
                   <point.icon className="h-4 w-4" aria-hidden />
                 </span>
                 {point.label}
@@ -84,11 +84,11 @@ export default function ContactPage() {
                   <Mail className="h-5 w-5" aria-hidden />
                 </CardIcon>
                 <div>
-                  <p className="type-eyebrow mb-1 text-[var(--text-muted)]">Email us</p>
+                  <p className="type-eyebrow mb-1 text-[var(--text-secondary)]">Email us</p>
                   <p className="type-card-title break-all text-[var(--foreground)] transition-colors group-hover:text-[var(--accent)]">
                     {siteConfig.email}
                   </p>
-                  <p className="type-body text-sm text-[var(--text-muted)]">
+                  <p className="type-body text-sm text-[var(--text-secondary)]">
                     For new projects, partnerships, and general questions
                   </p>
                 </div>
@@ -101,11 +101,11 @@ export default function ContactPage() {
                   <Phone className="h-5 w-5" aria-hidden />
                 </CardIcon>
                 <div>
-                  <p className="type-eyebrow mb-1 text-[var(--text-muted)]">Call us</p>
+                  <p className="type-eyebrow mb-1 text-[var(--text-secondary)]">Call us</p>
                   <p className="type-card-title text-[var(--foreground)] transition-colors group-hover:text-[var(--accent)]">
                     {siteConfig.phone}
                   </p>
-                  <p className="type-body text-sm text-[var(--text-muted)]">
+                  <p className="type-body text-sm text-[var(--text-secondary)]">
                     Mon – Fri, 10:00 AM – 7:00 PM IST
                   </p>
                 </div>
@@ -117,11 +117,11 @@ export default function ContactPage() {
                 <MapPin className="h-5 w-5" aria-hidden />
               </CardIcon>
               <div>
-                <p className="type-eyebrow mb-1 text-[var(--text-muted)]">Office</p>
+                <p className="type-eyebrow mb-1 text-[var(--text-secondary)]">Office</p>
                 <p className="type-card-title text-[var(--foreground)]">
                   {legalEntity.publicLocation}
                 </p>
-                <p className="type-body text-sm text-[var(--text-muted)]">
+                <p className="type-body text-sm text-[var(--text-secondary)]">
                   Working with clients across India, the US, UK, and UAE
                 </p>
               </div>
@@ -139,13 +139,13 @@ export default function ContactPage() {
                 <h2 className="type-card-title mb-2 text-[var(--foreground)]">
                   Prefer a real conversation?
                 </h2>
-                <p className="type-body mb-4 text-sm text-[var(--text-muted)]">
+                <p className="type-body mb-4 text-sm text-[var(--text-secondary)]">
                   Book a free 30-minute discovery call. We&apos;ll talk scope, timeline, and
                   whether we&apos;re a fit.
                 </p>
                 <a
                   href={`mailto:${siteConfig.email}?subject=Discovery%20call`}
-                  className="type-ui inline-flex items-center gap-2 text-[var(--accent)] transition-colors hover:text-[var(--link-emphasis)]"
+                  className="type-ui inline-flex items-center gap-2 text-[var(--accent)] transition-colors hover:text-[var(--accent-strong)]"
                 >
                   Schedule a call
                   <span aria-hidden>&rarr;</span>
@@ -155,7 +155,7 @@ export default function ContactPage() {
 
             {activeSocialLinks.length > 0 && (
               <div className="flex items-center gap-3 px-2 pt-2">
-                <span className="type-ui text-[var(--text-muted)]">Or find us on:</span>
+                <span className="type-ui text-[var(--text-secondary)]">Or find us on:</span>
                 <ul className="flex items-center gap-2">
                   {activeSocialLinks.map(({ platform, href }) => {
                     const { label, icon: Icon } = socialMeta[platform];
@@ -166,7 +166,7 @@ export default function ContactPage() {
                           target="_blank"
                           rel="noopener noreferrer"
                           aria-label={`${label} (opens in a new tab)`}
-                          className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--border)] bg-[var(--card)] text-[var(--text-muted)] transition-colors hover:border-[var(--border-strong)] hover:text-[var(--accent)]"
+                          className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--border)] bg-[var(--surface-raised)] text-[var(--text-secondary)] transition-colors hover:border-[var(--border-strong)] hover:text-[var(--accent)]"
                         >
                           <Icon size={16} aria-hidden />
                         </a>

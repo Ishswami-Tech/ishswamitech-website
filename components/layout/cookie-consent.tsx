@@ -2,8 +2,10 @@
 
 import { useState, useSyncExternalStore } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import { Cookie } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { transition } from "@/lib/motion";
 
 const STORAGE_KEY = "cookie-consent";
 const ACCEPTED = "accepted";
@@ -48,46 +50,44 @@ export default function CookieConsent() {
     <AnimatePresence>
       {isVisible && (
         <motion.div
-          initial={{ y: 100, opacity: 0 }}
+          initial={{ y: 24, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          exit={{ y: 100, opacity: 0 }}
+          exit={{ y: 24, opacity: 0 }}
+          transition={transition.normal}
           className="fixed inset-x-0 bottom-0 z-[60] p-4 md:p-6"
           role="dialog"
           aria-labelledby="cookie-consent-title"
           aria-describedby="cookie-consent-desc"
         >
           <div className="container container--narrow">
-            <div className="glass flex flex-col items-start gap-4 rounded-[var(--radius-xl)] p-6 md:flex-row md:items-center">
-              <div className="flex flex-1 items-start gap-3">
-                <span className="shrink-0 rounded-[var(--radius-sm)] bg-[var(--card-soft)] p-2 text-[var(--accent)]">
-                  <Cookie className="h-5 w-5" aria-hidden />
-                </span>
-                <div>
-                  <p
-                    id="cookie-consent-title"
-                    className="mb-1 font-heading font-semibold text-[var(--foreground)]"
+            <div className="glass-strong flex flex-col items-start gap-4 rounded-[var(--radius-2xl)] p-5 md:flex-row md:items-center md:gap-5">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface-tint-strong)] text-[var(--accent)]">
+                <Cookie className="h-5 w-5" aria-hidden />
+              </span>
+              <div className="flex-1">
+                <p
+                  id="cookie-consent-title"
+                  className="type-card-title mb-1 text-[var(--foreground)]"
+                >
+                  We use cookies
+                </p>
+                <p
+                  id="cookie-consent-desc"
+                  className="text-[var(--text-base)] text-[var(--text-secondary)]"
+                >
+                  We use cookies to enhance your experience and analyse site traffic. By selecting
+                  Accept, you consent to our use of cookies.{" "}
+                  <Link
+                    href="/privacy-policy#cookies"
+                    className="text-[var(--accent)] underline-offset-2 hover:underline"
                   >
-                    We use cookies
-                  </p>
-                  <p id="cookie-consent-desc" className="text-sm text-[var(--text-muted)]">
-                    We use cookies to enhance your experience and analyse site traffic. By
-                    selecting Accept, you consent to our use of cookies.{" "}
-                    <Link
-                      href="/privacy-policy#cookies"
-                      className="text-[var(--accent)] hover:underline"
-                    >
-                      Learn more
-                    </Link>
-                  </p>
-                </div>
+                    Learn more
+                  </Link>
+                </p>
               </div>
-              <button
-                type="button"
-                onClick={accept}
-                className="shrink-0 rounded-[var(--radius-sm)] bg-[var(--accent)] px-5 py-2.5 text-sm font-semibold text-[var(--button-foreground)] transition-all hover:-translate-y-0.5 hover:shadow-[var(--button-shadow)] motion-reduce:hover:translate-y-0"
-              >
+              <Button type="button" size="sm" onClick={accept} className="shrink-0">
                 Accept
-              </button>
+              </Button>
             </div>
           </div>
         </motion.div>

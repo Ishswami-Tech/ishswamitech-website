@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import {
   Globe,
   Smartphone,
@@ -10,7 +9,6 @@ import {
   ArrowRight,
   ArrowUpRight,
   Check,
-  Sparkles,
   ShieldCheck,
   Star,
   Headphones,
@@ -31,9 +29,13 @@ import {
 import { Container } from "@/components/ui/container";
 import { Section, SectionHeader } from "@/components/ui/section";
 import { Card, CardIcon } from "@/components/ui/card";
+import { SpotlightCard } from "@/components/ui/spotlight-card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { Badge, StatusDot } from "@/components/ui/badge";
+import { AnimatedBackground } from "@/components/ui/animated-background";
+import { CtaBand } from "@/components/ui/cta-band";
 import { Reveal } from "@/components/motion/reveal";
+import { Stagger, StaggerItem } from "@/components/motion/stagger";
 import AnimatedCounter from "@/components/ui/animated-counter";
 import { absoluteUrl, siteConfig } from "@/lib/site";
 
@@ -74,106 +76,91 @@ export default function HomePage() {
       />
 
       {/* ---------------------------------------------------------------- HERO */}
-      <section className="relative flex min-h-[92svh] items-center overflow-hidden">
-        <Image
-          src="/Assets/hero_img.jpg"
-          alt=""
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover"
-        />
-        <div className="absolute inset-0 bg-[#040814]/85" aria-hidden />
-        <div
-          className="absolute inset-0 bg-gradient-to-r from-[#040814] via-[#040814]/75 to-[#040814]/25"
-          aria-hidden
-        />
-        <div
-          className="absolute inset-0 bg-[radial-gradient(circle_at_18%_28%,rgba(61,217,235,0.16),transparent_46%),radial-gradient(circle_at_86%_72%,rgba(167,139,250,0.13),transparent_52%)]"
-          aria-hidden
-        />
+      <section className="relative isolate flex min-h-[92svh] items-center overflow-hidden">
+        <AnimatedBackground variant="aurora" />
 
-        <Container className="relative z-10 pb-20 pt-32">
-          <div className="grid items-center gap-14 lg:grid-cols-[1.15fr_0.85fr]">
-            <Reveal immediate className="max-w-2xl">
-              <p className="type-ui mb-7 inline-flex items-center gap-2.5 rounded-full border border-white/15 bg-white/[0.06] px-4 py-2 text-[#d7e5f6] backdrop-blur-xl">
-                <span className="relative flex h-2 w-2 shrink-0" aria-hidden>
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--accent)] opacity-60" />
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--accent)]" />
-                </span>
-                Accepting new projects · Senior-led delivery
-              </p>
+        <Container className="relative z-10 pb-24 pt-36">
+          <div className="grid items-center gap-16 lg:grid-cols-[1.1fr_0.9fr]">
+            <div className="max-w-2xl">
+              <Reveal immediate variant="fade">
+                <p className="type-ui mb-8 inline-flex items-center gap-2.5 rounded-[var(--radius-pill)] border border-[var(--border)] bg-[var(--surface-glass)] px-3.5 py-1.5 text-[var(--text-secondary)] backdrop-blur-md">
+                  <StatusDot />
+                  Accepting new projects · Senior-led delivery
+                </p>
+              </Reveal>
 
-              <h1 className="type-hero mb-6 text-white">
-                Software that{" "}
-                <span className="gradient-text">looks sharp, loads fast,</span> and{" "}
-                <span className="gradient-text">earns its keep</span>.
-              </h1>
+              <Reveal immediate delay={0.06}>
+                <h1 className="type-hero mb-6 text-[var(--foreground)]">
+                  Software that <span className="gradient-text">looks sharp, loads fast,</span> and
+                  earns its keep.
+                </h1>
+              </Reveal>
 
-              <p className="type-lead mb-10 max-w-xl text-[#c4d4e8]">
-                {siteConfig.shortName} designs and builds websites, SaaS platforms, mobile apps, AI
-                features, and cloud systems for ambitious founders and growing teams — with the
-                engineering depth to ship and the product taste to make it feel inevitable.
-              </p>
+              <Reveal immediate delay={0.12}>
+                <p className="type-lead mb-10 max-w-xl">
+                  {siteConfig.shortName} designs and builds websites, SaaS platforms, mobile apps,
+                  AI features, and cloud systems for ambitious founders and growing teams — with
+                  the engineering depth to ship and the product taste to make it feel inevitable.
+                </p>
+              </Reveal>
 
-              <div className="mb-12 flex flex-col gap-3 sm:flex-row">
-                <Button href="/contact">
-                  Start your project
-                  <ArrowUpRight className="h-4 w-4" aria-hidden />
-                </Button>
-                <Button href="/services" variant="ghost">
-                  Explore services
-                </Button>
-              </div>
+              <Reveal immediate delay={0.18}>
+                <div className="mb-12 flex flex-col gap-3 sm:flex-row">
+                  <Button href="/contact" size="lg">
+                    Start your project
+                    <ArrowUpRight className="h-4 w-4" aria-hidden />
+                  </Button>
+                  <Button href="/services" variant="ghost" size="lg">
+                    Explore services
+                  </Button>
+                </div>
+              </Reveal>
 
-              <ul className="grid max-w-xl gap-3 sm:grid-cols-3">
+              <Stagger as="ul" immediate delay={0.24} className="grid max-w-xl gap-2.5 sm:grid-cols-3">
                 {heroHighlights.map((item) => (
-                  <li
+                  <StaggerItem
+                    as="li"
                     key={item}
-                    className="type-ui flex items-start gap-2 rounded-[var(--radius-lg)] border border-white/10 bg-white/[0.04] px-4 py-3 text-[#d7e5f6] backdrop-blur-xl"
+                    className="type-ui flex items-start gap-2 rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface-glass)] px-3.5 py-2.5 text-[var(--text-secondary)] backdrop-blur-md"
                   >
-                    <Sparkles className="mt-0.5 h-4 w-4 shrink-0 text-[var(--accent-strong)]" aria-hidden />
+                    <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[var(--accent)]" aria-hidden />
                     <span>{item}</span>
-                  </li>
+                  </StaggerItem>
                 ))}
-              </ul>
-            </Reveal>
+              </Stagger>
+            </div>
 
-            <Reveal immediate index={2} className="relative">
-              <div
-                className="absolute -inset-6 rounded-[2.5rem] bg-gradient-to-br from-[var(--accent)]/20 via-transparent to-[var(--secondary)]/20 blur-2xl"
-                aria-hidden
-              />
-              <div className="relative rounded-[var(--radius-2xl)] border border-white/15 bg-[#071321]/75 p-7 backdrop-blur-2xl md:p-8">
+            <Reveal immediate variant="scale" delay={0.2}>
+              <SpotlightCard className="p-6 md:p-8">
                 <div className="mb-6 flex items-start justify-between gap-4">
                   <div>
-                    <p className="type-eyebrow text-[var(--accent-strong)]">How we engage</p>
-                    <p className="type-panel-title mt-2 text-white">
+                    <p className="type-eyebrow">How we engage</p>
+                    <p className="type-panel-title mt-2 text-[var(--foreground)]">
                       Premium execution, zero agency clutter
                     </p>
                   </div>
-                  <Badge tone="accent" className="shrink-0 border-[#ffb547]/30 bg-[#ffb547]/10 text-[#ffd79b]">
+                  <Badge tone="gradient" className="shrink-0">
                     Senior-led
                   </Badge>
                 </div>
 
-                <ul className="space-y-3">
+                <ul className="flex flex-col gap-2.5">
                   {engagementIncludes.map((item) => (
                     <li
                       key={item}
-                      className="type-body flex items-start gap-3 rounded-[var(--radius-lg)] border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-[#d5e3f2]"
+                      className="flex items-start gap-3 rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface-raised)] px-3.5 py-2.5 text-[var(--text-base)] text-[var(--text-secondary)]"
                     >
-                      <Check className="mt-0.5 h-4 w-4 shrink-0 text-[var(--accent)]" aria-hidden />
+                      <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[var(--accent)]" aria-hidden />
                       <span>{item}</span>
                     </li>
                   ))}
                 </ul>
 
-                <p className="type-body mt-6 border-t border-white/10 pt-5 text-sm text-[#9db4ca]">
+                <p className="mt-6 border-t border-[var(--border)] pt-5 text-[var(--text-base)] text-[var(--text-tertiary)]">
                   Every engagement starts with a written scope and a fixed-price quote before any
                   code is written.
                 </p>
-              </div>
+              </SpotlightCard>
             </Reveal>
           </div>
         </Container>
@@ -182,20 +169,29 @@ export default function HomePage() {
       {/* ------------------------------------------------------- TECH MARQUEE */}
       <section
         aria-labelledby="tech-marquee-heading"
-        className="site-section--tight overflow-hidden border-y border-[var(--border)] bg-[var(--band)] backdrop-blur-xl"
+        className="site-section--tight relative overflow-hidden border-y border-[var(--border)] bg-[var(--surface)]"
       >
         <h2 id="tech-marquee-heading" className="type-band-label mb-6 text-center">
           Technologies we engineer with
         </h2>
+        {/* Edge fade so items enter and leave rather than clipping at the border. */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-[var(--surface)] to-transparent"
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-[var(--surface)] to-transparent"
+        />
         <div className="marquee gap-12">
           {[0, 1].map((copy) => (
             <ul key={copy} className="flex shrink-0 gap-12 pr-12" aria-hidden={copy === 1}>
               {marqueeTech.map((tech) => (
                 <li
                   key={tech.name}
-                  className="type-tech-row flex items-center gap-2 whitespace-nowrap text-[var(--text-muted)]"
+                  className="type-tech-row flex items-center gap-2 whitespace-nowrap text-[var(--text-tertiary)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--foreground)]"
                 >
-                  <tech.icon className="h-5 w-5 shrink-0" aria-hidden />
+                  <tech.icon className="h-4 w-4 shrink-0" aria-hidden />
                   {tech.name}
                 </li>
               ))}
@@ -217,30 +213,22 @@ export default function HomePage() {
           }
         />
 
-        <div className="grid gap-6 md:grid-cols-3">
+        <Stagger className="grid gap-5 md:grid-cols-3">
           {differentiators.map((item, index) => (
-            <Reveal key={item.title} index={index}>
-              <Card className="group relative h-full overflow-hidden" padding="md">
-                <div
-                  className="absolute -right-12 -top-12 h-32 w-32 rounded-full bg-[var(--accent)]/10 opacity-0 blur-2xl transition-opacity group-hover:opacity-100"
-                  aria-hidden
-                />
-                <div className="relative">
-                  <div className="mb-5 flex items-center justify-between">
-                    <CardIcon>
-                      <item.icon className="h-5 w-5" aria-hidden />
-                    </CardIcon>
-                    <span className="type-index text-[var(--secondary)]">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
-                  </div>
-                  <h3 className="type-block-title mb-3 text-[var(--foreground)]">{item.title}</h3>
-                  <p className="type-body text-[var(--text-muted)]">{item.description}</p>
+            <StaggerItem key={item.title}>
+              <SpotlightCard className="h-full p-6">
+                <div className="mb-5 flex items-center justify-between">
+                  <CardIcon>
+                    <item.icon className="h-5 w-5" aria-hidden />
+                  </CardIcon>
+                  <span className="type-index">{String(index + 1).padStart(2, "0")}</span>
                 </div>
-              </Card>
-            </Reveal>
+                <h3 className="type-block-title mb-2.5 text-[var(--foreground)]">{item.title}</h3>
+                <p className="type-body text-[var(--text-secondary)]">{item.description}</p>
+              </SpotlightCard>
+            </StaggerItem>
           ))}
-        </div>
+        </Stagger>
       </Section>
 
       {/* ------------------------------------------------------------ SERVICES */}
@@ -251,32 +239,36 @@ export default function HomePage() {
           aside={
             <Link
               href="/services"
-              className="type-ui inline-flex items-center gap-2 text-[var(--accent)] transition-colors hover:text-[var(--link-emphasis)]"
+              className="type-ui group inline-flex items-center gap-1.5 text-[var(--accent)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--accent-strong)]"
             >
               View all services
-              <ArrowUpRight className="h-4 w-4" aria-hidden />
+              <ArrowUpRight
+                className="h-4 w-4 transition-transform duration-[var(--duration-fast)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                aria-hidden
+              />
             </Link>
           }
         />
 
-        <ul className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {services.slice(0, 6).map((service, index) => {
+        <Stagger as="ul" className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {services.slice(0, 6).map((service) => {
             const Icon = serviceIcons[service.icon] ?? Globe;
             return (
-              <Reveal as="li" key={service.id} index={index} className="h-full">
+              <StaggerItem as="li" key={service.id} className="h-full">
                 <Link href={`/services#${service.slug}`} className="block h-full">
-                  <Card className="group relative flex h-full flex-col overflow-hidden" interactive padding="md">
-                    <div
-                      className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[var(--accent)]/40 to-transparent opacity-0 transition-opacity group-hover:opacity-100"
-                      aria-hidden
-                    />
+                  <Card
+                    interactive
+                    padding="md"
+                    className="group/card flex h-full flex-col"
+                    tone="solid"
+                  >
                     <CardIcon tint={service.color} className="mb-5">
-                      <Icon className="h-6 w-6" aria-hidden />
+                      <Icon className="h-5 w-5" aria-hidden />
                     </CardIcon>
-                    <h3 className="type-card-title mb-2 text-[var(--foreground)] transition-colors group-hover:text-[var(--accent)]">
+                    <h3 className="type-card-title mb-2 text-[var(--foreground)] transition-colors duration-[var(--duration-fast)] group-hover/card:text-[var(--accent)]">
                       {service.title}
                     </h3>
-                    <p className="type-body mb-5 flex-1 text-[var(--text-muted)]">
+                    <p className="type-body mb-5 flex-1 text-[var(--text-secondary)]">
                       {service.shortDesc}
                     </p>
                     <div className="mb-4 flex flex-wrap gap-1.5">
@@ -287,20 +279,20 @@ export default function HomePage() {
                     <span className="type-ui flex items-center gap-1 text-[var(--accent)]">
                       Explore
                       <ArrowRight
-                        className="h-4 w-4 transition-transform group-hover:translate-x-1"
+                        className="h-4 w-4 transition-transform duration-[var(--duration-fast)] group-hover/card:translate-x-1"
                         aria-hidden
                       />
                     </span>
                   </Card>
                 </Link>
-              </Reveal>
+              </StaggerItem>
             );
           })}
-        </ul>
+        </Stagger>
       </Section>
 
       {/* ------------------------------------------------------------- PROCESS */}
-      <Section tone="band">
+      <Section tone="band" className="relative overflow-hidden">
         <SectionHeader
           align="center"
           eyebrow="Proven process"
@@ -308,41 +300,43 @@ export default function HomePage() {
           lead="No mystery, no surprises. Aligned goals, a concrete plan, iterative build cycles, and a launch checklist that covers performance and discovery."
         />
 
-        <ol className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          {deliverySteps.map((step, index) => (
-            <Reveal as="li" key={step.title} index={index}>
-              <Card className="h-full" padding="md">
+        <Stagger as="ol" className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+          {deliverySteps.map((step) => (
+            <StaggerItem as="li" key={step.title}>
+              <Card tone="solid" padding="md" className="h-full">
                 <div className="mb-5 flex items-center justify-between">
                   <CardIcon>
                     <step.icon className="h-5 w-5" aria-hidden />
                   </CardIcon>
-                  <span className="type-index text-[var(--secondary)]">{step.phase}</span>
+                  <span className="type-index">{step.phase}</span>
                 </div>
-                <h3 className="type-block-title mb-3 text-[var(--foreground)]">{step.title}</h3>
-                <p className="type-body text-[var(--text-muted)]">{step.detail}</p>
+                <h3 className="type-block-title mb-2.5 text-[var(--foreground)]">{step.title}</h3>
+                <p className="type-body text-[var(--text-secondary)]">{step.detail}</p>
               </Card>
-            </Reveal>
+            </StaggerItem>
           ))}
-        </ol>
+        </Stagger>
       </Section>
 
       {/* --------------------------------------------------------- STATS STRIP */}
-      <section className="site-section--tight border-y border-[var(--border)] bg-[var(--elevated)]">
+      <section className="site-section--tight border-b border-[var(--border)] bg-[var(--surface)]">
         <Container>
-          <dl className="grid grid-cols-2 gap-8 text-center md:grid-cols-4">
-            {companyStats.map((stat, index) => (
-              <Reveal key={stat.label} index={index}>
-                <dd className="type-stat mb-1 text-3xl text-[var(--stat-number)] md:text-5xl">
-                  {stat.count !== undefined ? (
-                    <AnimatedCounter end={stat.count} suffix={stat.suffix} />
-                  ) : (
-                    stat.value
-                  )}
+          <Stagger as="dl" className="grid grid-cols-2 gap-8 text-center md:grid-cols-4">
+            {companyStats.map((stat) => (
+              <StaggerItem key={stat.label}>
+                <dd className="type-stat mb-1.5 text-4xl md:text-5xl">
+                  <span className="gradient-text">
+                    {stat.count !== undefined ? (
+                      <AnimatedCounter end={stat.count} suffix={stat.suffix} />
+                    ) : (
+                      stat.value
+                    )}
+                  </span>
                 </dd>
                 <dt className="type-stat-label">{stat.label}</dt>
-              </Reveal>
+              </StaggerItem>
             ))}
-          </dl>
+          </Stagger>
         </Container>
       </section>
 
@@ -354,15 +348,15 @@ export default function HomePage() {
           title="Domain depth across the products people actually use"
         />
 
-        <ul className="mx-auto flex max-w-4xl flex-wrap justify-center gap-3">
-          {industries.map((industry, index) => (
-            <Reveal as="li" key={industry} index={index}>
-              <span className="type-ui block rounded-full border border-[var(--border)] bg-[var(--card)] px-5 py-2.5 text-[var(--foreground)] backdrop-blur-xl transition-colors hover:border-[var(--border-strong)] hover:text-[var(--accent)]">
+        <Stagger as="ul" gap={0.035} className="mx-auto flex max-w-4xl flex-wrap justify-center gap-2.5">
+          {industries.map((industry) => (
+            <StaggerItem as="li" key={industry} variant="scale">
+              <span className="type-ui block rounded-[var(--radius-pill)] border border-[var(--border)] bg-[var(--surface-raised)] px-4 py-2 text-[var(--text-secondary)] transition-[color,border-color,transform] duration-[var(--duration-fast)] hover:-translate-y-0.5 hover:border-[var(--border-strong)] hover:text-[var(--foreground)] motion-reduce:transform-none">
                 {industry}
               </span>
-            </Reveal>
+            </StaggerItem>
           ))}
-        </ul>
+        </Stagger>
       </Section>
 
       {/* -------------------------------------------------------- TESTIMONIALS */}
@@ -374,38 +368,38 @@ export default function HomePage() {
           lead="Recurring themes from the kind of work we focus on: clarity, speed, and practical execution."
         />
 
-        <ul className="grid gap-6 lg:grid-cols-3">
-          {testimonials.slice(0, 3).map((testimonial, index) => (
-            <Reveal as="li" key={testimonial.id} index={index} className="h-full">
-              <figure className="glass flex h-full flex-col rounded-[var(--radius-2xl)] p-6 md:p-7">
+        <Stagger as="ul" className="grid gap-5 lg:grid-cols-3">
+          {testimonials.slice(0, 3).map((testimonial) => (
+            <StaggerItem as="li" key={testimonial.id} className="h-full">
+              <figure className="glass flex h-full flex-col rounded-[var(--radius-2xl)] p-6">
                 <div
-                  className="mb-4 flex items-center gap-1"
+                  className="mb-4 flex items-center gap-0.5"
                   role="img"
                   aria-label={`${testimonial.rating} out of 5 stars`}
                 >
                   {Array.from({ length: testimonial.rating }).map((_, starIndex) => (
                     <Star
                       key={starIndex}
-                      className="h-4 w-4 fill-[var(--warning)] text-[var(--warning)]"
+                      className="h-3.5 w-3.5 fill-[var(--warning)] text-[var(--warning)]"
                       aria-hidden
                     />
                   ))}
                 </div>
-                <blockquote className="type-body mb-6 flex-1 text-[var(--foreground)]">
+                <blockquote className="type-quote mb-6 flex-1 text-[var(--foreground)]">
                   &ldquo;{testimonial.quote}&rdquo;
                 </blockquote>
                 <figcaption className="border-t border-[var(--border)] pt-5">
-                  <p className="type-card-title text-base text-[var(--foreground)]">
+                  <p className="type-card-title text-[var(--text-md)] text-[var(--foreground)]">
                     {testimonial.name}
                   </p>
-                  <p className="type-body text-sm text-[var(--text-muted)]">
+                  <p className="text-[var(--text-base)] text-[var(--text-tertiary)]">
                     {testimonial.role}, {testimonial.company}
                   </p>
                 </figcaption>
               </figure>
-            </Reveal>
+            </StaggerItem>
           ))}
-        </ul>
+        </Stagger>
       </Section>
 
       {/* ---------------------------------------------------------- TECH STACK */}
@@ -417,75 +411,33 @@ export default function HomePage() {
           lead="We pick the right tool for the job, not the trendy one — production-grade frameworks your team can actually hire for."
         />
 
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
-          {stackGroups.map((group, index) => (
-            <Reveal key={group.label} index={index}>
-              <Card className="h-full" padding="sm">
+        <Stagger className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
+          {stackGroups.map((group) => (
+            <StaggerItem key={group.label}>
+              <Card tone="solid" padding="sm" className="h-full">
                 <h3 className="type-band-label mb-3 text-[var(--accent)]">{group.label}</h3>
                 <ul className="flex flex-col gap-1.5">
                   {group.techs.map((tech) => (
-                    <li key={tech} className="type-body text-sm text-[var(--text-muted)]">
+                    <li key={tech} className="text-[var(--text-base)] text-[var(--text-secondary)]">
                       {tech}
                     </li>
                   ))}
                 </ul>
               </Card>
-            </Reveal>
+            </StaggerItem>
           ))}
-        </div>
+        </Stagger>
       </Section>
 
       {/* ------------------------------------------------------------ CTA BAND */}
-      <Section>
-        <Reveal>
-          <Card tone="highlight" padding="lg" className="relative overflow-hidden">
-            <div
-              className="absolute -right-20 -top-20 h-60 w-60 rounded-full bg-[var(--accent)]/15 blur-3xl"
-              aria-hidden
-            />
-            <div
-              className="absolute -bottom-20 -left-20 h-60 w-60 rounded-full bg-[var(--secondary)]/15 blur-3xl"
-              aria-hidden
-            />
-
-            <div className="relative grid gap-10 lg:grid-cols-[1.4fr_1fr] lg:items-center">
-              <div>
-                <p className="type-eyebrow mb-4">Let&apos;s build</p>
-                <h2 className="type-section-title mb-4 text-[var(--foreground)]">
-                  Ready to turn your vision into a product that ships?
-                </h2>
-                <p className="type-lead mb-8 max-w-xl">
-                  Tell us about your project in a 30-minute discovery call. You&apos;ll walk away
-                  with a concrete scope, a timeline, and an honest sense of what it&apos;ll take.
-                </p>
-                <div className="flex flex-col gap-3 sm:flex-row">
-                  <Button href="/contact">
-                    Book a discovery call
-                    <ArrowUpRight className="h-4 w-4" aria-hidden />
-                  </Button>
-                  <Button href="/pricing" variant="secondary">
-                    See pricing
-                  </Button>
-                </div>
-              </div>
-
-              <ul className="grid gap-3">
-                {ctaAssurances.map(({ icon: Icon, text }) => (
-                  <li
-                    key={text}
-                    className="type-body flex items-center gap-3 rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface)] px-4 py-3 backdrop-blur-xl"
-                  >
-                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[var(--radius-sm)] bg-[var(--card-soft)] text-[var(--accent)]">
-                      <Icon className="h-4 w-4" aria-hidden />
-                    </span>
-                    {text}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </Card>
-        </Reveal>
-      </Section>
+      <CtaBand
+        eyebrow="Let's build"
+        title="Ready to turn your vision into a product that ships?"
+        lead="Tell us about your project in a 30-minute discovery call. You'll walk away with a concrete scope, a timeline, and an honest sense of what it'll take."
+        primary={{ label: "Book a discovery call", href: "/contact" }}
+        secondary={{ label: "See pricing", href: "/pricing" }}
+        assurances={ctaAssurances}
+      />
     </>
   );
 }

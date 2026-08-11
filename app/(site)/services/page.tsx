@@ -10,7 +10,6 @@ import {
   Shield,
   ShoppingCart,
   Building2,
-  ArrowRight,
   ArrowUpRight,
   Search,
   Layout,
@@ -19,6 +18,9 @@ import {
   Rocket,
   Headphones,
   Check,
+  MessageSquare,
+  FileCheck2,
+  ShieldCheck,
 } from "lucide-react";
 import { services } from "@/data/services";
 import { Container } from "@/components/ui/container";
@@ -27,7 +29,9 @@ import { Card, CardIcon } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { PageHero } from "@/components/ui/page-hero";
+import { CtaBand } from "@/components/ui/cta-band";
 import { Reveal } from "@/components/motion/reveal";
+import { Stagger, StaggerItem } from "@/components/motion/stagger";
 import { createPageMetadata, siteConfig } from "@/lib/site";
 
 export const metadata: Metadata = createPageMetadata({
@@ -62,9 +66,9 @@ const processSteps = [
 ];
 
 const consultationPoints = [
-  "No sales pressure — just useful advice",
-  "Fixed-scope quotes if we're a fit",
-  "NDA-protected from the first email",
+  { icon: MessageSquare, text: "No sales pressure — just useful advice" },
+  { icon: FileCheck2, text: "Fixed-scope quotes if we're a fit" },
+  { icon: ShieldCheck, text: "NDA-protected from the first email" },
 ];
 
 export default function ServicesPage() {
@@ -76,11 +80,9 @@ export default function ServicesPage() {
         title="Software services, end-to-end and under one roof"
         lead="From idea to launch — and the long tail of iteration after. We design, engineer, deploy, and maintain modern digital products across every major platform."
         aside={
-          <Card padding="md">
-            <p className="type-eyebrow mb-3 text-[var(--secondary)]">
-              {services.length} capabilities
-            </p>
-            <p className="type-body text-[var(--foreground)]">
+          <Card tone="highlight" padding="md">
+            <p className="type-eyebrow mb-3">{services.length} capabilities</p>
+            <p className="type-body text-[var(--text-secondary)]">
               One team, {services.length} core capabilities. No outsourcing, no handoffs, no
               &ldquo;that&apos;s not our scope&rdquo; — just senior people who can take your project
               from zero to production.
@@ -90,19 +92,19 @@ export default function ServicesPage() {
       />
 
       {/* Jump nav */}
-      <section className="border-y border-[var(--border)] bg-[var(--band)]">
+      <section className="sticky top-[var(--navbar-height)] z-30 border-y border-[var(--border)] bg-[var(--surface-glass-strong)] backdrop-blur-xl">
         <Container>
           <nav aria-label="Jump to a service" className="overflow-x-auto">
-            <ul className="flex min-w-max gap-2 py-4">
+            <ul className="flex min-w-max gap-2 py-3">
               {services.map((service) => {
                 const Icon = iconMap[service.icon] ?? Globe;
                 return (
                   <li key={service.id}>
                     <a
                       href={`#${service.slug}`}
-                      className="type-ui inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--card)] px-4 py-2 text-[var(--text-muted)] backdrop-blur-xl transition-all hover:border-[var(--border-strong)] hover:text-[var(--accent)]"
+                      className="type-ui inline-flex items-center gap-2 rounded-[var(--radius-pill)] border border-[var(--border)] bg-[var(--surface-raised)] px-3.5 py-1.5 text-[var(--text-tertiary)] transition-[color,border-color,transform] duration-[var(--duration-fast)] hover:-translate-y-0.5 hover:border-[var(--border-strong)] hover:text-[var(--foreground)] motion-reduce:transform-none"
                     >
-                      <Icon className="h-4 w-4" style={{ color: service.color }} aria-hidden />
+                      <Icon className="h-3.5 w-3.5" style={{ color: service.color }} aria-hidden />
                       {service.title}
                     </a>
                   </li>
@@ -115,27 +117,28 @@ export default function ServicesPage() {
 
       {/* Service detail */}
       <Section>
-        <div className="space-y-8">
+        <div className="flex flex-col gap-6">
           {services.map((service, index) => {
             const Icon = iconMap[service.icon] ?? Globe;
             const reverse = index % 2 === 1;
 
             return (
-              <Reveal as="article" key={service.id} className="scroll-mt-24">
-                <Card id={service.slug} className="relative overflow-hidden" padding="lg">
+              <Reveal as="article" key={service.id} className="scroll-mt-32">
+                <Card id={service.slug} tone="solid" className="relative overflow-hidden" padding="lg">
+                  {/* Per-service accent wash, tinted from the service's own colour. */}
                   <div
-                    className="absolute -right-20 -top-20 h-60 w-60 rounded-full opacity-50 blur-3xl"
-                    style={{ backgroundColor: `${service.color}1A` }}
+                    className="absolute -right-24 -top-24 h-72 w-72 rounded-full blur-3xl"
+                    style={{ backgroundColor: `color-mix(in srgb, ${service.color} 12%, transparent)` }}
                     aria-hidden
                   />
 
                   <div className="relative grid items-start gap-10 lg:grid-cols-[0.85fr_1.15fr]">
                     <div className={reverse ? "lg:order-2" : undefined}>
                       <div className="mb-5 flex items-center gap-4">
-                        <CardIcon tint={service.color} className="h-14 w-14 rounded-[var(--radius-lg)]">
-                          <Icon className="h-7 w-7" aria-hidden />
+                        <CardIcon tint={service.color}>
+                          <Icon className="h-5 w-5" aria-hidden />
                         </CardIcon>
-                        <span className="type-index text-[var(--text-muted)]">
+                        <span className="type-index">
                           {String(index + 1).padStart(2, "0")} / {services.length}
                         </span>
                       </div>
@@ -143,13 +146,13 @@ export default function ServicesPage() {
                       <h2 className="type-section-title mb-3 text-[var(--foreground)]">
                         {service.title}
                       </h2>
-                      <p className="type-body mb-6 text-[var(--text-muted)]">
+                      <p className="type-body mb-6 text-[var(--text-secondary)]">
                         {service.description}
                       </p>
 
                       <div className="mb-6">
-                        <h3 className="type-band-label mb-3 text-[var(--accent)]">Stack</h3>
-                        <ul className="flex flex-wrap gap-2">
+                        <h3 className="type-band-label mb-3">Stack</h3>
+                        <ul className="flex flex-wrap gap-1.5">
                           {service.technologies.map((tech) => (
                             <li key={tech}>
                               <Badge tone="outline">{tech}</Badge>
@@ -158,24 +161,22 @@ export default function ServicesPage() {
                         </ul>
                       </div>
 
-                      <Button href="/contact" size="md">
+                      <Button href="/contact">
                         Get a quote
                         <ArrowUpRight className="h-4 w-4" aria-hidden />
                       </Button>
                     </div>
 
                     <div className={reverse ? "lg:order-1" : undefined}>
-                      <h3 className="type-band-label mb-4 text-[var(--accent)]">
-                        What&apos;s included
-                      </h3>
-                      <ul className="grid gap-3 sm:grid-cols-2">
+                      <h3 className="type-band-label mb-4">What&apos;s included</h3>
+                      <ul className="grid gap-2.5 sm:grid-cols-2">
                         {service.features.map((feature) => (
                           <li
                             key={feature}
-                            className="type-body flex items-start gap-2.5 rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--surface)] px-4 py-3 text-sm text-[var(--foreground)]"
+                            className="flex items-start gap-2.5 rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface-raised)] px-3.5 py-2.5 text-[var(--text-base)] text-[var(--text-secondary)]"
                           >
                             <Check
-                              className="mt-0.5 h-4 w-4 shrink-0"
+                              className="mt-0.5 h-3.5 w-3.5 shrink-0"
                               style={{ color: service.color }}
                               aria-hidden
                             />
@@ -201,74 +202,33 @@ export default function ServicesPage() {
           lead="Seven repeatable phases that keep projects on time, on budget, and on track for the outcomes you actually care about."
         />
 
-        <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <Stagger as="ol" className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {processSteps.map((step, index) => (
-            <Reveal as="li" key={step.title} index={index}>
-              <Card className="h-full" padding="md">
+            <StaggerItem as="li" key={step.title}>
+              <Card tone="solid" className="h-full" padding="md">
                 <div className="mb-4 flex items-center justify-between">
                   <CardIcon>
                     <step.icon className="h-5 w-5" aria-hidden />
                   </CardIcon>
-                  <span className="type-index text-[var(--secondary)]">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
+                  <span className="type-index">{String(index + 1).padStart(2, "0")}</span>
                 </div>
                 <h3 className="type-card-title mb-2 text-[var(--foreground)]">{step.title}</h3>
-                <p className="type-body text-sm text-[var(--text-muted)]">{step.desc}</p>
+                <p className="type-body text-[var(--text-secondary)]">{step.desc}</p>
               </Card>
-            </Reveal>
+            </StaggerItem>
           ))}
-        </ol>
+        </Stagger>
       </Section>
 
       {/* CTA */}
-      <Section>
-        <Reveal>
-          <Card tone="highlight" padding="lg" className="relative overflow-hidden">
-            <div
-              className="absolute -right-20 -top-20 h-60 w-60 rounded-full bg-[var(--accent)]/15 blur-3xl"
-              aria-hidden
-            />
-            <div className="relative grid gap-10 lg:grid-cols-[1.3fr_1fr] lg:items-center">
-              <div>
-                <p className="type-eyebrow mb-4">Not sure where to start?</p>
-                <h2 className="type-section-title mb-4 text-[var(--foreground)]">
-                  Book a free 30-minute discovery call
-                </h2>
-                <p className="type-lead mb-8 max-w-xl">
-                  Walk us through your idea, current state, or roadmap. We&apos;ll help you scope
-                  the right phase — even if it&apos;s not with us.
-                </p>
-                <div className="flex flex-col gap-3 sm:flex-row">
-                  <Button href="/contact">
-                    Book free consultation
-                    <ArrowUpRight className="h-4 w-4" aria-hidden />
-                  </Button>
-                  <Button href="/pricing" variant="secondary">
-                    See pricing
-                    <ArrowRight className="h-4 w-4" aria-hidden />
-                  </Button>
-                </div>
-              </div>
-
-              <ul className="space-y-3">
-                {consultationPoints.map((point) => (
-                  <li
-                    key={point}
-                    className="type-body flex items-start gap-3 rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface)] px-4 py-3 backdrop-blur-xl"
-                  >
-                    <span
-                      className="mt-1.5 inline-flex h-2 w-2 shrink-0 rounded-full bg-[var(--accent)]"
-                      aria-hidden
-                    />
-                    <span>{point}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </Card>
-        </Reveal>
-      </Section>
+      <CtaBand
+        eyebrow="Not sure where to start?"
+        title="Book a free 30-minute discovery call"
+        lead="Walk us through your idea, current state, or roadmap. We'll help you scope the right phase — even if it's not with us."
+        primary={{ label: "Book free consultation", href: "/contact" }}
+        secondary={{ label: "See pricing", href: "/pricing" }}
+        assurances={consultationPoints}
+      />
     </>
   );
 }

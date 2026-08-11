@@ -4,11 +4,12 @@ import { useId, useState } from "react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AnimatePresence, motion } from "framer-motion";
-import { CheckCircle, Loader2, Send } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
+import { CheckCircle, Send } from "lucide-react";
 import { contactFormSchema, type ContactFormValues } from "@/lib/contact-schema";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { Field, Input, Select, Textarea } from "@/components/ui/field";
+import { modalVariants, transition } from "@/lib/motion";
 
 const serviceOptions = [
   "Web development",
@@ -31,48 +32,6 @@ const budgetOptions = [
   "Rs. 10,00,000+",
   "Not sure yet",
 ];
-
-function fieldClasses(hasError: boolean) {
-  return cn(
-    "w-full rounded-[var(--radius-md)] border bg-[var(--surface)] px-4 py-3 text-[var(--foreground)] placeholder-[var(--text-subtle)] backdrop-blur-xl transition-colors focus:outline-none",
-    hasError
-      ? "border-[var(--danger)]/60 focus:border-[var(--danger)]"
-      : "border-[var(--border)] focus:border-[var(--border-strong)]"
-  );
-}
-
-function Field({
-  label,
-  htmlFor,
-  required,
-  error,
-  children,
-}: {
-  label: string;
-  htmlFor: string;
-  required?: boolean;
-  error?: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div>
-      <label htmlFor={htmlFor} className="type-ui mb-2 inline-block text-[var(--foreground)]">
-        {label}
-        {required && (
-          <span className="ml-1 text-[var(--secondary)]" aria-hidden>
-            *
-          </span>
-        )}
-      </label>
-      {children}
-      {error && (
-        <p id={`${htmlFor}-error`} role="alert" className="mt-1.5 text-sm text-[var(--danger)]">
-          {error}
-        </p>
-      )}
-    </div>
-  );
-}
 
 export function ContactForm() {
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -105,9 +64,7 @@ export function ContactForm() {
 
       if (!response.ok) {
         const result = await response.json().catch(() => null);
-        setSubmissionError(
-          result?.message ?? "We couldn't send your message. Please try again."
-        );
+        setSubmissionError(result?.message ?? "We couldn't send your message. Please try again.");
         return;
       }
     } catch {
@@ -124,13 +81,21 @@ export function ContactForm() {
       {isSubmitted ? (
         <motion.div
           key="success"
-          initial={{ opacity: 0, scale: 0.97 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0 }}
-          className="glass rounded-[var(--radius-2xl)] border-[var(--success)]/40 p-10 text-center md:p-14"
+          variants={modalVariants}
+          initial="hidden"
+          animate="visible"
+          exit="exit"
+          transition={transition.normal}
+          className="glass rounded-[var(--radius-2xl)] border-[var(--success)]/35 p-10 text-center md:p-14"
         >
-          <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full border border-[var(--success)]/30 bg-[var(--success)]/15 text-[var(--success)]">
-            <CheckCircle className="h-8 w-8" aria-hidden />
+          <div className="relative mx-auto mb-5 w-fit">
+            <div
+              aria-hidden
+              className="absolute inset-0 rounded-full bg-[var(--success)]/25 blur-2xl"
+            />
+            <div className="relative flex h-14 w-14 items-center justify-center rounded-full border border-[var(--success)]/30 bg-[var(--success)]/12 text-[var(--success)]">
+              <CheckCircle className="h-7 w-7" aria-hidden />
+            </div>
           </div>
           <h2 className="type-section-title mb-3 text-[var(--foreground)]">Message sent</h2>
           <p className="type-lead mx-auto mb-8 max-w-md">
@@ -152,17 +117,16 @@ export function ContactForm() {
       ) : (
         <motion.form
           key="form"
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
+          transition={transition.normal}
           onSubmit={handleSubmit(onSubmit)}
-          className="glass rounded-[var(--radius-2xl)] p-7 md:p-10"
+          className="glass rounded-[var(--radius-2xl)] p-6 md:p-9"
           noValidate
         >
           <div className="mb-7">
-            <p className="type-eyebrow mb-3">Project brief</p>
-            <h2 className="type-panel-title text-[var(--foreground)]">
-              Tell us about your project
-            </h2>
+            <p className="type-eyebrow mb-2.5">Project brief</p>
+            <h2 className="type-panel-title text-[var(--foreground)]">Tell us about your project</h2>
           </div>
 
           {/* Honeypot: hidden from users, commonly auto-filled by bots. */}
@@ -177,127 +141,121 @@ export function ContactForm() {
             />
           </div>
 
-          <div className="mb-5 grid gap-5 md:grid-cols-2">
+          <div className="grid gap-5 md:grid-cols-2">
             <Field label="Full name" htmlFor={fieldId("name")} required error={errors.name?.message}>
-              <input
+              <Input
                 id={fieldId("name")}
                 autoComplete="name"
                 placeholder="Jane Doe"
+                invalid={Boolean(errors.name)}
                 aria-invalid={Boolean(errors.name)}
                 aria-describedby={describedBy("name")}
-                className={fieldClasses(Boolean(errors.name))}
                 {...register("name")}
               />
             </Field>
+
             <Field label="Email" htmlFor={fieldId("email")} required error={errors.email?.message}>
-              <input
+              <Input
                 id={fieldId("email")}
                 type="email"
                 autoComplete="email"
                 placeholder="jane@company.com"
+                invalid={Boolean(errors.email)}
                 aria-invalid={Boolean(errors.email)}
                 aria-describedby={describedBy("email")}
-                className={fieldClasses(Boolean(errors.email))}
                 {...register("email")}
               />
             </Field>
-          </div>
 
-          <div className="mb-5 grid gap-5 md:grid-cols-2">
-            <Field label="Phone (optional)" htmlFor={fieldId("phone")}>
-              <input
+            <Field label="Phone" htmlFor={fieldId("phone")} hint="Optional">
+              <Input
                 id={fieldId("phone")}
                 type="tel"
                 autoComplete="tel"
                 placeholder="+91 98765 43210"
-                className={fieldClasses(false)}
                 {...register("phone")}
               />
             </Field>
-            <Field label="Company (optional)" htmlFor={fieldId("company")}>
-              <input
+
+            <Field label="Company" htmlFor={fieldId("company")} hint="Optional">
+              <Input
                 id={fieldId("company")}
                 autoComplete="organization"
                 placeholder="Acme Inc."
-                className={fieldClasses(false)}
                 {...register("company")}
               />
             </Field>
-          </div>
 
-          <div className="mb-5 grid gap-5 md:grid-cols-2">
             <Field label="Service of interest" htmlFor={fieldId("service")}>
-              <select
-                id={fieldId("service")}
-                className={fieldClasses(false)}
-                {...register("service")}
-              >
+              <Select id={fieldId("service")} defaultValue="" {...register("service")}>
                 <option value="">Select a service…</option>
                 {serviceOptions.map((option) => (
                   <option key={option} value={option}>
                     {option}
                   </option>
                 ))}
-              </select>
+              </Select>
             </Field>
+
             <Field label="Estimated budget" htmlFor={fieldId("budget")}>
-              <select id={fieldId("budget")} className={fieldClasses(false)} {...register("budget")}>
+              <Select id={fieldId("budget")} defaultValue="" {...register("budget")}>
                 <option value="">Select a range…</option>
                 {budgetOptions.map((option) => (
                   <option key={option} value={option}>
                     {option}
                   </option>
                 ))}
-              </select>
+              </Select>
+            </Field>
+
+            <Field
+              label="Project description"
+              htmlFor={fieldId("message")}
+              required
+              error={errors.message?.message}
+              className="md:col-span-2"
+            >
+              <Textarea
+                id={fieldId("message")}
+                rows={5}
+                placeholder="Tell us about your goals, current state, and what you'd like to build…"
+                invalid={Boolean(errors.message)}
+                aria-invalid={Boolean(errors.message)}
+                aria-describedby={describedBy("message")}
+                {...register("message")}
+              />
             </Field>
           </div>
 
-          <Field
-            label="Project description"
-            htmlFor={fieldId("message")}
-            required
-            error={errors.message?.message}
-          >
-            <textarea
-              id={fieldId("message")}
-              rows={5}
-              placeholder="Tell us about your goals, current state, and what you'd like to build…"
-              aria-invalid={Boolean(errors.message)}
-              aria-describedby={describedBy("message")}
-              className={cn(fieldClasses(Boolean(errors.message)), "resize-none")}
-              {...register("message")}
-            />
-          </Field>
-
-          <p className="type-body mt-4 text-xs text-[var(--text-muted)]">
+          <p className="mt-5 text-[var(--text-xs)] text-[var(--text-tertiary)]">
             By submitting, you agree to our{" "}
-            <Link href="/privacy-policy" className="text-[var(--accent)] hover:underline">
+            <Link
+              href="/privacy-policy"
+              className="text-[var(--accent)] underline-offset-2 hover:underline"
+            >
               Privacy Policy
             </Link>
             . We&apos;ll never share your information.
           </p>
 
-          {submissionError && (
-            <p
-              role="alert"
-              className="type-body mt-4 rounded-[var(--radius-md)] border border-[var(--danger)]/30 bg-[var(--danger)]/10 px-4 py-3 text-sm text-[var(--danger)]"
-            >
-              {submissionError}
-            </p>
-          )}
-
-          <Button type="submit" disabled={isSubmitting} className="mt-6 w-full sm:w-auto">
-            {isSubmitting ? (
-              <>
-                <Loader2 className="h-5 w-5 animate-spin" aria-hidden />
-                Sending…
-              </>
-            ) : (
-              <>
-                <Send className="h-4 w-4" aria-hidden />
-                Send message
-              </>
+          <AnimatePresence>
+            {submissionError && (
+              <motion.p
+                role="alert"
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={transition.fast}
+                className="mt-4 overflow-hidden rounded-[var(--radius-lg)] border border-[var(--danger)]/30 bg-[var(--danger)]/10 px-4 py-3 text-[var(--text-base)] text-[var(--danger)]"
+              >
+                {submissionError}
+              </motion.p>
             )}
+          </AnimatePresence>
+
+          <Button type="submit" loading={isSubmitting} className="mt-6 w-full sm:w-auto">
+            {!isSubmitting && <Send className="h-4 w-4" aria-hidden />}
+            {isSubmitting ? "Sending…" : "Send message"}
           </Button>
         </motion.form>
       )}

@@ -1,25 +1,45 @@
 import { cn } from "@/lib/utils";
 
+type Tone = "neutral" | "accent" | "outline" | "success" | "warning" | "gradient";
+
+const tones: Record<Tone, string> = {
+  neutral: "border border-[var(--border)] bg-[var(--surface-raised)] text-[var(--text-secondary)]",
+  accent: "border border-[var(--border-strong)] bg-[var(--surface-tint)] text-[var(--accent)]",
+  outline: "border border-[var(--border-hover)] text-[var(--text-secondary)]",
+  success: "border border-[var(--success)]/30 bg-[var(--success)]/12 text-[var(--success)]",
+  warning: "border border-[var(--warning)]/30 bg-[var(--warning)]/12 text-[var(--warning)]",
+  gradient:
+    "border-0 [background-image:var(--gradient-primary)] text-[var(--text-on-brand)] shadow-[var(--shadow-glow)]",
+};
+
 export function Badge({
   tone = "neutral",
   className,
   children,
 }: {
-  tone?: "neutral" | "accent" | "outline";
+  tone?: Tone;
   className?: string;
   children: React.ReactNode;
 }) {
   return (
     <span
       className={cn(
-        "type-tag inline-flex items-center gap-1.5 rounded-[var(--radius-sm)] px-2.5 py-1",
-        tone === "neutral" && "border border-[var(--border)] bg-[var(--card-soft)] text-[var(--text-muted)]",
-        tone === "accent" && "border border-[var(--border-strong)] bg-[var(--card-soft)] text-[var(--accent)]",
-        tone === "outline" && "border border-[var(--border)] text-[var(--foreground)]",
+        "type-tag inline-flex items-center gap-1.5 rounded-[var(--radius-md)] px-2.5 py-1",
+        tones[tone],
         className
       )}
     >
       {children}
+    </span>
+  );
+}
+
+/** Small live indicator — a filled dot with an expanding ring behind it. */
+export function StatusDot({ className }: { className?: string }) {
+  return (
+    <span className={cn("relative flex h-2 w-2 shrink-0", className)} aria-hidden>
+      <span className="pulse-ring absolute inline-flex h-full w-full rounded-full bg-[var(--success)]" />
+      <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--success)]" />
     </span>
   );
 }

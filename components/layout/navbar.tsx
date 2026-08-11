@@ -1,11 +1,18 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import {
+  AnimatePresence,
+  motion,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+} from "motion/react";
 import { Menu, X, ArrowUpRight } from "lucide-react";
+import { transition } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 import { siteConfig } from "@/lib/site";
 
@@ -22,10 +29,13 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
-  const reduceMotion = useReducedMotion();
+  const reduced = useReducedMotion();
+
+  const { scrollYProgress } = useScroll();
+  const progress = useSpring(scrollYProgress, { stiffness: 140, damping: 28, restDelta: 0.001 });
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 30);
+    const handleScroll = () => setIsScrolled(window.scrollY > 24);
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
@@ -52,30 +62,39 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="fixed inset-x-0 top-3 z-50">
+      <header
+        className={cn(
+          "fixed inset-x-0 top-0 z-50 border-b",
+          "transition-[background-color,border-color,backdrop-filter,box-shadow]",
+          "duration-[var(--duration-normal)] ease-[var(--ease-out)]",
+          isScrolled
+            ? "border-[var(--border)] bg-[var(--surface-glass-strong)] shadow-[var(--shadow-lg)] backdrop-blur-xl"
+            : "border-transparent bg-transparent"
+        )}
+      >
         <nav aria-label="Main" className="container">
-          <div
-            className={cn(
-              "flex items-center justify-between rounded-[var(--radius-xl)] border px-3.5 py-2.5 transition-all duration-300 md:px-4",
-              isScrolled
-                ? "border-[var(--border-strong)] bg-[var(--navbar-bg)] shadow-[var(--navbar-shadow)] backdrop-blur-2xl"
-                : "border-white/10 bg-[#06101d]/70 shadow-[0_16px_46px_rgba(0,0,0,0.24)] backdrop-blur-xl"
-            )}
-          >
+          <div className="flex h-[var(--navbar-height)] items-center justify-between gap-4">
             <Link
               href="/"
-              className="group flex items-center gap-3"
+              className="group flex items-center gap-2.5"
               aria-label={`${siteConfig.shortName} home`}
             >
-              <span className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-[var(--radius-md)] border border-[var(--border-strong)] bg-[linear-gradient(135deg,rgba(66,232,244,0.12),rgba(255,184,77,0.08))] p-1 transition-transform group-hover:-translate-y-0.5 motion-reduce:group-hover:translate-y-0">
-                <Image src={siteConfig.logo} alt="" width={32} height={32} className="h-8 w-8" />
+              <span
+                className={cn(
+                  "flex h-9 w-9 items-center justify-center overflow-hidden rounded-[var(--radius-lg)]",
+                  "border border-[var(--border)] bg-[var(--surface-tint-strong)] p-1",
+                  "transition-transform duration-[var(--duration-normal)] ease-[var(--ease-out)]",
+                  "group-hover:scale-105 motion-reduce:transform-none"
+                )}
+              >
+                <Image src={siteConfig.logo} alt="" width={28} height={28} className="h-7 w-7" />
               </span>
-              <span className="font-heading text-lg font-bold gradient-text">
+              <span className="text-[var(--text-lg)] font-semibold tracking-[-0.02em] text-[var(--foreground)]">
                 {siteConfig.shortName}
               </span>
             </Link>
 
-            <ul className="hidden items-center gap-1 rounded-[var(--radius-md)] border border-white/10 bg-[var(--nav-pill-bg)] p-1.5 backdrop-blur-xl lg:flex">
+            <ul className="hidden items-center gap-0.5 lg:flex">
               {navLinks.map((link) => {
                 const active = isActive(link.href);
                 return (
@@ -84,20 +103,26 @@ export default function Navbar() {
                       href={link.href}
                       aria-current={active ? "page" : undefined}
                       className={cn(
-                        "relative block rounded-[var(--radius-sm)] px-3.5 py-1.5 text-sm font-semibold transition-colors",
+                        "relative block rounded-[var(--radius-md)] px-3.5 py-2",
+                        "text-[var(--text-base)] font-medium",
+                        "transition-colors duration-[var(--duration-fast)] ease-[var(--ease-out)]",
                         active
-                          ? "text-[var(--button-foreground)]"
-                          : "text-[var(--text-muted)] hover:bg-white/[0.05] hover:text-[var(--foreground)]"
+                          ? "text-[var(--foreground)]"
+                          : "text-[var(--text-tertiary)] hover:text-[var(--foreground)]"
                       )}
                     >
                       {active &&
-                        (reduceMotion ? (
-                          <span className="absolute inset-0 rounded-[var(--radius-sm)] [background:var(--button-gradient)]" />
+                        (reduced ? (
+                          <span
+                            aria-hidden
+                            className="absolute inset-0 rounded-[var(--radius-md)] bg-[var(--surface-tint-strong)]"
+                          />
                         ) : (
                           <motion.span
+                            aria-hidden
                             layoutId="nav-active"
-                            className="absolute inset-0 rounded-[var(--radius-sm)] [background:var(--button-gradient)]"
-                            transition={{ type: "spring", bounce: 0.2, duration: 0.5 }}
+                            transition={transition.spring}
+                            className="absolute inset-0 rounded-[var(--radius-md)] bg-[var(--surface-tint-strong)]"
                           />
                         ))}
                       <span className="relative">{link.label}</span>
@@ -107,29 +132,54 @@ export default function Navbar() {
               })}
             </ul>
 
-            <Link
-              href="/contact"
-              className="group hidden items-center gap-1.5 rounded-[var(--radius-md)] [background:var(--button-gradient)] px-5 py-2.5 text-sm font-bold text-[var(--button-foreground)] shadow-[var(--button-shadow)] transition-transform hover:-translate-y-0.5 motion-reduce:hover:translate-y-0 lg:inline-flex"
-            >
-              Get a quote
-              <ArrowUpRight
-                className="h-3.5 w-3.5 transition-transform group-hover:rotate-45"
-                aria-hidden
-              />
-            </Link>
+            <div className="flex items-center gap-2">
+              <Link
+                href="/contact"
+                className={cn(
+                  "group/cta hidden items-center gap-1.5 rounded-[var(--radius-lg)] px-4 py-2.5",
+                  "text-[var(--text-base)] font-medium text-[var(--text-on-brand)]",
+                  "[background-image:var(--gradient-primary)] shadow-[var(--shadow-glow)]",
+                  "transition-[transform,box-shadow] duration-[var(--duration-fast)] ease-[var(--ease-out)]",
+                  "hover:-translate-y-px hover:shadow-[var(--shadow-glow-strong)]",
+                  "motion-reduce:transform-none lg:inline-flex"
+                )}
+              >
+                Get a quote
+                <ArrowUpRight
+                  className="h-3.5 w-3.5 transition-transform duration-[var(--duration-fast)] group-hover/cta:translate-x-0.5 group-hover/cta:-translate-y-0.5"
+                  aria-hidden
+                />
+              </Link>
 
-            <button
-              type="button"
-              className="rounded-[var(--radius-md)] border border-[var(--border-strong)] bg-[var(--card)] p-2.5 text-[var(--foreground)] transition-colors hover:bg-[var(--card-soft)] lg:hidden"
-              onClick={() => setIsMenuOpen((open) => !open)}
-              aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-              aria-expanded={isMenuOpen}
-              aria-controls="mobile-nav"
-            >
-              {isMenuOpen ? <X size={20} aria-hidden /> : <Menu size={20} aria-hidden />}
-            </button>
+              <button
+                type="button"
+                className={cn(
+                  "rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface-raised)] p-2.5",
+                  "text-[var(--foreground)] transition-colors duration-[var(--duration-fast)]",
+                  "hover:border-[var(--border-hover)] lg:hidden"
+                )}
+                onClick={() => setIsMenuOpen((open) => !open)}
+                aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+                aria-expanded={isMenuOpen}
+                aria-controls="mobile-nav"
+              >
+                {isMenuOpen ? <X size={18} aria-hidden /> : <Menu size={18} aria-hidden />}
+              </button>
+            </div>
           </div>
         </nav>
+
+        {/* Reading progress. Scales a single element on the GPU rather than
+            animating width, and only shows once the header is condensed. */}
+        <motion.div
+          aria-hidden
+          style={{ scaleX: reduced ? 0 : progress }}
+          className={cn(
+            "absolute inset-x-0 bottom-0 h-px origin-left [background-image:var(--gradient-primary)]",
+            "transition-opacity duration-[var(--duration-normal)]",
+            isScrolled ? "opacity-100" : "opacity-0"
+          )}
+        />
       </header>
 
       <AnimatePresence>
@@ -138,40 +188,44 @@ export default function Navbar() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-40 lg:hidden"
+            transition={transition.fast}
+            className="fixed inset-0 z-[60] lg:hidden"
           >
             <button
               type="button"
-              className="absolute inset-0 h-full w-full cursor-default bg-[rgba(3,8,16,0.68)] backdrop-blur-md"
+              className="absolute inset-0 h-full w-full cursor-default bg-[rgba(3,5,12,0.7)] backdrop-blur-sm"
               onClick={() => setIsMenuOpen(false)}
               aria-label="Close menu"
               tabIndex={-1}
             />
+
             <motion.div
               id="mobile-nav"
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
-              transition={{ type: "tween", duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
-              className="absolute inset-y-0 right-0 flex w-[88%] max-w-sm flex-col border-l border-[var(--border-strong)] bg-[#071321]/95 shadow-[var(--navbar-shadow)] backdrop-blur-2xl"
+              transition={transition.normal}
+              className={cn(
+                "absolute inset-y-0 right-0 flex w-[86%] max-w-sm flex-col",
+                "border-l border-[var(--border)] bg-[var(--surface)] shadow-[var(--shadow-xl)]"
+              )}
             >
-              <div className="flex items-center justify-between border-b border-[var(--border)] bg-white/[0.02] p-5">
-                <span className="font-heading text-base font-bold gradient-text">
+              <div className="flex h-[var(--navbar-height)] items-center justify-between border-b border-[var(--border)] px-5">
+                <span className="text-[var(--text-md)] font-semibold text-[var(--foreground)]">
                   {siteConfig.shortName}
                 </span>
                 <button
                   type="button"
                   onClick={() => setIsMenuOpen(false)}
                   aria-label="Close menu"
-                  className="rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--card)] p-2 text-[var(--foreground)]"
+                  className="rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface-raised)] p-2 text-[var(--foreground)]"
                 >
-                  <X size={18} aria-hidden />
+                  <X size={16} aria-hidden />
                 </button>
               </div>
 
-              <nav aria-label="Mobile" className="flex-1 overflow-y-auto p-5">
-                <ul className="flex flex-col gap-1.5">
+              <nav aria-label="Mobile" className="flex-1 overflow-y-auto p-4">
+                <ul className="flex flex-col gap-1">
                   {navLinks.map((link) => {
                     const active = isActive(link.href);
                     return (
@@ -181,14 +235,15 @@ export default function Navbar() {
                           onClick={() => setIsMenuOpen(false)}
                           aria-current={active ? "page" : undefined}
                           className={cn(
-                            "flex items-center justify-between rounded-[var(--radius-lg)] px-4 py-3.5 text-base font-medium transition-colors",
+                            "flex items-center justify-between rounded-[var(--radius-lg)] px-4 py-3",
+                            "text-[var(--text-md)] font-medium transition-colors duration-[var(--duration-fast)]",
                             active
-                              ? "[background:var(--button-gradient)] text-[var(--button-foreground)]"
-                              : "text-[var(--foreground)] hover:bg-[var(--card-soft)]"
+                              ? "bg-[var(--surface-tint-strong)] text-[var(--foreground)]"
+                              : "text-[var(--text-secondary)] hover:bg-[var(--surface-tint)] hover:text-[var(--foreground)]"
                           )}
                         >
                           {link.label}
-                          <ArrowUpRight className="h-4 w-4 opacity-60" aria-hidden />
+                          <ArrowUpRight className="h-4 w-4 opacity-40" aria-hidden />
                         </Link>
                       </li>
                     );
@@ -196,11 +251,15 @@ export default function Navbar() {
                 </ul>
               </nav>
 
-              <div className="border-t border-[var(--border)] p-5">
+              <div className="border-t border-[var(--border)] p-4">
                 <Link
                   href="/contact"
                   onClick={() => setIsMenuOpen(false)}
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-[var(--radius-md)] [background:var(--button-gradient)] px-5 py-3.5 font-bold text-[var(--button-foreground)] shadow-[var(--button-shadow)]"
+                  className={cn(
+                    "inline-flex w-full items-center justify-center gap-2 rounded-[var(--radius-lg)] px-5 py-3",
+                    "font-medium text-[var(--text-on-brand)]",
+                    "[background-image:var(--gradient-primary)] shadow-[var(--shadow-glow)]"
+                  )}
                 >
                   Get a quote
                   <ArrowUpRight className="h-4 w-4" aria-hidden />

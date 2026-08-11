@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import StructuredData from "@/components/layout/structured-data";
+import { AnimatedBackground } from "@/components/ui/animated-background";
 import { siteConfig } from "@/lib/site";
 
 const inter = Inter({
@@ -74,12 +75,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" data-theme="dark" suppressHydrationWarning className={inter.variable}>
-      <body className="antialiased bg-[var(--background)] text-[var(--foreground)] selection:bg-[var(--selection)] selection:text-[var(--selection-foreground)]">
+      <body className="bg-[var(--background)] text-[var(--foreground)] antialiased">
         <StructuredData />
-        <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden" aria-hidden="true">
-          <div className="site-grid-mask" />
-          <div className="site-noise" />
-        </div>
+        {/* Single ambient layer for the whole app. Sections that want something
+            louder mount their own <AnimatedBackground> locally. */}
+        <AnimatedBackground variant="minimal" position="fixed" intensity="subtle" />
         {children}
       </body>
     </html>

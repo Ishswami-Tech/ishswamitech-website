@@ -56,7 +56,7 @@ export function BlogIndex({ posts }: { posts: readonly BlogPost[] }) {
             </label>
             <div className="relative">
               <Search
-                className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[var(--text-muted)]"
+                className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[var(--text-secondary)]"
                 aria-hidden
               />
               <input
@@ -65,7 +65,7 @@ export function BlogIndex({ posts }: { posts: readonly BlogPost[] }) {
                 placeholder="Search articles…"
                 value={search}
                 onChange={(event) => setSearch(event.target.value)}
-                className="w-full rounded-full border border-[var(--border)] bg-[var(--card)] py-3.5 pl-12 pr-4 text-[var(--foreground)] placeholder-[var(--text-subtle)] backdrop-blur-xl transition-colors focus:border-[var(--border-strong)] focus:outline-none"
+                className="w-full rounded-full border border-[var(--border)] bg-[var(--surface-raised)] py-3.5 pl-12 pr-4 text-[var(--foreground)] placeholder-[var(--text-tertiary)] backdrop-blur-xl transition-colors focus:border-[var(--border-strong)] focus:outline-none"
               />
             </div>
           </div>
@@ -81,8 +81,8 @@ export function BlogIndex({ posts }: { posts: readonly BlogPost[] }) {
                 className={cn(
                   "type-ui rounded-full border px-4 py-2 transition-all",
                   activeTag === tag
-                    ? "border-[var(--border-strong)] bg-[var(--accent)] text-[var(--button-foreground)] shadow-[var(--button-shadow)]"
-                    : "border-[var(--border)] bg-[var(--card)] text-[var(--text-muted)] hover:border-[var(--border-strong)] hover:text-[var(--foreground)]"
+                    ? "border-[var(--border-strong)] bg-[var(--accent)] text-[var(--text-on-brand)] shadow-[var(--shadow-glow)]"
+                    : "border-[var(--border)] bg-[var(--surface-raised)] text-[var(--text-secondary)] hover:border-[var(--border-strong)] hover:text-[var(--foreground)]"
                 )}
               >
                 {tag}
@@ -99,7 +99,7 @@ export function BlogIndex({ posts }: { posts: readonly BlogPost[] }) {
               <p className="type-card-title mb-2 text-[var(--foreground)]">
                 No articles match your filters.
               </p>
-              <p className="type-body text-[var(--text-muted)]">
+              <p className="type-body text-[var(--text-secondary)]">
                 Try a different category or search term.
               </p>
             </Card>
@@ -107,7 +107,7 @@ export function BlogIndex({ posts }: { posts: readonly BlogPost[] }) {
             <>
               {featured && (
                 <Link href={`/blog/${featured.slug}`} className="mb-10 block">
-                  <article className="glass group overflow-hidden rounded-[var(--radius-2xl)] transition-all hover:border-[var(--border-strong)] hover:shadow-[var(--button-shadow)]">
+                  <article className="glass group overflow-hidden rounded-[var(--radius-2xl)] transition-all hover:border-[var(--border-strong)] hover:shadow-[var(--shadow-glow)]">
                     <div className="grid lg:grid-cols-[1.1fr_0.9fr]">
                       <div className="relative aspect-[16/10] overflow-hidden lg:aspect-auto lg:min-h-[400px]">
                         <Image
@@ -117,22 +117,22 @@ export function BlogIndex({ posts }: { posts: readonly BlogPost[] }) {
                           className="object-cover transition-transform duration-500 group-hover:scale-105 motion-reduce:transition-none"
                           sizes="(max-width: 1024px) 100vw, 50vw"
                         />
-                        <p className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full [background:var(--button-gradient)] px-3 py-1 text-xs font-semibold text-[var(--button-foreground)]">
+                        <p className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full [background-image:var(--gradient-primary)] px-3 py-1 text-xs font-semibold text-[var(--text-on-brand)]">
                           Featured
                         </p>
                       </div>
                       <div className="flex flex-col justify-center p-8 lg:p-12">
-                        <p className="type-tag mb-4 inline-flex w-fit items-center gap-1 rounded-[var(--radius-sm)] border border-[var(--border)] bg-[var(--card-soft)] px-2.5 py-1 text-[var(--accent)]">
+                        <p className="type-tag mb-4 inline-flex w-fit items-center gap-1 rounded-[var(--radius-sm)] border border-[var(--border)] bg-[var(--surface-tint)] px-2.5 py-1 text-[var(--accent)]">
                           <Tag className="h-3 w-3" aria-hidden />
                           {featured.category}
                         </p>
                         <h2 className="type-section-title mb-4 text-[var(--foreground)] transition-colors group-hover:text-[var(--accent)]">
                           {featured.title}
                         </h2>
-                        <p className="type-body mb-6 line-clamp-3 text-[var(--text-muted)]">
+                        <p className="type-body mb-6 line-clamp-3 text-[var(--text-secondary)]">
                           {featured.excerpt}
                         </p>
-                        <div className="type-ui mb-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-[var(--text-muted)]">
+                        <div className="type-ui mb-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-[var(--text-secondary)]">
                           <span className="inline-flex items-center gap-1.5">
                             <User className="h-4 w-4" aria-hidden />
                             {featured.author}
@@ -176,16 +176,16 @@ export function BlogIndex({ posts }: { posts: readonly BlogPost[] }) {
                               />
                             </div>
                             <div className="flex flex-1 flex-col p-6">
-                              <p className="type-tag mb-3 inline-flex w-fit rounded-[var(--radius-sm)] border border-[var(--border)] bg-[var(--card-soft)] px-2 py-0.5 text-[var(--accent)]">
+                              <p className="type-tag mb-3 inline-flex w-fit rounded-[var(--radius-sm)] border border-[var(--border)] bg-[var(--surface-tint)] px-2 py-0.5 text-[var(--accent)]">
                                 {post.category}
                               </p>
                               <h3 className="type-card-title mb-2 line-clamp-2 text-[var(--foreground)] transition-colors group-hover:text-[var(--accent)]">
                                 {post.title}
                               </h3>
-                              <p className="type-body mb-5 line-clamp-2 flex-1 text-sm text-[var(--text-muted)]">
+                              <p className="type-body mb-5 line-clamp-2 flex-1 text-sm text-[var(--text-secondary)]">
                                 {post.excerpt}
                               </p>
-                              <div className="type-ui flex items-center justify-between text-[var(--text-muted)]">
+                              <div className="type-ui flex items-center justify-between text-[var(--text-secondary)]">
                                 <span className="inline-flex items-center gap-1.5">
                                   <Calendar className="h-4 w-4" aria-hidden />
                                   <time dateTime={post.date}>{formatDate(post.date)}</time>
@@ -213,14 +213,14 @@ export function BlogIndex({ posts }: { posts: readonly BlogPost[] }) {
                       {popular.map((post, index) => (
                         <li key={post.id} className="group">
                           <Link href={`/blog/${post.slug}`} className="flex gap-3">
-                            <span className="type-stat shrink-0 text-xl text-[var(--text-subtle)]">
+                            <span className="type-stat shrink-0 text-xl text-[var(--text-tertiary)]">
                               {String(index + 1).padStart(2, "0")}
                             </span>
                             <span>
                               <span className="type-ui mb-1 line-clamp-2 block text-sm text-[var(--foreground)] transition-colors group-hover:text-[var(--accent)]">
                                 {post.title}
                               </span>
-                              <span className="type-body block text-xs text-[var(--text-muted)]">
+                              <span className="type-body block text-xs text-[var(--text-secondary)]">
                                 {formatDate(post.date)} · {post.readTime}
                               </span>
                             </span>
@@ -242,7 +242,7 @@ export function BlogIndex({ posts }: { posts: readonly BlogPost[] }) {
                       <h2 className="type-card-title mb-2 text-[var(--foreground)]">
                         Want this applied to your product?
                       </h2>
-                      <p className="type-body mb-4 text-sm text-[var(--text-muted)]">
+                      <p className="type-body mb-4 text-sm text-[var(--text-secondary)]">
                         We write about what we ship. If something here maps to a problem
                         you&apos;re facing, tell us about it.
                       </p>
@@ -266,7 +266,7 @@ export function BlogIndex({ posts }: { posts: readonly BlogPost[] }) {
                               type="button"
                               onClick={() => setActiveTag(tag)}
                               aria-pressed={activeTag === tag}
-                              className="type-tag rounded-[var(--radius-sm)] border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1 text-[var(--text-muted)] transition-colors hover:border-[var(--border-strong)] hover:text-[var(--accent)]"
+                              className="type-tag rounded-[var(--radius-sm)] border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1 text-[var(--text-secondary)] transition-colors hover:border-[var(--border-strong)] hover:text-[var(--accent)]"
                             >
                               {tag}
                             </button>

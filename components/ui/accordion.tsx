@@ -1,8 +1,9 @@
 "use client";
 
 import { useId, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { ChevronDown } from "lucide-react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { Plus } from "lucide-react";
+import { duration, easeOut } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
 export type AccordionItem = {
@@ -13,11 +14,11 @@ export type AccordionItem = {
 
 export function Accordion({ items }: { items: readonly AccordionItem[] }) {
   const [openId, setOpenId] = useState<AccordionItem["id"] | null>(null);
-  const reduceMotion = useReducedMotion();
+  const reduced = useReducedMotion();
   const baseId = useId();
 
   return (
-    <div className="space-y-3">
+    <div className="flex flex-col gap-2.5">
       {items.map((item) => {
         const isOpen = openId === item.id;
         const panelId = `${baseId}-panel-${item.id}`;
@@ -27,8 +28,12 @@ export function Accordion({ items }: { items: readonly AccordionItem[] }) {
           <div
             key={item.id}
             className={cn(
-              "glass overflow-hidden rounded-[var(--radius-xl)] border transition-colors",
-              isOpen ? "border-[var(--border-strong)]" : "border-[var(--border)]"
+              "overflow-hidden rounded-[var(--radius-xl)] border bg-[var(--surface-raised)]",
+              "transition-[border-color,background-color,box-shadow]",
+              "duration-[var(--duration-normal)] ease-[var(--ease-out)]",
+              isOpen
+                ? "border-[var(--border-strong)] shadow-[var(--shadow-md)]"
+                : "border-[var(--border)] hover:border-[var(--border-hover)]"
             )}
           >
             <h3>
@@ -38,18 +43,29 @@ export function Accordion({ items }: { items: readonly AccordionItem[] }) {
                 aria-expanded={isOpen}
                 aria-controls={panelId}
                 onClick={() => setOpenId(isOpen ? null : item.id)}
-                className="flex w-full items-center justify-between gap-4 px-6 py-4 text-left transition-colors hover:bg-[var(--card-soft)]"
+                className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left"
               >
-                <span className="type-card-title text-base text-[var(--foreground)]">
+                <span
+                  className={cn(
+                    "type-card-title transition-colors duration-[var(--duration-fast)]",
+                    isOpen ? "text-[var(--foreground)]" : "text-[var(--text-secondary)]"
+                  )}
+                >
                   {item.question}
                 </span>
-                <ChevronDown
-                  aria-hidden
+                <span
                   className={cn(
-                    "h-5 w-5 shrink-0 text-[var(--accent)] transition-transform duration-300",
-                    isOpen && "rotate-180"
+                    "flex h-7 w-7 shrink-0 items-center justify-center rounded-full border",
+                    "transition-[transform,background-color,border-color,color]",
+                    "duration-[var(--duration-normal)] ease-[var(--ease-out)]",
+                    "motion-reduce:transition-none",
+                    isOpen
+                      ? "rotate-45 border-transparent bg-[var(--primary)] text-[var(--text-on-brand)]"
+                      : "border-[var(--border)] text-[var(--text-tertiary)]"
                   )}
-                />
+                >
+                  <Plus className="h-3.5 w-3.5" aria-hidden />
+                </span>
               </button>
             </h3>
 
@@ -59,13 +75,16 @@ export function Accordion({ items }: { items: readonly AccordionItem[] }) {
                   id={panelId}
                   role="region"
                   aria-labelledby={buttonId}
-                  initial={reduceMotion ? false : { height: 0, opacity: 0 }}
+                  /* Height is the one property worth animating off the compositor
+                     here: transform-based collapse either clips the text or
+                     scales it. Kept short so the layout cost stays trivial. */
+                  initial={reduced ? false : { height: 0, opacity: 0 }}
                   animate={{ height: "auto", opacity: 1 }}
-                  exit={reduceMotion ? { opacity: 0 } : { height: 0, opacity: 0 }}
-                  transition={{ duration: reduceMotion ? 0 : 0.25 }}
+                  exit={reduced ? { opacity: 0 } : { height: 0, opacity: 0 }}
+                  transition={{ duration: reduced ? 0 : duration.normal, ease: easeOut }}
                   className="overflow-hidden"
                 >
-                  <p className="type-body px-6 pb-5 text-[var(--text-muted)]">{item.answer}</p>
+                  <p className="type-body px-5 pb-5 text-[var(--text-secondary)]">{item.answer}</p>
                 </motion.div>
               )}
             </AnimatePresence>

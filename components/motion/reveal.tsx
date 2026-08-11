@@ -1,50 +1,77 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
-import { cn } from "@/lib/utils";
+import { motion, useReducedMotion } from "motion/react";
+import { revealVariants, transition, type RevealVariant } from "@/lib/motion";
 
-type RevealProps = {
+type Tag = "div" | "section" | "article" | "figure" | "li" | "ul" | "ol" | "span" | "header";
+
+export type RevealProps = {
   children: React.ReactNode;
   className?: string;
-  /** Stagger position within a group, in units of 60ms. */
-  index?: number;
-  /** Animate on mount instead of on scroll — use for above-the-fold content. */
+  /** Direction and character of the entrance. */
+  variant?: RevealVariant;
+  /** Play on mount rather than on scroll. Use above the fold. */
   immediate?: boolean;
-  as?: "div" | "article" | "figure" | "li" | "span";
+  /** Seconds to wait before starting. Prefer <Stagger> for groups. */
+  delay?: number;
+  as?: Tag;
+  id?: string;
 };
 
 /**
- * Scroll-reveal wrapper. Exists so pages can stay server components and only
- * ship this small client boundary rather than the whole page tree.
+ * The one scroll/mount entrance in the system.
+ *
+ * Exists so pages stay server components and ship only this small client
+ * boundary instead of the whole subtree. Under reduced motion it renders a
+ * plain element with no Motion runtime attached at all.
  */
 export function Reveal({
   children,
   className,
-  index = 0,
+  variant = "up",
   immediate = false,
+  delay = 0,
   as = "div",
+  id,
 }: RevealProps) {
-  const reduceMotion = useReducedMotion();
-  const MotionTag = motion[as];
+  const reduced = useReducedMotion();
 
-  if (reduceMotion) {
+  if (reduced) {
     const Tag = as;
-    return <Tag className={className}>{children}</Tag>;
+    return (
+      <Tag className={className} id={id}>
+        {children}
+      </Tag>
+    );
   }
 
-  const transition = { duration: 0.5, delay: index * 0.06, ease: [0.2, 0.8, 0.2, 1] as const };
-  const animation = { opacity: 1, y: 0 };
+  const MotionTag = motion[as];
 
   return (
     <MotionTag
-      className={cn(className)}
-      initial={{ opacity: 0, y: 20 }}
-      transition={transition}
+      id={id}
+      className={className}
+      variants={revealVariants(variant, false)}
+      initial="hidden"
+      transition={{ ...transition.slow, delay }}
       {...(immediate
-        ? { animate: animation }
-        : { whileInView: animation, viewport: { once: true, margin: "-80px" } })}
+        ? { animate: "visible" }
+        : { whileInView: "visible", viewport: { once: true, margin: "-80px" } })}
     >
       {children}
     </MotionTag>
   );
 }
+
+export const FadeIn = (props: Omit<RevealProps, "variant">) => (
+  <Reveal {...props} variant="fade" />
+);
+
+export const SlideUp = (props: Omit<RevealProps, "variant">) => <Reveal {...props} variant="up" />;
+
+export const ScaleIn = (props: Omit<RevealProps, "variant">) => (
+  <Reveal {...props} variant="scale" />
+);
+
+/** Alias for readability at call sites that are explicitly scroll-driven. */
+export const ScrollReveal = (props: RevealProps) => <Reveal {...props} immediate={false} />;

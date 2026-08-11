@@ -1,6 +1,31 @@
-export type ClassValue = string | number | bigint | false | null | undefined;
+export type ClassValue =
+  | string
+  | number
+  | bigint
+  | boolean
+  | null
+  | undefined
+  | readonly ClassValue[];
 
-/** Joins truthy class names; falsy values from `cond && "class"` are dropped. */
+/**
+ * Joins truthy class names.
+ *
+ * Falsy values from `cond && "class"` are dropped, and arrays are flattened so
+ * a variant can group several related classes without the call site having to
+ * concatenate them into one unreadable string.
+ */
 export function cn(...values: ClassValue[]): string {
-  return values.filter((value): value is string => typeof value === "string" && value.length > 0).join(" ");
+  const out: string[] = [];
+
+  const walk = (value: ClassValue) => {
+    if (!value) return;
+    if (Array.isArray(value)) {
+      value.forEach(walk);
+      return;
+    }
+    if (typeof value === "string") out.push(value);
+  };
+
+  values.forEach(walk);
+  return out.join(" ");
 }

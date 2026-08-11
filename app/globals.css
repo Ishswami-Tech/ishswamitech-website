@@ -1,124 +1,216 @@
 @import "tailwindcss";
 
 /* ==========================================================================
-   Design tokens
+   DESIGN TOKENS
+   Single source of truth. Components reference these; they never hardcode
+   a colour, radius, shadow or duration.
    ========================================================================== */
 
 :root {
   color-scheme: dark;
 
-  /* Brand palette */
-  --primary: #081525;
-  --accent: #42e8f4;
-  --accent-strong: #74f0ff;
-  --accent-deep: #0f7f8c;
-  --secondary: #ffb84d;
-  --tertiary: #a78bfa;
+  /* ---------------------------------------------------------------- Palette
+     Navy-tinted neutral ramp. Deliberately not pure grey — the blue cast is
+     what separates a premium dark UI from a generic one. */
+  --navy-950: #05070f;
+  --navy-900: #080b16;
+  --navy-850: #0a0e1c;
+  --navy-800: #0e1324;
+  --navy-750: #131930;
+  --navy-700: #1a2140;
+  --navy-600: #232c52;
+  --navy-500: #313c69;
+
+  /* Brand ramp: blue → indigo → violet, with cyan reserved as a highlight. */
+  --blue-500: #3b82f6;
+  --blue-400: #60a5fa;
+  --indigo-600: #4f46e5;
+  --indigo-500: #6366f1;
+  --indigo-400: #818cf8;
+  --violet-500: #8b5cf6;
+  --violet-400: #a78bfa;
+  --cyan-400: #22d3ee;
+  --cyan-300: #67e8f9;
+  --pink-400: #f472b6;
+
+  /* ------------------------------------------------------------- Semantic */
+  --primary: var(--indigo-500);
+  --primary-hover: var(--indigo-400);
+  --secondary: var(--violet-500);
+  --accent: var(--indigo-400);
+  --accent-strong: var(--violet-400);
+  --accent-cyan: var(--cyan-400);
+
   --success: #34d399;
   --warning: #fbbf24;
-  --danger: #f87171;
+  --danger: #fb7185;
+  --info: var(--blue-400);
 
-  /* Surfaces */
-  --background: #050b16;
-  --foreground: #f6fbff;
-  --surface: rgba(7, 18, 32, 0.86);
-  --surface-strong: #081525;
-  --card: rgba(10, 28, 48, 0.78);
-  --card-soft: rgba(66, 232, 244, 0.08);
-  --elevated: #0d1726;
-  --band: rgba(8, 21, 37, 0.7);
+  /* -------------------------------------------------------------- Surfaces
+     Layered by elevation: background sits behind surface sits behind raised. */
+  --background: var(--navy-950);
+  --surface: var(--navy-900);
+  --surface-raised: var(--navy-850);
+  --surface-overlay: var(--navy-800);
 
-  /* Text */
-  --text-primary: #f6fbff;
-  --text-muted: #a7b8cc;
-  --text-subtle: #7d91a8;
+  /* Translucent surfaces for content that sits over the animated background. */
+  --surface-glass: rgba(14, 19, 36, 0.72);
+  --surface-glass-strong: rgba(10, 14, 28, 0.88);
+  --surface-tint: rgba(99, 102, 241, 0.07);
+  --surface-tint-strong: rgba(99, 102, 241, 0.13);
 
-  /* Lines */
-  --border: rgba(255, 255, 255, 0.11);
-  --border-strong: rgba(66, 232, 244, 0.32);
-  --grid-line: rgba(116, 240, 255, 0.04);
+  /* ------------------------------------------------------------------ Text */
+  --foreground: #eef1f8;
+  --text-primary: #eef1f8;
+  --text-secondary: #b4bcd4;
+  --text-tertiary: #7b86a4;
+  --text-on-brand: #ffffff;
 
-  /* Interactive */
-  --selection: rgba(66, 232, 244, 0.28);
-  --selection-foreground: #ffffff;
-  --link-emphasis: #ffcc73;
-  --stat-number: #42e8f4;
+  /* ----------------------------------------------------------------- Lines */
+  --border: rgba(148, 163, 214, 0.13);
+  --border-hover: rgba(148, 163, 214, 0.24);
+  --border-strong: rgba(129, 140, 248, 0.36);
+  --border-brand: rgba(99, 102, 241, 0.5);
+  --grid-line: rgba(129, 140, 248, 0.055);
 
-  --button-gradient: linear-gradient(135deg, #42e8f4 0%, #38bdf8 55%, #7c6dff 100%);
-  --button-foreground: #06111f;
-  --button-shadow: 0 14px 34px rgba(66, 232, 244, 0.2);
+  /* ------------------------------------------------------------- Gradients
+     Used for hero copy, primary CTAs, selected states and decoration only.
+     The main application surface stays flat. */
+  --gradient-primary: linear-gradient(135deg, #4f6bff 0%, #6366f1 50%, #8b5cf6 100%);
+  --gradient-secondary: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+  --gradient-accent: linear-gradient(135deg, #3b82f6 0%, #22d3ee 100%);
+  --gradient-warm: linear-gradient(135deg, #8b5cf6 0%, #f472b6 100%);
+  --gradient-text: linear-gradient(115deg, #ffffff 0%, #c7d2fe 38%, #a78bfa 72%, #67e8f9 100%);
+  --gradient-hero: radial-gradient(
+      120% 90% at 12% 8%,
+      rgba(99, 102, 241, 0.22) 0%,
+      transparent 55%
+    ),
+    radial-gradient(100% 80% at 88% 20%, rgba(139, 92, 246, 0.17) 0%, transparent 58%),
+    radial-gradient(90% 90% at 60% 100%, rgba(34, 211, 238, 0.1) 0%, transparent 62%);
+  --gradient-border: linear-gradient(
+    135deg,
+    rgba(129, 140, 248, 0.45),
+    rgba(139, 92, 246, 0.16) 45%,
+    transparent 75%
+  );
 
-  --navbar-bg: rgba(6, 16, 29, 0.9);
-  --navbar-shadow: 0 18px 55px rgba(0, 0, 0, 0.38), 0 0 0 1px rgba(66, 232, 244, 0.12);
-  --nav-pill-bg: rgba(255, 255, 255, 0.06);
+  /* --------------------------------------------------------------- Shadows
+     A real elevation scale plus a separate brand glow. Glow is an accent,
+     never a substitute for elevation. */
+  --shadow-xs: 0 1px 2px rgba(2, 4, 12, 0.4);
+  --shadow-sm: 0 2px 8px rgba(2, 4, 12, 0.45);
+  --shadow-md: 0 8px 24px -6px rgba(2, 4, 12, 0.55);
+  --shadow-lg: 0 18px 48px -12px rgba(2, 4, 12, 0.62);
+  --shadow-xl: 0 32px 80px -20px rgba(2, 4, 12, 0.7);
+  --shadow-glow: 0 10px 34px -10px rgba(79, 70, 229, 0.55);
+  --shadow-glow-strong: 0 16px 48px -12px rgba(99, 102, 241, 0.7);
+  --shadow-inset-top: inset 0 1px 0 rgba(255, 255, 255, 0.07);
 
-  --page-gradient:
-    linear-gradient(135deg, rgba(66, 232, 244, 0.11) 0%, transparent 34%),
-    linear-gradient(225deg, rgba(255, 184, 77, 0.09) 0%, transparent 32%),
-    linear-gradient(180deg, #050b16 0%, #07182a 44%, #040a13 100%);
-
-  /* Radius scale — the only radii used across the site */
-  --radius-sm: 0.5rem;
-  --radius-md: 0.75rem;
-  --radius-lg: 1rem;
-  --radius-xl: 1.25rem;
-  --radius-2xl: 1.75rem;
+  /* ---------------------------------------------------------------- Radius */
+  --radius-xs: 0.25rem;
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.25rem;
+  --radius-3xl: 1.75rem;
   --radius-pill: 999px;
 
-  /* Layout */
-  --page-gutter: clamp(1.125rem, 3.4vw, 2rem);
-  --content-width: 1240px;
-  --section-space: clamp(4rem, 8vw, 7rem);
-  --section-space-tight: clamp(2.5rem, 5vw, 4.25rem);
+  /* --------------------------------------------------------------- Spacing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
 
-  /* Type scale */
-  --text-xs: 0.8125rem;
-  --text-sm: 0.875rem;
-  --text-base: 1rem;
-  --text-md: 1.0625rem;
-  --text-lg: 1.125rem;
+  /* ---------------------------------------------------------------- Layout */
+  --page-gutter: clamp(1.125rem, 3.4vw, 2rem);
+  --content-width: 1200px;
+  --section-space: clamp(4.5rem, 8vw, 7.5rem);
+  --section-space-tight: clamp(2.5rem, 5vw, 4.25rem);
+  --navbar-height: 4.5rem;
+
+  /* ------------------------------------------------------------ Typography */
+  --text-xs: 0.75rem;
+  --text-sm: 0.8125rem;
+  --text-base: 0.9375rem;
+  --text-md: 1rem;
+  --text-lg: 1.0625rem;
   --text-xl: 1.25rem;
   --text-2xl: 1.5rem;
   --text-3xl: 1.875rem;
   --text-4xl: 2.25rem;
-  --leading-tight: 1.2;
+
+  --leading-tight: 1.15;
   --leading-snug: 1.35;
   --leading-normal: 1.5;
   --leading-relaxed: 1.65;
 
+  --tracking-tight: -0.022em;
+  --tracking-normal: -0.011em;
+  --tracking-wide: 0.08em;
+
   --font-mono-stack: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
     monospace;
 
-  /* Motion */
-  --motion-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
-  --motion-fast: 160ms;
-  --motion-base: 240ms;
+  /* ----------------------------------------------------------------- Motion
+     Three tiers, matching the interaction they describe. Anything slower than
+     --duration-slow is ambient background only. */
+  --duration-instant: 80ms;
+  --duration-fast: 150ms;
+  --duration-normal: 240ms;
+  --duration-slow: 400ms;
+  --duration-ambient: 24s;
 
-  --noise-opacity: 0.045;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+
+  /* -------------------------------------------------------------- Effects */
+  --blur-sm: 8px;
+  --blur-md: 16px;
+  --blur-lg: 28px;
+  --noise-opacity: 0.035;
+
+  --selection: rgba(129, 140, 248, 0.32);
+  --selection-foreground: #ffffff;
 }
 
+/* Tailwind v4 theme bridge — exposes tokens as utility classes. */
 @theme inline {
-  --color-primary: var(--primary);
-  --color-accent: var(--accent);
-  --color-secondary: var(--secondary);
-  --color-tertiary: var(--tertiary);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
   --color-surface: var(--surface);
-  --color-card: var(--card);
-  --color-text-primary: var(--text-primary);
-  --color-text-muted: var(--text-muted);
+  --color-surface-raised: var(--surface-raised);
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-accent: var(--accent);
   --color-success: var(--success);
   --color-warning: var(--warning);
   --color-danger: var(--danger);
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
   --color-border: var(--border);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-tertiary: var(--text-tertiary);
+
   --font-sans: var(--font-inter), system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --font-heading: var(--font-inter), system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --font-mono: var(--font-mono-stack);
+
+  --breakpoint-sm: 40rem;
+  --breakpoint-md: 48rem;
+  --breakpoint-lg: 64rem;
+  --breakpoint-xl: 80rem;
+  --breakpoint-2xl: 96rem;
 }
 
 /* ==========================================================================
-   Base
+   BASE
    ========================================================================== */
 
 * {
@@ -127,34 +219,38 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--navbar-height) + 1.5rem);
   background: var(--background);
 }
 
 body {
-  background: var(--page-gradient);
+  background: var(--background);
   color: var(--foreground);
   font-family: var(--font-inter), system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  font-size: var(--text-base);
+  font-size: var(--text-md);
   line-height: var(--leading-normal);
+  letter-spacing: var(--tracking-normal);
   min-height: 100vh;
   overflow-x: hidden;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 h1,
 h2,
 h3,
 h4 {
-  font-weight: 700;
+  font-weight: 600;
   line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
   text-wrap: balance;
 }
 
 h1 { font-size: var(--text-3xl); }
 h2 { font-size: var(--text-2xl); }
-h3 { font-size: var(--text-xl); font-weight: 600; }
-h4 { font-size: var(--text-lg); font-weight: 600; }
+h3 { font-size: var(--text-xl); }
+h4 { font-size: var(--text-lg); }
 
 a {
   text-underline-offset: 0.2em;
@@ -171,13 +267,29 @@ img {
 }
 
 :focus-visible {
-  outline: 2px solid color-mix(in srgb, var(--accent) 85%, transparent);
-  outline-offset: 3px;
+  outline: 2px solid var(--indigo-400);
+  outline-offset: 2px;
   border-radius: var(--radius-sm);
 }
 
-.font-heading {
-  font-family: var(--font-inter), system-ui, sans-serif;
+/* Scrollbar tuned to the navy surface rather than the OS default. */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--navy-950);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--navy-700);
+  border: 2px solid var(--navy-950);
+  border-radius: var(--radius-pill);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--navy-600);
 }
 
 .font-mono {
@@ -185,7 +297,7 @@ img {
 }
 
 /* ==========================================================================
-   Layout primitives
+   LAYOUT PRIMITIVES
    ========================================================================== */
 
 /* Owns its own horizontal gutter — never pair with px-* utilities. */
@@ -196,41 +308,26 @@ img {
   padding-inline: var(--page-gutter);
 }
 
-.container--narrow {
-  max-width: 56rem;
-}
+.container--narrow { max-width: 56rem; }
+.container--prose { max-width: 46rem; }
 
-.container--prose {
-  max-width: 46rem;
-}
-
-.site-section {
-  padding-block: var(--section-space);
-}
-
-.site-section--tight {
-  padding-block: var(--section-space-tight);
-}
-
-.site-section--no-top {
-  padding-top: 0;
-}
-
-.site-section--ruled {
-  border-top: 1px solid var(--border);
-}
+.site-section { padding-block: var(--section-space); }
+.site-section--tight { padding-block: var(--section-space-tight); }
+.site-section--no-top { padding-top: 0; }
+.site-section--ruled { border-top: 1px solid var(--border); }
 
 .site-section--band {
   border-block: 1px solid var(--border);
-  background: var(--band);
+  background: linear-gradient(180deg, rgba(10, 14, 28, 0.6), rgba(8, 11, 22, 0.3));
 }
 
 .site-section--elevated {
-  background: var(--elevated);
+  background: var(--surface);
+  border-block: 1px solid var(--border);
 }
 
 .page-hero {
-  padding-block: clamp(7.5rem, 11vw, 10rem) var(--section-space-tight);
+  padding-block: clamp(8rem, 12vw, 11rem) var(--section-space-tight);
 }
 
 .page-hero--compact {
@@ -238,110 +335,112 @@ img {
 }
 
 /* ==========================================================================
-   Typography roles — one family (Inter); weight + size create hierarchy
+   TYPOGRAPHY ROLES
+   One family (Inter). Weight, size and tracking create hierarchy.
    ========================================================================== */
 
 .type-hero {
-  font-weight: 700;
-  font-size: clamp(2.25rem, 4vw + 1rem, 3.75rem);
-  line-height: 1.05;
-  letter-spacing: -0.025em;
+  font-weight: 600;
+  font-size: clamp(2.5rem, 4.4vw + 1rem, 4.25rem);
+  line-height: 1.02;
+  letter-spacing: -0.032em;
   text-wrap: balance;
 }
 
 .type-page-title {
-  font-weight: 700;
-  font-size: clamp(2rem, 3vw + 1rem, 2.875rem);
-  line-height: 1.1;
-  letter-spacing: -0.02em;
+  font-weight: 600;
+  font-size: clamp(2.125rem, 3vw + 1rem, 3.125rem);
+  line-height: 1.06;
+  letter-spacing: -0.028em;
   text-wrap: balance;
 }
 
 .type-section-title {
-  font-weight: 700;
-  font-size: clamp(1.5rem, 1.5vw + 1rem, 2.125rem);
-  line-height: var(--leading-tight);
-  letter-spacing: -0.015em;
+  font-weight: 600;
+  font-size: clamp(1.625rem, 1.6vw + 1rem, 2.25rem);
+  line-height: 1.12;
+  letter-spacing: -0.024em;
   text-wrap: balance;
 }
 
 .type-panel-title {
   font-weight: 600;
-  font-size: clamp(1.125rem, 1vw + 0.875rem, 1.375rem);
+  font-size: clamp(1.1875rem, 1vw + 0.875rem, 1.4375rem);
   line-height: var(--leading-snug);
-  letter-spacing: -0.01em;
+  letter-spacing: -0.018em;
 }
 
 .type-block-title {
   font-weight: 600;
-  font-size: clamp(1.125rem, 0.75vw + 1rem, 1.3125rem);
+  font-size: clamp(1.0625rem, 0.7vw + 0.9rem, 1.1875rem);
   line-height: var(--leading-snug);
-  letter-spacing: -0.01em;
+  letter-spacing: -0.014em;
 }
 
 .type-card-title {
   font-weight: 600;
   font-size: var(--text-lg);
   line-height: var(--leading-snug);
-  letter-spacing: -0.005em;
+  letter-spacing: -0.012em;
 }
 
 .type-eyebrow {
   font-size: var(--text-xs);
   font-weight: 600;
-  letter-spacing: 0.09em;
+  letter-spacing: var(--tracking-wide);
   text-transform: uppercase;
   line-height: var(--leading-normal);
   color: var(--accent);
 }
 
 .type-band-label {
-  font-size: var(--text-sm);
+  font-size: var(--text-xs);
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   line-height: var(--leading-normal);
-  color: var(--text-muted);
+  color: var(--text-tertiary);
   display: block;
 }
 
 .type-lead {
   font-size: var(--text-lg);
   line-height: var(--leading-relaxed);
-  color: var(--text-muted);
+  letter-spacing: -0.008em;
+  color: var(--text-secondary);
   text-wrap: pretty;
 }
 
 .type-body {
-  font-size: var(--text-base);
+  font-size: var(--text-md);
   line-height: var(--leading-relaxed);
   text-wrap: pretty;
 }
 
 .type-ui {
-  font-size: var(--text-sm);
+  font-size: var(--text-base);
   line-height: var(--leading-normal);
   font-weight: 500;
 }
 
 .type-stat {
-  font-weight: 700;
+  font-weight: 600;
   font-variant-numeric: tabular-nums;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.035em;
 }
 
 .type-stat-label {
   font-size: var(--text-xs);
-  font-weight: 600;
-  letter-spacing: 0.04em;
+  font-weight: 500;
+  letter-spacing: 0.045em;
   text-transform: uppercase;
-  color: var(--text-muted);
+  color: var(--text-tertiary);
 }
 
 .type-quote {
   font-size: var(--text-lg);
   line-height: var(--leading-relaxed);
-  font-style: italic;
+  letter-spacing: -0.01em;
 }
 
 .type-tech-row {
@@ -354,93 +453,244 @@ img {
 .type-index {
   font-family: var(--font-mono-stack);
   font-size: var(--text-xs);
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  color: var(--text-tertiary);
 }
 
 .type-tag {
   font-size: var(--text-xs);
-  font-weight: 600;
-  letter-spacing: 0.04em;
+  font-weight: 500;
+  letter-spacing: 0.01em;
 }
 
 /* ==========================================================================
-   Surfaces & effects
+   SURFACES & EFFECTS
    ========================================================================== */
 
 .glass {
-  background: var(--surface);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
+  background: var(--surface-glass);
+  backdrop-filter: blur(var(--blur-md)) saturate(140%);
+  -webkit-backdrop-filter: blur(var(--blur-md)) saturate(140%);
   border: 1px solid var(--border);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.28);
+  box-shadow: var(--shadow-md), var(--shadow-inset-top);
+}
+
+.glass-strong {
+  background: var(--surface-glass-strong);
+  backdrop-filter: blur(var(--blur-lg)) saturate(150%);
+  -webkit-backdrop-filter: blur(var(--blur-lg)) saturate(150%);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-lg), var(--shadow-inset-top);
 }
 
 .gradient-text {
-  background: linear-gradient(135deg, #f6fbff 0%, #42e8f4 45%, #a78bfa 100%);
+  background: var(--gradient-text);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   color: transparent;
 }
 
-.site-grid-mask {
+/* Gradient hairline border via mask — keeps the fill transparent so the
+   animated background stays visible through the element. */
+.gradient-border {
+  position: relative;
+}
+
+.gradient-border::before {
+  content: "";
   position: absolute;
   inset: 0;
-  animation: site-drift 18s var(--motion-ease) infinite;
+  border-radius: inherit;
+  padding: 1px;
+  background: var(--gradient-border);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   AMBIENT BACKGROUND LAYERS
+   Consumed only by <AnimatedBackground>. Every animation here runs on
+   transform/opacity so it stays on the compositor.
+   ========================================================================== */
+
+.bg-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(var(--orb-blur, 90px));
+  opacity: var(--orb-opacity, 0.5);
+  will-change: transform;
+}
+
+.bg-orb--drift-a {
+  animation: orb-drift-a var(--duration-ambient) var(--ease-in-out) infinite;
+}
+
+.bg-orb--drift-b {
+  animation: orb-drift-b calc(var(--duration-ambient) * 1.5) var(--ease-in-out) infinite;
+}
+
+.bg-orb--drift-c {
+  animation: orb-drift-c calc(var(--duration-ambient) * 1.25) var(--ease-in-out) infinite;
+}
+
+@keyframes orb-drift-a {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(4%, -6%, 0) scale(1.08); }
+}
+
+@keyframes orb-drift-b {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1.05); }
+  50% { transform: translate3d(-5%, 5%, 0) scale(0.95); }
+}
+
+@keyframes orb-drift-c {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(0.98); }
+  50% { transform: translate3d(3%, 4%, 0) scale(1.06); }
+}
+
+.bg-grid {
+  position: absolute;
+  inset: 0;
   background-image:
     linear-gradient(var(--grid-line) 1px, transparent 1px),
     linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
-  background-size: 42px 42px;
-  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.55), transparent 85%);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(80% 60% at 50% 0%, #000 0%, transparent 100%);
+  -webkit-mask-image: radial-gradient(80% 60% at 50% 0%, #000 0%, transparent 100%);
 }
 
-.site-noise {
+.bg-dots {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(var(--grid-line) 1.2px, transparent 1.2px);
+  background-size: 28px 28px;
+  mask-image: radial-gradient(70% 60% at 50% 40%, #000 0%, transparent 100%);
+  -webkit-mask-image: radial-gradient(70% 60% at 50% 40%, #000 0%, transparent 100%);
+}
+
+/* Fine film grain. A tiled SVG beats hundreds of DOM nodes or a canvas loop. */
+.bg-grain {
   position: absolute;
   inset: 0;
   opacity: var(--noise-opacity);
-  background-image:
-    radial-gradient(circle at 20% 20%, white 0.7px, transparent 0.8px),
-    radial-gradient(circle at 80% 60%, white 0.7px, transparent 0.8px),
-    radial-gradient(circle at 40% 85%, white 0.7px, transparent 0.8px);
-  background-size: 120px 120px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-.hover-lift {
-  transition-duration: var(--motion-base);
-  transition-property: border-color, box-shadow, transform, background-color, color;
-  transition-timing-function: var(--motion-ease);
+/* Aurora ribbons: two wide conic sweeps, heavily blurred and masked. */
+.bg-aurora {
+  position: absolute;
+  inset: -30%;
+  filter: blur(70px);
+  opacity: 0.42;
+  background:
+    conic-gradient(
+      from 180deg at 30% 40%,
+      transparent 0deg,
+      rgba(79, 107, 255, 0.5) 60deg,
+      transparent 150deg
+    ),
+    conic-gradient(
+      from 20deg at 70% 55%,
+      transparent 0deg,
+      rgba(139, 92, 246, 0.45) 70deg,
+      transparent 160deg
+    );
+  animation: aurora-sweep calc(var(--duration-ambient) * 1.75) linear infinite;
+  will-change: transform;
 }
 
-.hover-lift:hover {
-  transform: translateY(-0.25rem);
-  box-shadow: var(--button-shadow);
+@keyframes aurora-sweep {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.15); }
+  100% { transform: rotate(360deg) scale(1); }
 }
 
-@keyframes site-drift {
-  0%, 100% { transform: translate3d(0, 0, 0); }
-  50% { transform: translate3d(0, -0.35rem, 0); }
+/* Diagonal light beams sweeping across the hero. */
+.bg-beam {
+  position: absolute;
+  top: -40%;
+  height: 180%;
+  width: 28rem;
+  transform: rotate(18deg);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(129, 140, 248, 0.09),
+    rgba(167, 139, 250, 0.05),
+    transparent
+  );
+  filter: blur(28px);
+  animation: beam-slide calc(var(--duration-ambient) * 0.75) var(--ease-in-out) infinite;
+  will-change: transform, opacity;
 }
+
+@keyframes beam-slide {
+  0%, 100% { transform: rotate(18deg) translate3d(-6%, 0, 0); opacity: 0.5; }
+  50% { transform: rotate(18deg) translate3d(6%, 0, 0); opacity: 0.9; }
+}
+
+/* ==========================================================================
+   MOTION UTILITIES
+   ========================================================================== */
 
 @keyframes marquee-scroll {
   from { transform: translate3d(0, 0, 0); }
   to { transform: translate3d(-50%, 0, 0); }
 }
 
-/* CSS-driven marquee: no JS, no layout thrash, pauses on hover. */
 .marquee {
   display: flex;
   width: max-content;
-  animation: marquee-scroll 42s linear infinite;
+  animation: marquee-scroll 46s linear infinite;
 }
 
 .marquee:hover {
   animation-play-state: paused;
 }
 
+@keyframes shimmer {
+  from { transform: translate3d(-100%, 0, 0); }
+  to { transform: translate3d(100%, 0, 0); }
+}
+
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: var(--surface-raised);
+}
+
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(148, 163, 214, 0.08),
+    transparent
+  );
+  animation: shimmer 1.6s var(--ease-in-out) infinite;
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.85); opacity: 0.7; }
+  70%, 100% { transform: scale(2); opacity: 0; }
+}
+
+.pulse-ring {
+  animation: pulse-ring 2.4s var(--ease-out) infinite;
+}
+
 /* ==========================================================================
-   Reduced motion
+   REDUCED MOTION
+   Strip ambient and decorative movement; keep state transitions short but
+   present so interactions still read as responsive.
    ========================================================================== */
 
 @media (prefers-reduced-motion: reduce) {
@@ -448,11 +698,14 @@ img {
     scroll-behavior: auto;
   }
 
-  .site-grid-mask,
+  .bg-orb--drift-a,
+  .bg-orb--drift-b,
+  .bg-orb--drift-c,
+  .bg-aurora,
+  .bg-beam,
   .marquee,
-  .animate-bounce,
-  .animate-ping,
-  .animate-spin {
+  .pulse-ring,
+  .skeleton::after {
     animation: none !important;
   }
 
@@ -462,12 +715,31 @@ img {
     justify-content: center;
   }
 
-  .hover-lift,
-  .glass {
+  *,
+  *::before,
+  *::after {
     transition-duration: 1ms !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+/* On coarse-pointer/small screens, drop the most expensive layers. Blur over
+   a large area is the single biggest paint cost on mobile GPUs. */
+@media (max-width: 48rem) {
+  :root {
+    --blur-lg: 18px;
+    --blur-md: 12px;
   }
 
-  .hover-lift:hover {
-    transform: none;
+  .bg-aurora,
+  .bg-beam {
+    display: none;
+  }
+
+  .bg-orb {
+    --orb-blur: 60px;
+    --orb-opacity: 0.35;
+    animation: none;
   }
 }

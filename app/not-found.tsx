@@ -79,7 +79,7 @@ export default function NotFound() {
                     <span className="type-card-title text-sm text-[var(--foreground)] transition-colors group-hover:text-[var(--accent)]">
                       {link.label}
                     </span>
-                    <span className="type-body text-xs text-[var(--text-muted)]">{link.desc}</span>
+                    <span className="type-body text-xs text-[var(--text-secondary)]">{link.desc}</span>
                   </Card>
                 </Link>
               </li>

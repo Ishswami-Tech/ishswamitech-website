@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import {
   ArrowLeft,
   ArrowUpRight,
@@ -50,7 +50,7 @@ function renderContent(content: string) {
     blocks.push(
       <ul key={`ul-${idx}`} className="mb-6 list-disc space-y-2 pl-6 marker:text-[var(--accent)]">
         {listBuffer.map((item, i) => (
-          <li key={i} className="type-body text-[var(--text-muted)]">
+          <li key={i} className="type-body text-[var(--text-secondary)]">
             {item}
           </li>
         ))}
@@ -91,7 +91,7 @@ function renderContent(content: string) {
     }
     if (line.trim() === "") return;
     blocks.push(
-      <p key={idx} className="type-body mb-5 text-[var(--text-muted)]">
+      <p key={idx} className="type-body mb-5 text-[var(--text-secondary)]">
         {line}
       </p>
     );
@@ -112,7 +112,7 @@ export default function BlogPostContent({ post, relatedPosts }: BlogPostContentP
           <div className="mx-auto max-w-4xl">
             <Link
               href="/blog"
-              className="type-ui mb-8 inline-flex items-center gap-2 text-[var(--text-muted)] transition-colors hover:text-[var(--accent)]"
+              className="type-ui mb-8 inline-flex items-center gap-2 text-[var(--text-secondary)] transition-colors hover:text-[var(--accent)]"
             >
               <ArrowLeft className="h-4 w-4" />
               Back to all articles
@@ -122,14 +122,14 @@ export default function BlogPostContent({ post, relatedPosts }: BlogPostContentP
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
             >
-              <span className="type-tag mb-5 inline-flex w-fit items-center gap-1 rounded-md border border-[var(--border)] bg-[var(--card-soft)] px-2.5 py-1 text-[var(--accent)]">
+              <span className="type-tag mb-5 inline-flex w-fit items-center gap-1 rounded-md border border-[var(--border)] bg-[var(--surface-tint)] px-2.5 py-1 text-[var(--accent)]">
                 <Tag className="h-3 w-3" />
                 {post.category}
               </span>
               <h1 className="type-page-title mb-5 text-[var(--foreground)]">{post.title}</h1>
               <p className="type-lead mb-8 max-w-3xl">{post.excerpt}</p>
 
-              <div className="type-ui flex flex-wrap items-center gap-x-5 gap-y-2 text-[var(--text-muted)]">
+              <div className="type-ui flex flex-wrap items-center gap-x-5 gap-y-2 text-[var(--text-secondary)]">
                 <span className="inline-flex items-center gap-1.5">
                   <User className="h-4 w-4" />
                   {post.author}
@@ -185,7 +185,7 @@ export default function BlogPostContent({ post, relatedPosts }: BlogPostContentP
         <div className="container mx-auto px-4">
           <div className="mx-auto max-w-3xl">
             <div className="glass flex flex-col items-start gap-4 rounded-2xl border border-[var(--border)] p-6 sm:flex-row sm:items-center sm:justify-between">
-              <p className="type-band-label text-[var(--text-muted)]">Share this article</p>
+              <p className="type-band-label text-[var(--text-secondary)]">Share this article</p>
               <ShareButtons title={post.title} url={shareUrl} />
             </div>
           </div>
@@ -197,7 +197,7 @@ export default function BlogPostContent({ post, relatedPosts }: BlogPostContentP
         <div className="container mx-auto px-4">
           <div className="mx-auto max-w-3xl">
             <div className="glass flex items-center gap-5 rounded-2xl border border-[var(--border)] p-6">
-              <div className="relative aspect-square h-16 w-16 shrink-0 overflow-hidden rounded-2xl ring-2 ring-[var(--card-soft)]">
+              <div className="relative aspect-square h-16 w-16 shrink-0 overflow-hidden rounded-2xl ring-2 ring-[var(--surface-tint)]">
                 <Image
                   src={post.authorAvatar || "/Assets/Programmers_4.jpg"}
                   alt={post.author}
@@ -207,9 +207,9 @@ export default function BlogPostContent({ post, relatedPosts }: BlogPostContentP
                 />
               </div>
               <div>
-                <p className="type-eyebrow mb-1 text-[var(--text-muted)]">Written by</p>
+                <p className="type-eyebrow mb-1 text-[var(--text-secondary)]">Written by</p>
                 <h3 className="type-card-title text-[var(--foreground)]">{post.author}</h3>
-                <p className="type-body text-sm text-[var(--text-muted)]">
+                <p className="type-body text-sm text-[var(--text-secondary)]">
                   Engineer & writer at {siteConfig.name}
                 </p>
               </div>
@@ -220,7 +220,7 @@ export default function BlogPostContent({ post, relatedPosts }: BlogPostContentP
 
       {/* RELATED */}
       {relatedPosts.length > 0 && (
-        <section className="site-section bg-[var(--home-band-bg)]">
+        <section className="site-section bg-[var(--surface)]">
           <div className="container mx-auto px-4">
             <div className="mb-10 flex items-end justify-between">
               <div>
@@ -229,7 +229,7 @@ export default function BlogPostContent({ post, relatedPosts }: BlogPostContentP
               </div>
               <Link
                 href="/blog"
-                className="type-ui inline-flex items-center gap-2 text-[var(--accent)] transition-colors hover:text-[var(--link-emphasis)]"
+                className="type-ui inline-flex items-center gap-2 text-[var(--accent)] transition-colors hover:text-[var(--accent-strong)]"
               >
                 All articles
                 <ArrowUpRight className="h-4 w-4" />
@@ -250,13 +250,13 @@ export default function BlogPostContent({ post, relatedPosts }: BlogPostContentP
                       />
                     </div>
                     <div className="flex flex-1 flex-col p-6">
-                      <span className="type-tag mb-3 inline-flex w-fit items-center gap-1 rounded-md border border-[var(--border)] bg-[var(--card-soft)] px-2 py-0.5 text-[var(--accent)]">
+                      <span className="type-tag mb-3 inline-flex w-fit items-center gap-1 rounded-md border border-[var(--border)] bg-[var(--surface-tint)] px-2 py-0.5 text-[var(--accent)]">
                         {p.category}
                       </span>
                       <h3 className="type-card-title mb-2 line-clamp-2 text-[var(--foreground)] transition-colors group-hover:text-[var(--accent)]">
                         {p.title}
                       </h3>
-                      <p className="type-body mt-auto text-xs text-[var(--text-muted)]">
+                      <p className="type-body mt-auto text-xs text-[var(--text-secondary)]">
                         {formatDate(p.date)} · {p.readTime}
                       </p>
                     </div>
@@ -275,7 +275,7 @@ export default function BlogPostContent({ post, relatedPosts }: BlogPostContentP
             <div className="absolute -right-20 -top-20 h-60 w-60 rounded-full bg-[var(--accent)]/15 blur-3xl" />
             <div className="absolute -bottom-20 -left-20 h-60 w-60 rounded-full bg-[var(--secondary)]/15 blur-3xl" />
             <div className="relative">
-              <div className="mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--card-soft)] text-[var(--accent)]">
+              <div className="mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--surface-tint)] text-[var(--accent)]">
                 <Mail className="h-5 w-5" />
               </div>
               <p className="type-eyebrow mb-4">Weekly field notes</p>
@@ -291,11 +291,11 @@ export default function BlogPostContent({ post, relatedPosts }: BlogPostContentP
                   type="email"
                   required
                   placeholder="your@email.com"
-                  className="flex-1 rounded-full border border-[var(--border)] bg-[var(--surface)] px-5 py-3 text-[var(--foreground)] placeholder-[var(--text-muted)] focus:border-[var(--border-strong)] focus:outline-none"
+                  className="flex-1 rounded-full border border-[var(--border)] bg-[var(--surface)] px-5 py-3 text-[var(--foreground)] placeholder-[var(--text-secondary)] focus:border-[var(--border-strong)] focus:outline-none"
                 />
                 <button
                   type="submit"
-                  className="rounded-full [background:var(--button-gradient)] px-6 py-3 font-semibold text-[var(--button-foreground)] shadow-[var(--button-shadow)] transition-all hover:-translate-y-0.5"
+                  className="rounded-full [background-image:var(--gradient-primary)] px-6 py-3 font-semibold text-[var(--text-on-brand)] shadow-[var(--shadow-glow)] transition-all hover:-translate-y-0.5"
                 >
                   Subscribe
                 </button>

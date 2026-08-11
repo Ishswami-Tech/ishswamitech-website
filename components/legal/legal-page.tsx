@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { ArrowLeft, FileText, PackageCheck, RotateCcw, Shield } from "lucide-react";
 import { Container } from "@/components/ui/container";
-import { Card } from "@/components/ui/card";
+import { Card, CardIcon } from "@/components/ui/card";
+import { AnimatedBackground } from "@/components/ui/animated-background";
 import { Reveal } from "@/components/motion/reveal";
 import { legalContacts, legalDocuments, type LegalSlug } from "@/lib/legal/policy-content";
 
@@ -23,13 +24,17 @@ export function LegalPage({ slug }: { slug: LegalSlug }) {
 
   return (
     <>
-      <section className="page-hero page-hero--compact">
-        <Container width="narrow">
-          <Reveal immediate>
-            <nav aria-label="Breadcrumb" className="type-ui mb-6 text-[var(--text-muted)]">
+      <section className="page-hero page-hero--compact relative isolate overflow-hidden">
+        <AnimatedBackground variant="minimal" intensity="subtle" />
+        <Container width="narrow" className="relative z-10">
+          <Reveal immediate variant="fade">
+            <nav aria-label="Breadcrumb" className="type-ui mb-6 text-[var(--text-tertiary)]">
               <ol className="flex items-center gap-2">
                 <li>
-                  <Link href="/" className="transition-colors hover:text-[var(--accent)]">
+                  <Link
+                    href="/"
+                    className="transition-colors duration-[var(--duration-fast)] hover:text-[var(--foreground)]"
+                  >
                     Home
                   </Link>
                 </li>
@@ -41,14 +46,14 @@ export function LegalPage({ slug }: { slug: LegalSlug }) {
             </nav>
           </Reveal>
 
-          <Reveal immediate index={1}>
-            <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-[var(--radius-md)] border border-[var(--border-strong)] bg-[var(--card-soft)] text-[var(--accent)]">
-              <Icon className="h-6 w-6" aria-hidden />
-            </div>
+          <Reveal immediate delay={0.06}>
+            <CardIcon className="mb-5">
+              <Icon className="h-5 w-5" aria-hidden />
+            </CardIcon>
             <p className="type-eyebrow mb-3">{doc.eyebrow}</p>
             <h1 className="type-page-title mb-3 text-[var(--foreground)]">{doc.title}</h1>
-            <p className="type-ui text-[var(--text-subtle)]">Last updated: {doc.updated}</p>
-            <p className="type-body mt-4 max-w-2xl text-[var(--text-muted)]">{doc.intro}</p>
+            <p className="type-ui text-[var(--text-tertiary)]">Last updated: {doc.updated}</p>
+            <p className="type-body mt-4 max-w-2xl text-[var(--text-secondary)]">{doc.intro}</p>
           </Reveal>
         </Container>
       </section>
@@ -57,14 +62,17 @@ export function LegalPage({ slug }: { slug: LegalSlug }) {
         <Container width="narrow">
           <div className="grid gap-10 lg:grid-cols-[minmax(0,14rem)_1fr]">
             <aside className="hidden lg:block">
-              <nav aria-label="On this page" className="sticky top-28">
+              <nav
+                aria-label="On this page"
+                className="sticky top-[calc(var(--navbar-height)+1.5rem)]"
+              >
                 <p className="type-band-label mb-3">On this page</p>
-                <ul className="space-y-2 border-l border-[var(--border)] pl-4">
+                <ul className="flex flex-col gap-1 border-l border-[var(--border)]">
                   {doc.sections.map((section) => (
                     <li key={section.id}>
                       <a
                         href={`#${section.id}`}
-                        className="type-ui block text-[var(--text-muted)] transition-colors hover:text-[var(--accent)]"
+                        className="type-ui -ml-px block border-l border-transparent py-1 pl-4 text-[var(--text-tertiary)] transition-[color,border-color] duration-[var(--duration-fast)] hover:border-[var(--primary)] hover:text-[var(--foreground)]"
                       >
                         {stripNumber(section.title)}
                       </a>
@@ -74,25 +82,29 @@ export function LegalPage({ slug }: { slug: LegalSlug }) {
               </nav>
             </aside>
 
-            <article className="space-y-10">
+            <article className="flex flex-col gap-9">
               {doc.disclosure && (
                 <Card tone="soft" padding="md">
-                  <p className="type-body text-[var(--text-muted)]">{doc.disclosure}</p>
+                  <p className="type-body text-[var(--text-secondary)]">{doc.disclosure}</p>
                 </Card>
               )}
 
               {doc.sections.map((section) => (
-                <section key={section.id} id={section.id} className="scroll-mt-28">
+                <section
+                  key={section.id}
+                  id={section.id}
+                  className="scroll-mt-[calc(var(--navbar-height)+1.5rem)]"
+                >
                   <h2 className="type-panel-title mb-3 text-[var(--foreground)]">
                     {section.title}
                   </h2>
-                  <p className="type-body text-[var(--text-muted)]">{section.body}</p>
+                  <p className="type-body text-[var(--text-secondary)]">{section.body}</p>
                 </section>
               ))}
 
               <Card tone="soft" padding="md">
                 <h2 className="type-panel-title mb-3 text-[var(--foreground)]">Contact us</h2>
-                <p className="type-body text-[var(--text-muted)]">
+                <p className="type-body text-[var(--text-secondary)]">
                   For questions about this policy, email{" "}
                   <a
                     href={`mailto:${legalContacts.supportEmail}`}
@@ -113,7 +125,7 @@ export function LegalPage({ slug }: { slug: LegalSlug }) {
 
               <Link
                 href="/"
-                className="type-ui inline-flex items-center gap-2 text-[var(--accent)] transition-colors hover:text-[var(--link-emphasis)]"
+                className="type-ui inline-flex items-center gap-2 text-[var(--accent)] transition-colors hover:text-[var(--accent-strong)]"
               >
                 <ArrowLeft className="h-4 w-4" aria-hidden />
                 Back to home

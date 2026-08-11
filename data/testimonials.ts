@@ -26,7 +26,7 @@ export const testimonials = [
     role: "Product",
     avatar: "/Assets/Programmers_4.jpg",
     quote:
-      "Ishswami Tech focused on practical decisions instead of unnecessary complexity, which helped us move faster.",
+      "IshSwamiTech focused on practical decisions instead of unnecessary complexity, which helped us move faster.",
     rating: 5,
   },
 ];

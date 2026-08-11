@@ -12,7 +12,7 @@ import {
   Tag,
   Mail,
 } from "lucide-react";
-import ShareButtons from "./ShareButtons";
+import ShareButtons from "./share-buttons";
 import { absoluteUrl, siteConfig } from "@/lib/site";
 
 interface BlogPost {

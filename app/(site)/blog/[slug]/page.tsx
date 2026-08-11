@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { blogPosts } from "@/data/blog";
-import BlogPostContent from "@/components/BlogPostContent";
+import BlogPostContent from "@/components/blog/blog-post-content";
 import { absoluteUrl, siteConfig } from "@/lib/site";
 
 export async function generateStaticParams() {

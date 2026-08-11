@@ -494,25 +494,6 @@ img {
 
 /* Gradient hairline border via mask — keeps the fill transparent so the
    animated background stays visible through the element. */
-/*
-  Runs the hero artwork past the container's right gutter to the viewport
-  edge. A rendered scene should bleed off the page; stopping it at the content
-  width leaves a hard vertical seam where the render's backdrop meets the page.
-
-  The width is the column, plus whatever margin the centred container leaves on
-  that side, plus the gutter itself. max() keeps it honest below --content-width,
-  where that margin is zero and the term would otherwise go negative. The hero
-  section clips the overflow, so the extra width never creates a scrollbar.
-
-  Only above the breakpoint: on smaller screens the image is already full-width.
-*/
-@media (min-width: 1024px) {
-  .hero-bleed-right {
-    width: calc(100% + max(0px, (100vw - var(--content-width)) / 2) + var(--page-gutter));
-    max-width: none;
-  }
-}
-
 .gradient-border {
   position: relative;
 }

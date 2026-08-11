@@ -33,7 +33,6 @@ import { Card, CardIcon } from "@/components/ui/card";
 import { SpotlightCard } from "@/components/ui/spotlight-card";
 import { Button } from "@/components/ui/button";
 import { Badge, StatusDot } from "@/components/ui/badge";
-import { AnimatedBackground } from "@/components/ui/animated-background";
 import { CtaBand } from "@/components/ui/cta-band";
 import { Reveal } from "@/components/motion/reveal";
 import { Stagger, StaggerItem } from "@/components/motion/stagger";
@@ -78,82 +77,106 @@ export default function HomePage() {
 
       {/* ---------------------------------------------------------------- HERO */}
       <section className="relative isolate flex min-h-[92svh] items-center overflow-hidden">
-        <AnimatedBackground variant="aurora" />
+        {/*
+          The artwork is the section's backdrop rather than a column of its
+          own, so no <AnimatedBackground> here — anything behind a full-bleed
+          opaque image is paid for and never seen.
+        */}
+        <div aria-hidden className="absolute inset-0 -z-10">
+          <Image
+            src="/Assets/hero-visual.webp"
+            alt=""
+            fill
+            priority
+            fetchPriority="high"
+            sizes="100vw"
+            placeholder="blur"
+            blurDataURL="data:image/webp;base64,UklGRkIAAABXRUJQVlA4IDYAAADwAQCdASoQAAsAA8BgJagC7AEO+51yuwAA/vhOjxjazHsxMANMIrfztD9iarjpziH37PjgAAA="
+            /* Biased right of centre: the hero is wider than the 3:2 source on
+               desktop so nothing is cropped horizontally there, but a phone
+               crops to roughly a third of the width and centring it would show
+               empty sky instead of the laptop. */
+            className="object-cover object-[62%_50%]"
+          />
+
+          {/*
+            Readability scrim. Two of them, because the text sits in different
+            places at different widths: down the left above lg, over the whole
+            frame below it. Contrast has to hold in both cases, and a single
+            gradient that works for one washes out the artwork in the other.
+
+            Neither reaches full opacity at the text end — 0.94 keeps the
+            purple wave faintly alive behind the headline, and over a near-black
+            render that is still far past the contrast floor for white type.
+          */}
+          <div
+            className="absolute inset-0 lg:hidden"
+            style={{
+              background:
+                "linear-gradient(to bottom, rgba(5,7,15,0.92) 0%, rgba(5,7,15,0.74) 42%, rgba(5,7,15,0.93) 100%)",
+            }}
+          />
+          <div
+            className="absolute inset-0 hidden lg:block"
+            style={{
+              background:
+                "linear-gradient(to right, rgba(5,7,15,0.94) 0%, rgba(5,7,15,0.88) 30%, rgba(5,7,15,0.55) 54%, rgba(5,7,15,0.12) 80%, rgba(5,7,15,0) 100%)",
+            }}
+          />
+
+          {/* Hands off to the page colour so the next section doesn't begin
+              with a visible horizontal seam, and — the reason it reaches this
+              far up — darkens the band the proof row sits in. The horizontal
+              scrim above has faded out by then, leaving those last two items
+              over the lit laptop with nothing behind them. */}
+          <div
+            className="absolute inset-x-0 bottom-0 h-56 lg:h-72"
+            style={{
+              background:
+                "linear-gradient(to top, var(--background) 22%, rgba(5,7,15,0.82) 55%, rgba(5,7,15,0.35) 80%, transparent)",
+            }}
+          />
+        </div>
 
         <Container className="relative z-10 pb-16 pt-28">
-          <div className="grid items-center gap-x-10 gap-y-10 lg:grid-cols-[1fr_1.08fr]">
-            <div className="max-w-2xl">
-              <Reveal immediate variant="fade">
-                <p className="type-ui mb-8 inline-flex items-center gap-2.5 rounded-[var(--radius-pill)] border border-[var(--border)] bg-[var(--surface-glass)] px-3.5 py-1.5 text-[var(--text-secondary)] backdrop-blur-md">
-                  <StatusDot />
-                  Accepting new projects · Senior-led delivery
-                </p>
-              </Reveal>
+          <div className="max-w-2xl">
+            <Reveal immediate variant="fade">
+              <p className="type-ui mb-8 inline-flex items-center gap-2.5 rounded-[var(--radius-pill)] border border-[var(--border)] bg-[var(--surface-glass)] px-3.5 py-1.5 text-[var(--text-secondary)] backdrop-blur-md">
+                <StatusDot />
+                Accepting new projects · Senior-led delivery
+              </p>
+            </Reveal>
 
-              <Reveal immediate delay={0.06}>
-                <h1 className="type-hero mb-6 text-[var(--foreground)]">
-                  Software That <span className="gradient-text">Looks Sharp, Loads Fast,</span> and
-                  Earns Its Keep.
-                </h1>
-              </Reveal>
+            <Reveal immediate delay={0.06}>
+              <h1 className="type-hero mb-6 text-[var(--foreground)]">
+                Software That <span className="gradient-text">Looks Sharp, Loads Fast,</span> and
+                Earns Its Keep.
+              </h1>
+            </Reveal>
 
-              <Reveal immediate delay={0.12}>
-                <p className="type-lead mb-10 max-w-xl">
-                  {siteConfig.shortName} designs and builds websites, SaaS platforms, mobile apps,
-                  AI features, and cloud systems for ambitious founders and growing teams — with
-                  the engineering depth to ship and the product taste to make it feel inevitable.
-                </p>
-              </Reveal>
+            <Reveal immediate delay={0.12}>
+              <p className="type-lead mb-10 max-w-xl">
+                {siteConfig.shortName} designs and builds websites, SaaS platforms, mobile apps, AI
+                features, and cloud systems for ambitious founders and growing teams — with the
+                engineering depth to ship and the product taste to make it feel inevitable.
+              </p>
+            </Reveal>
 
-              <Reveal immediate delay={0.18}>
-                <div className="flex flex-col gap-3 sm:flex-row">
-                  <Button href="/contact" size="lg">
-                    Start your project
-                    <ArrowUpRight className="h-4 w-4" aria-hidden />
-                  </Button>
-                  <Button href="/services" variant="ghost" size="lg">
-                    Explore services
-                  </Button>
-                </div>
-              </Reveal>
-            </div>
-
-            {/* The artwork is a full-bleed render rather than a framed
-                screenshot, so it carries no card, border or shadow. Its own
-                near-black backdrop is within a few points of --background;
-                the mask below closes the remaining gap. */}
-            <Reveal immediate variant="scale" delay={0.2}>
-              <Image
-                src="/Assets/hero-visual.webp"
-                alt="A laptop running code, ringed by floating analytics panels and a glowing arc."
-                width={1536}
-                height={1024}
-                priority
-                fetchPriority="high"
-                sizes="(max-width: 1023px) 100vw, 52vw"
-                placeholder="blur"
-                blurDataURL="data:image/webp;base64,UklGRkIAAABXRUJQVlA4IDYAAADwAQCdASoQAAsAA8BgJagC7AEO+51yuwAA/vhOjxjazHsxMANMIrfztD9iarjpziH37PjgAAA="
-                className="hero-bleed-right h-auto w-full"
-                /* Feathers the left, top and bottom into the page. Without it
-                   the artwork's rectangle is faintly visible against
-                   --background, which reads as a pasted-in image rather than
-                   part of the scene. The right edge is left hard on purpose —
-                   it runs off the viewport, so there is nothing to blend into.
-                   Two gradients intersected, so the edges fade together. */
-                style={{
-                  maskImage:
-                    "linear-gradient(to right, transparent, #000 16%), linear-gradient(to bottom, transparent, #000 10%, #000 86%, transparent)",
-                  maskComposite: "intersect",
-                  WebkitMaskImage:
-                    "linear-gradient(to right, transparent, #000 16%), linear-gradient(to bottom, transparent, #000 10%, #000 86%, transparent)",
-                  WebkitMaskComposite: "source-in",
-                }}
-              />
+            <Reveal immediate delay={0.18}>
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <Button href="/contact" size="lg">
+                  Start your project
+                  <ArrowUpRight className="h-4 w-4" aria-hidden />
+                </Button>
+                <Button href="/services" variant="ghost" size="lg">
+                  Explore services
+                </Button>
+              </div>
             </Reveal>
           </div>
 
-          {/* Proof row spanning the full width beneath both columns, so the
-              five points read as one band rather than a column of chips. */}
+          {/* Proof row spanning the full width beneath the copy, so the five
+              points read as one band rather than a column of chips. */}
           <Stagger
             as="ul"
             immediate

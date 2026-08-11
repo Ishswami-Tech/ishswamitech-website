@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import {
   Globe,
   Smartphone,
@@ -80,8 +81,12 @@ export default function HomePage() {
         <AnimatedBackground variant="aurora" />
 
         <Container className="relative z-10 pb-24 pt-36">
-          <div className="grid items-center gap-16 lg:grid-cols-[1.1fr_0.9fr]">
-            <div className="max-w-2xl">
+          {/* Explicit placement so the source order can put the visual
+              directly after the calls to action. Stacked on a phone that
+              means the artwork arrives before the secondary proof chips
+              rather than a full screen below them. */}
+          <div className="grid items-center gap-x-14 gap-y-10 lg:grid-cols-[1.02fr_0.98fr]">
+            <div className="max-w-2xl lg:col-start-1 lg:row-start-1">
               <Reveal immediate variant="fade">
                 <p className="type-ui mb-8 inline-flex items-center gap-2.5 rounded-[var(--radius-pill)] border border-[var(--border)] bg-[var(--surface-glass)] px-3.5 py-1.5 text-[var(--text-secondary)] backdrop-blur-md">
                   <StatusDot />
@@ -105,7 +110,7 @@ export default function HomePage() {
               </Reveal>
 
               <Reveal immediate delay={0.18}>
-                <div className="mb-12 flex flex-col gap-3 sm:flex-row">
+                <div className="flex flex-col gap-3 sm:flex-row">
                   <Button href="/contact" size="lg">
                     Start your project
                     <ArrowUpRight className="h-4 w-4" aria-hidden />
@@ -115,53 +120,99 @@ export default function HomePage() {
                   </Button>
                 </div>
               </Reveal>
-
-              <Stagger as="ul" immediate delay={0.24} className="grid max-w-xl gap-2.5 sm:grid-cols-3">
-                {heroHighlights.map((item) => (
-                  <StaggerItem
-                    as="li"
-                    key={item}
-                    className="type-ui flex items-start gap-2 rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface-glass)] px-3.5 py-2.5 text-[var(--text-secondary)] backdrop-blur-md"
-                  >
-                    <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[var(--accent)]" aria-hidden />
-                    <span>{item}</span>
-                  </StaggerItem>
-                ))}
-              </Stagger>
             </div>
 
-            <Reveal immediate variant="scale" delay={0.2}>
-              <SpotlightCard className="p-6 md:p-8">
-                <div className="mb-6 flex items-start justify-between gap-4">
-                  <div>
-                    <p className="type-eyebrow">How we engage</p>
-                    <p className="type-panel-title mt-2 text-[var(--foreground)]">
-                      Premium execution, zero agency clutter
-                    </p>
+            {/* Product visual with the engagement card riding over its lower
+                edge. The overlap is what gives the hero depth; on narrow
+                screens the two stack normally so nothing covers anything. */}
+            <div className="relative lg:col-start-2 lg:row-span-2 lg:row-start-1">
+              <Reveal immediate variant="scale" delay={0.2}>
+                <figure className="gradient-border relative overflow-hidden rounded-[var(--radius-3xl)] bg-[var(--surface)] shadow-[var(--shadow-xl)]">
+                  <Image
+                    src="/Assets/hero-visual.webp"
+                    alt="A studio monitor showing React dashboard code, lit by a blue key light."
+                    width={1400}
+                    height={1050}
+                    priority
+                    fetchPriority="high"
+                    sizes="(max-width: 1023px) 92vw, 44vw"
+                    placeholder="blur"
+                    blurDataURL="data:image/webp;base64,UklGRkoAAABXRUJQVlA4ID4AAADwAQCdASoQAAwAA8BgJbACdAD0gVyCwAAA/vQyxxKUGOVkCBuunozj3G348eeqpEv8BjDvlLPyrs8m6hgAAA=="
+                    className="h-auto w-full"
+                  />
+                  {/* Sinks the bottom of the artwork into the page colour so
+                      the card below reads as floating rather than pasted on. */}
+                  <div
+                    aria-hidden
+                    className="pointer-events-none absolute inset-x-0 bottom-0 h-2/5"
+                    style={{
+                      background:
+                        "linear-gradient(to top, var(--background) 8%, rgba(5,7,15,0.35) 55%, transparent)",
+                    }}
+                  />
+                </figure>
+              </Reveal>
+
+              <Reveal
+                immediate
+                delay={0.34}
+                className="relative z-10 -mt-12 px-2 sm:px-5 lg:-mt-16 lg:px-6"
+              >
+                <SpotlightCard className="p-5">
+                  <div className="mb-4 flex items-start justify-between gap-4">
+                    <div>
+                      <p className="type-eyebrow">How we engage</p>
+                      <p className="type-panel-title mt-1.5 text-[var(--foreground)]">
+                        Premium execution, zero agency clutter
+                      </p>
+                    </div>
+                    <Badge tone="gradient" className="shrink-0">
+                      Senior-led
+                    </Badge>
                   </div>
-                  <Badge tone="gradient" className="shrink-0">
-                    Senior-led
-                  </Badge>
-                </div>
 
-                <ul className="flex flex-col gap-2.5">
-                  {engagementIncludes.map((item) => (
-                    <li
-                      key={item}
-                      className="flex items-start gap-3 rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface-raised)] px-3.5 py-2.5 text-[var(--text-base)] text-[var(--text-secondary)]"
-                    >
-                      <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[var(--accent)]" aria-hidden />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
+                  {/* Two-up so the card stays short enough for the artwork
+                      above it to keep the visual weight. */}
+                  <ul className="grid gap-2 sm:grid-cols-2">
+                    {engagementIncludes.map((item) => (
+                      <li
+                        key={item}
+                        className="flex items-start gap-2.5 rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface-raised)] px-3 py-2.5 text-[var(--text-base)] leading-[var(--leading-snug)] text-[var(--text-secondary)]"
+                      >
+                        <Check
+                          className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[var(--accent)]"
+                          aria-hidden
+                        />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
 
-                <p className="mt-6 border-t border-[var(--border)] pt-5 text-[var(--text-base)] text-[var(--text-tertiary)]">
-                  Every engagement starts with a written scope and a fixed-price quote before any
-                  code is written.
-                </p>
-              </SpotlightCard>
-            </Reveal>
+                  <p className="mt-4 border-t border-[var(--border)] pt-3.5 text-[var(--text-base)] text-[var(--text-tertiary)]">
+                    Every engagement starts with a written scope and a fixed-price quote before any
+                    code is written.
+                  </p>
+                </SpotlightCard>
+              </Reveal>
+            </div>
+
+            <Stagger
+              as="ul"
+              immediate
+              delay={0.24}
+              className="grid max-w-xl gap-2.5 sm:grid-cols-3 lg:col-start-1 lg:row-start-2"
+            >
+              {heroHighlights.map((item) => (
+                <StaggerItem
+                  as="li"
+                  key={item}
+                  className="type-ui flex items-start gap-2 rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface-glass)] px-3.5 py-2.5 text-[var(--text-secondary)] backdrop-blur-md"
+                >
+                  <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[var(--accent)]" aria-hidden />
+                  <span>{item}</span>
+                </StaggerItem>
+              ))}
+            </Stagger>
           </div>
         </Container>
       </section>

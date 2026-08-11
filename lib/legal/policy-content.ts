@@ -1,8 +1,28 @@
-import { legalEntity, paymentCollectionDisclosure as basePaymentCollectionDisclosure, siteConfig } from "@/lib/site";
+import { legalEntity, paymentCollectionDisclosure, siteConfig } from "@/lib/site";
 
-export const paymentCollectionDisclosure = basePaymentCollectionDisclosure;
+export type LegalSection = {
+  id: string;
+  title: string;
+  body: string;
+};
 
-export const termsSections = [
+export type LegalDocument = {
+  slug: string;
+  breadcrumb: string;
+  title: string;
+  eyebrow: string;
+  metaTitle: string;
+  metaDescription: string;
+  updated: string;
+  intro: string;
+  /** Rendered in a callout above the sections. */
+  disclosure?: string;
+  sections: readonly LegalSection[];
+};
+
+const LAST_UPDATED = "February 2026";
+
+export const termsSections: readonly LegalSection[] = [
   {
     id: "electronic-record",
     title: "1. Electronic record",
@@ -16,7 +36,7 @@ export const termsSections = [
   {
     id: "ownership",
     title: "3. Platform ownership",
-    body: "The Platform is owned by Ishswami Tech, a business operated from Pune, Maharashtra, India, providing technology, software, and digital platform services. By using the Platform, you contract with the Platform Owner and agree to these Terms of Use together with any applicable policies incorporated by reference.",
+    body: "The Platform is owned by IshSwamiTech, a business operated from Pune, Maharashtra, India, providing technology, software, and digital platform services. By using the Platform, you contract with the Platform Owner and agree to these Terms of Use together with any applicable policies incorporated by reference.",
   },
   {
     id: "acceptance",
@@ -56,7 +76,7 @@ export const termsSections = [
   {
     id: "liability",
     title: "11. Limitation of liability",
-    body: "To the maximum extent permitted by law, Ishswami Tech shall not be liable for any indirect, incidental, special, consequential, or punitive damages, or for any loss of profits, data, use, goodwill, or other intangible losses. Nothing in these Terms limits liability where such limitation is not permitted by applicable law.",
+    body: "To the maximum extent permitted by law, IshSwamiTech shall not be liable for any indirect, incidental, special, consequential, or punitive damages, or for any loss of profits, data, use, goodwill, or other intangible losses. Nothing in these Terms limits liability where such limitation is not permitted by applicable law.",
   },
   {
     id: "indemnity",
@@ -83,13 +103,13 @@ export const termsSections = [
     title: "16. Contact",
     body: "All concerns or communications relating to these Terms must be communicated using the contact information provided on this website.",
   },
-] as const;
+];
 
-export const privacySections = [
+export const privacySections: readonly LegalSection[] = [
   {
     id: "introduction",
     title: "1. Introduction",
-    body: "This Privacy Policy describes how Ishswami Tech and its affiliates collect, use, share, protect, and otherwise process your information and personal data through our website https://ishswami.in and related digital channels. You may browse certain sections without registering, but by using the Platform you agree to this Privacy Policy, the Terms of Use, and applicable service terms under the laws of India.",
+    body: "This Privacy Policy describes how IshSwamiTech and its affiliates collect, use, share, protect, and otherwise process your information and personal data through our website https://ishswami.in and related digital channels. You may browse certain sections without registering, but by using the Platform you agree to this Privacy Policy, the Terms of Use, and applicable service terms under the laws of India.",
   },
   {
     id: "collection",
@@ -112,89 +132,171 @@ export const privacySections = [
     body: `${paymentCollectionDisclosure} Depending on the platform or service, this may include customer or patient profile details, verification status, bookings, orders, subscriptions, consultation records, invoices, payment transactions, refund records, support requests, and operational records required to provide the booked or purchased service.`,
   },
   {
+    id: "cookies",
+    title: "6. Cookies and similar technologies",
+    body: "We use cookies and similar technologies to keep the website functioning, remember your preferences, understand how pages are used, and improve performance. Essential cookies are required for the site to operate and cannot be switched off. You can control or delete non-essential cookies through your browser settings, though some features may not work as expected if you do. Where analytics or third-party services set cookies, those providers process the data under their own policies.",
+  },
+  {
     id: "security",
-    title: "6. Security precautions",
+    title: "7. Security precautions",
     body: "We take reasonable security measures to protect your personal data from unauthorized access, loss, misuse, or disclosure. However, no method of transmission or storage is fully secure, and users are responsible for safeguarding login credentials and account access.",
   },
   {
     id: "retention",
-    title: "7. Data retention and deletion",
+    title: "8. Data retention and deletion",
     body: "We retain personal data only for as long as necessary to fulfill the purpose for which it was collected or as required by applicable law. You may request account deletion or data assistance through the Platform or by using the contact details below. We may retain certain data where needed for fraud prevention, dispute handling, legal compliance, or legitimate business purposes.",
   },
   {
     id: "rights",
-    title: "8. Your rights",
+    title: "9. Your rights",
     body: "You may access, rectify, and update your personal data directly through the Platform where such functionality is available. Depending on your location and applicable law, you may also have additional rights to object to or restrict certain processing.",
   },
   {
     id: "consent",
-    title: "9. Consent",
+    title: "10. Consent",
     body: "By visiting our Platform or providing your information, you consent to the collection, use, storage, disclosure, and processing of your information in accordance with this Privacy Policy. Where you provide information about another person, you confirm that you have the authority to do so and that you permit us to use the information under this Policy.",
   },
   {
     id: "changes",
-    title: "10. Changes to this Privacy Policy",
+    title: "11. Changes to this Privacy Policy",
     body: "Please review this Privacy Policy periodically for changes. We may update it to reflect changes in our information practices, legal obligations, or service operations.",
   },
   {
     id: "grievance",
-    title: "11. Grievance and contact",
+    title: "12. Grievance and contact",
     body: "All concerns or communications relating to this Privacy Policy should be sent using the contact information provided on this website.",
   },
-] as const;
+];
 
-export const refundSections = [
+export const refundSections: readonly LegalSection[] = [
   {
+    id: "services",
     title: "1. Software and technology services",
     body: "Refunds for custom software, app development, website development, maintenance, consulting, and other professional services are governed by the signed proposal, statement of work, invoice, or separate written agreement. Work already delivered, approved, or consumed is generally not refundable unless we agree otherwise in writing.",
   },
   {
+    id: "client-platform",
     title: "2. Client-platform payments",
-    body: "For client platforms, Ishswami Tech may collect online payments as the technology and payment collection partner. The actual service, product, booking, subscription, consultation, event, digital content, or deliverable is provided by the respective client or service provider.",
+    body: "For client platforms, IshSwamiTech may collect online payments as the technology and payment collection partner. The actual service, product, booking, subscription, consultation, event, digital content, or deliverable is provided by the respective client or service provider.",
   },
   {
+    id: "appointments",
     title: "3. Video and appointment services",
     body: "For healthcare and similar time-slot based services, payment is non-refundable once the appointment is confirmed and the reserved slot has been allocated. Missed appointments do not automatically carry forward and any rebooking is subject to live availability unless separately approved in writing.",
   },
   {
+    id: "cancellation",
     title: "4. Cancellation handling",
     body: "Cancellation and refund eligibility depends on the type of service being purchased and the policy shown for that service. If a cancellation or refund is allowed, it will be processed according to the applicable service terms, gateway rules, and the status of work or booking already completed.",
   },
   {
+    id: "approved",
     title: "5. Approved refunds",
     body: "If a refund is approved, it will be initiated to the original payment method where possible. Bank, card, UPI, or payment gateway settlement timelines depend on the payment processor and banking network.",
   },
   {
+    id: "requests",
     title: "6. Refund requests",
-    body: "To request a refund review, email us with your project name, invoice number, reason for the request, and any supporting details. We aim to review refund requests within 7 - 10 business days. Once the refund is approved, it will be processed to the original source within 7 - 10 days.",
+    body: "To request a refund review, email us with your project name, invoice number, reason for the request, and any supporting details. We aim to review refund requests within 7 to 10 business days. Once a refund is approved, it will be processed to the original payment source within a further 7 to 10 business days.",
   },
   {
+    id: "charges",
     title: "7. Gateway and processing charges",
     body: "Payment gateway, bank, or platform charges may be non-refundable where they have already been charged by the payment processor or bank.",
   },
-] as const;
+];
 
-export const shippingSections = [
+export const shippingSections: readonly LegalSection[] = [
   {
+    id: "no-physical-shipping",
     title: "1. No physical shipping",
-    body: "Ishswami Tech primarily provides software, digital products, technology services, client-platform services, and online payment or booking infrastructure. We do not ship physical goods unless a separate written agreement specifically includes physical delivery.",
+    body: "IshSwamiTech primarily provides software, digital products, technology services, client-platform services, and online payment or booking infrastructure. We do not ship physical goods unless a separate written agreement specifically includes physical delivery.",
   },
   {
+    id: "digital-delivery",
     title: "2. Digital service delivery",
     body: "Software, website, mobile app, cloud, AI, support, consulting, digital product, subscription, booking, event, and platform deliverables are provided electronically through agreed channels such as email, project tools, repositories, cloud environments, production deployments, apps, websites, SMS, WhatsApp, or email.",
   },
   {
+    id: "confirmation",
     title: "3. Booking and service confirmation",
-    body: "For client platforms operated by Ishswami Tech, confirmations and access details may be delivered digitally through the app, website, SMS, WhatsApp, email, or other configured channels. The actual service, consultation, appointment, or deliverable is fulfilled by the listed client or service provider.",
+    body: "For client platforms operated by IshSwamiTech, confirmations and access details may be delivered digitally through the app, website, SMS, WhatsApp, email, or other configured channels. The actual service, consultation, appointment, or deliverable is fulfilled by the listed client or service provider.",
   },
   {
+    id: "timelines",
     title: "4. Delivery timelines",
     body: "Project delivery timelines are defined in the proposal, invoice, or statement of work. Platform confirmations are normally generated after successful booking or order creation and payment confirmation, subject to provider, gateway, and system availability.",
   },
-] as const;
+];
 
 export const legalContacts = {
   supportEmail: siteConfig.email,
   supportPhone: siteConfig.phone,
   entityName: legalEntity.displayName,
 } as const;
+
+export type LegalSlug =
+  | "privacy-policy"
+  | "terms-and-conditions"
+  | "refund-cancellation"
+  | "shipping-delivery";
+
+/**
+ * Canonical legal documents. Each maps 1:1 to a route; retired URLs are
+ * redirected in next.config.ts rather than duplicated as pages.
+ */
+export const legalDocuments: Record<LegalSlug, LegalDocument> = {
+  "privacy-policy": {
+    slug: "privacy-policy",
+    breadcrumb: "Privacy policy",
+    title: "Privacy Policy",
+    eyebrow: `${legalEntity.displayName} legal`,
+    metaTitle: "Privacy Policy",
+    metaDescription:
+      "How IshSwamiTech collects, uses, shares, and protects personal data across our website, projects, and connected digital services.",
+    updated: LAST_UPDATED,
+    intro:
+      "This policy explains how IshSwamiTech collects and uses information to operate the website, projects, and connected digital services.",
+    disclosure: paymentCollectionDisclosure,
+    sections: privacySections,
+  },
+  "terms-and-conditions": {
+    slug: "terms-and-conditions",
+    breadcrumb: "Terms & conditions",
+    title: "Terms and Conditions",
+    eyebrow: `${legalEntity.displayName} legal`,
+    metaTitle: "Terms and Conditions",
+    metaDescription:
+      "The terms governing use of the IshSwamiTech website, services, and connected client platforms.",
+    updated: LAST_UPDATED,
+    intro:
+      "This document is an electronic record and is intended to serve as a formal reference for website, payment gateway, and compliance use.",
+    sections: termsSections,
+  },
+  "refund-cancellation": {
+    slug: "refund-cancellation",
+    breadcrumb: "Refund & cancellation",
+    title: "Refund & Cancellation Policy",
+    eyebrow: `${legalEntity.displayName} legal`,
+    metaTitle: "Refund & Cancellation Policy",
+    metaDescription:
+      "How IshSwamiTech handles refunds and cancellations for service engagements, project invoices, and client-platform payments.",
+    updated: LAST_UPDATED,
+    intro:
+      "This policy applies to service bookings, digital services, and client-platform payments handled through IshSwamiTech.",
+    sections: refundSections,
+  },
+  "shipping-delivery": {
+    slug: "shipping-delivery",
+    breadcrumb: "Shipping & delivery",
+    title: "Shipping & Delivery Policy",
+    eyebrow: `${legalEntity.displayName} legal`,
+    metaTitle: "Shipping & Delivery Policy",
+    metaDescription:
+      "How IshSwamiTech handles digital service delivery and booking confirmations. We do not ship physical goods as part of our standard business model.",
+    updated: LAST_UPDATED,
+    intro:
+      "This policy explains how IshSwamiTech handles digital service delivery and booking confirmations. We do not ship physical goods as part of our standard business model.",
+    sections: shippingSections,
+  },
+};

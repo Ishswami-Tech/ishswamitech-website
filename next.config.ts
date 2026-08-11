@@ -10,6 +10,10 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       { source: "/careers", destination: "/blog", permanent: true },
+      // Retired legal URLs. Each policy now lives at exactly one canonical
+      // path so the content cannot drift between two pages again.
+      { source: "/terms-of-service", destination: "/terms-and-conditions", permanent: true },
+      { source: "/refund-policy", destination: "/refund-cancellation", permanent: true },
     ];
   },
 };

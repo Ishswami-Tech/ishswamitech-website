@@ -118,7 +118,7 @@ export function BlogIndex({ posts }: { posts: readonly BlogPost[] }) {
         {filtered.length === 0 ? (
           <EmptyState
             icon={SearchX}
-            title="No articles match your filters"
+            title="No Articles Match Your Filters"
             description="Try a different category, or clear the filters to see everything we've published."
             action={
               <Button type="button" variant="secondary" size="sm" onClick={resetFilters}>
@@ -241,7 +241,7 @@ export function BlogIndex({ posts }: { posts: readonly BlogPost[] }) {
 
               <aside className="flex flex-col gap-5">
                 <Card tone="solid" padding="md">
-                  <h2 className="type-card-title mb-4 text-[var(--foreground)]">Popular posts</h2>
+                  <h2 className="type-card-title mb-4 text-[var(--foreground)]">Popular Posts</h2>
                   <ol className="flex flex-col gap-4">
                     {popular.map((post, index) => (
                       <li key={post.id} className="group">
@@ -268,7 +268,7 @@ export function BlogIndex({ posts }: { posts: readonly BlogPost[] }) {
                     <Mail className="h-5 w-5" aria-hidden />
                   </CardIcon>
                   <h2 className="type-card-title mb-2 text-[var(--foreground)]">
-                    Want this applied to your product?
+                    Want This Applied to Your Product?
                   </h2>
                   <p className="type-body mb-4 text-[var(--text-secondary)]">
                     We write about what we ship. If something here maps to a problem you&apos;re
@@ -281,7 +281,7 @@ export function BlogIndex({ posts }: { posts: readonly BlogPost[] }) {
                 </Card>
 
                 <Card tone="solid" padding="md">
-                  <h2 className="type-card-title mb-4 text-[var(--foreground)]">Browse by topic</h2>
+                  <h2 className="type-card-title mb-4 text-[var(--foreground)]">Browse by Topic</h2>
                   <ul className="flex flex-wrap gap-2">
                     {tags
                       .filter((tag) => tag !== ALL)

@@ -91,8 +91,8 @@ export default function HomePage() {
 
               <Reveal immediate delay={0.06}>
                 <h1 className="type-hero mb-6 text-[var(--foreground)]">
-                  Software that <span className="gradient-text">looks sharp, loads fast,</span> and
-                  earns its keep.
+                  Software That <span className="gradient-text">Looks Sharp, Loads Fast,</span> and
+                  Earns Its Keep.
                 </h1>
               </Reveal>
 
@@ -204,7 +204,7 @@ export default function HomePage() {
       <Section>
         <SectionHeader
           eyebrow="Why teams choose us"
-          title="A cleaner delivery model, with stronger product thinking"
+          title="A Cleaner Delivery Model, With Stronger Product Thinking"
           aside={
             <p className="type-lead max-w-xl">
               Clear scope, thoughtful UX, and engineering you can grow with — so stakeholders see
@@ -235,7 +235,7 @@ export default function HomePage() {
       <Section tone="ruled">
         <SectionHeader
           eyebrow="What we build"
-          title="End-to-end software, designed and delivered in-house"
+          title="End-to-End Software, Designed and Delivered In-House"
           aside={
             <Link
               href="/services"
@@ -296,7 +296,7 @@ export default function HomePage() {
         <SectionHeader
           align="center"
           eyebrow="Proven process"
-          title="A simple path from idea to launch"
+          title="A Simple Path From Idea to Launch"
           lead="No mystery, no surprises. Aligned goals, a concrete plan, iterative build cycles, and a launch checklist that covers performance and discovery."
         />
 
@@ -345,7 +345,7 @@ export default function HomePage() {
         <SectionHeader
           align="center"
           eyebrow="Industries we serve"
-          title="Domain depth across the products people actually use"
+          title="Domain Depth Across the Products People Actually Use"
         />
 
         <Stagger as="ul" gap={0.035} className="mx-auto flex max-w-4xl flex-wrap justify-center gap-2.5">
@@ -364,7 +364,7 @@ export default function HomePage() {
         <SectionHeader
           align="center"
           eyebrow="Client feedback"
-          title="What clients say about working with us"
+          title="What Clients Say About Working With Us"
           lead="Recurring themes from the kind of work we focus on: clarity, speed, and practical execution."
         />
 
@@ -407,7 +407,7 @@ export default function HomePage() {
         <SectionHeader
           align="center"
           eyebrow="Our stack"
-          title="Modern, battle-tested tooling"
+          title="Modern, Battle-Tested Tooling"
           lead="We pick the right tool for the job, not the trendy one — production-grade frameworks your team can actually hire for."
         />
 
@@ -432,7 +432,7 @@ export default function HomePage() {
       {/* ------------------------------------------------------------ CTA BAND */}
       <CtaBand
         eyebrow="Let's build"
-        title="Ready to turn your vision into a product that ships?"
+        title="Ready to Turn Your Vision Into a Product That Ships?"
         lead="Tell us about your project in a 30-minute discovery call. You'll walk away with a concrete scope, a timeline, and an honest sense of what it'll take."
         primary={{ label: "Book a discovery call", href: "/contact" }}
         secondary={{ label: "See pricing", href: "/pricing" }}

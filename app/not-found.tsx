@@ -43,7 +43,7 @@ export default function NotFound() {
 
           <Reveal immediate delay={0.12}>
             <h1 className="type-section-title mb-3 text-[var(--foreground)]">
-              We can&apos;t find that page
+              We Can&apos;t Find That Page
             </h1>
             <p className="type-lead mx-auto mb-10 max-w-md">
               The page you&apos;re looking for might have moved, been renamed, or never existed.

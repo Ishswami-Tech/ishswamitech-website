@@ -97,7 +97,7 @@ export function ContactForm() {
               <CheckCircle className="h-7 w-7" aria-hidden />
             </div>
           </div>
-          <h2 className="type-section-title mb-3 text-[var(--foreground)]">Message sent</h2>
+          <h2 className="type-section-title mb-3 text-[var(--foreground)]">Message Sent</h2>
           <p className="type-lead mx-auto mb-8 max-w-md">
             Thanks for reaching out. We&apos;ve received your project details and will reply within
             one business day.
@@ -126,7 +126,7 @@ export function ContactForm() {
         >
           <div className="mb-7">
             <p className="type-eyebrow mb-2.5">Project brief</p>
-            <h2 className="type-panel-title text-[var(--foreground)]">Tell us about your project</h2>
+            <h2 className="type-panel-title text-[var(--foreground)]">Tell Us About Your Project</h2>
           </div>
 
           {/* Honeypot: hidden from users, commonly auto-filled by bots. */}

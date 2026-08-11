@@ -84,7 +84,7 @@ export default function Footer() {
             <div>
               <p className="type-eyebrow mb-3">Let&apos;s build</p>
               <p className="type-section-title text-[var(--foreground)]">
-                Have a project in mind? Let&apos;s talk.
+                Have a Project in Mind? Let&apos;s Talk.
               </p>
               <p className="type-lead mt-3 max-w-xl">
                 Free 30-minute discovery call, no commitment.

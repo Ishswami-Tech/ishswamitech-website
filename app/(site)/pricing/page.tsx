@@ -34,7 +34,7 @@ export default function PricingPage() {
         align="center"
         background="spotlight"
         eyebrow={`${siteConfig.shortName} pricing`}
-        title="Plans that scale with your stage"
+        title="Plans That Scale With Your Stage"
         lead="Honest ranges, fixed-scope quotes, and the flexibility to mix project and retainer work. Every engagement starts with a free discovery call — no commitment required."
       />
 
@@ -66,7 +66,7 @@ export default function PricingPage() {
         <SectionHeader
           align="center"
           eyebrow="Add-on services"
-          title="Add-on capabilities, scoped separately"
+          title="Add-On Capabilities, Scoped Separately"
           lead="Layer these onto any plan, or use them as a stand-alone engagement on an existing product."
         />
 
@@ -90,14 +90,14 @@ export default function PricingPage() {
 
       {/* FAQ */}
       <Section tone="band" width="narrow">
-        <SectionHeader align="center" eyebrow="FAQ" title="Pricing questions, answered" />
+        <SectionHeader align="center" eyebrow="FAQ" title="Pricing Questions, Answered" />
         <Accordion items={pricingFaq} />
       </Section>
 
       {/* CTA */}
       <CtaBand
         eyebrow="Still deciding?"
-        title="Not sure which plan fits your project?"
+        title="Not Sure Which Plan Fits Your Project?"
         lead="Tell us about your idea in a 30-minute call. We'll recommend the right plan — or honestly tell you if we're not the right fit."
         primary={{ label: "Book free consultation", href: "/contact" }}
         secondary={{ label: "Browse services", href: "/services" }}

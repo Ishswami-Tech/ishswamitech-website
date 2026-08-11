@@ -225,7 +225,7 @@ export default function BlogPostContent({ post, relatedPosts }: BlogPostContentP
             <div className="mb-10 flex items-end justify-between">
               <div>
                 <p className="type-eyebrow mb-3">Keep reading</p>
-                <h2 className="type-section-title text-[var(--foreground)]">Related articles</h2>
+                <h2 className="type-section-title text-[var(--foreground)]">Related Articles</h2>
               </div>
               <Link
                 href="/blog"
@@ -280,7 +280,7 @@ export default function BlogPostContent({ post, relatedPosts }: BlogPostContentP
               </div>
               <p className="type-eyebrow mb-4">Weekly field notes</p>
               <h2 className="type-section-title mb-4 text-[var(--foreground)]">
-                Get the next article straight to your inbox
+                Get the Next Article Straight to Your Inbox
               </h2>
               <p className="type-lead mx-auto mb-8 max-w-xl">
                 One short, practical email each Friday. Engineering, design, and shipping

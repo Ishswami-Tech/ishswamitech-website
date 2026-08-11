@@ -103,7 +103,7 @@ export function LegalPage({ slug }: { slug: LegalSlug }) {
               ))}
 
               <Card tone="soft" padding="md">
-                <h2 className="type-panel-title mb-3 text-[var(--foreground)]">Contact us</h2>
+                <h2 className="type-panel-title mb-3 text-[var(--foreground)]">Contact Us</h2>
                 <p className="type-body text-[var(--text-secondary)]">
                   For questions about this policy, email{" "}
                   <a

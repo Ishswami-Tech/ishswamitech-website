@@ -81,7 +81,7 @@ export default function ContactPage() {
       <PageHero
         breadcrumb="Contact"
         eyebrow={`Contact ${siteConfig.shortName}`}
-        title="Let's build something worth talking about"
+        title="Let's Build Something Worth Talking About"
         lead="Tell us about your project and we'll get back within one business day. Every conversation starts with a free 30-minute discovery — no commitment, no scripts."
         background="aurora"
         aside={
@@ -139,7 +139,7 @@ export default function ContactPage() {
                   <Sparkles className="h-5 w-5" aria-hidden />
                 </CardIcon>
                 <h2 className="type-card-title mb-2 text-[var(--foreground)]">
-                  Prefer a real conversation?
+                  Prefer a Real Conversation?
                 </h2>
                 <p className="type-body mb-4 text-[var(--text-secondary)]">
                   Book a free 30-minute discovery call. We&apos;ll talk scope, timeline, and whether
@@ -195,7 +195,7 @@ export default function ContactPage() {
         <SectionHeader
           align="center"
           eyebrow="FAQ"
-          title="Frequently asked questions"
+          title="Frequently Asked Questions"
           lead="The questions we hear most often. Don't see yours? Just ask in your message."
         />
         <Accordion items={contactFaq} />

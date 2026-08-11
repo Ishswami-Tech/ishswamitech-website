@@ -25,7 +25,7 @@ export default function SiteError({
     <Section width="narrow" className="pt-40">
       <ErrorState
         icon={AlertTriangle}
-        title="Something went wrong"
+        title="Something Went Wrong"
         description="This page hit an unexpected error. Trying again usually clears it — if it doesn't, we'd like to hear about it."
         action={
           <div className="flex flex-col gap-3 sm:flex-row">

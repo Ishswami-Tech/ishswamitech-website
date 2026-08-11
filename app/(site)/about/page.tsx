@@ -104,7 +104,7 @@ export default function AboutPage() {
       <PageHero
         breadcrumb="About"
         eyebrow={`About ${siteConfig.shortName}`}
-        title={<>We&rsquo;re builders, thinkers, and product-minded problem solvers.</>}
+        title={<>We&rsquo;re Builders, Thinkers, and Product-Minded Problem Solvers.</>}
         lead={`${siteConfig.shortName} helps founders and growing teams turn ambitious ideas into shipped products. We blend practical product engineering, AI capability, and a design eye that respects both pixels and conversion rates.`}
         background="aurora"
         aside={
@@ -168,7 +168,7 @@ export default function AboutPage() {
           <Reveal delay={0.08}>
             <p className="type-eyebrow mb-3">Our story</p>
             <h2 className="type-section-title mb-5 text-[var(--foreground)]">
-              Born from a frustration with how software gets built
+              Born From a Frustration With How Software Gets Built
             </h2>
             <p className="type-body mb-4 text-[var(--text-secondary)]">
               {siteConfig.shortName} was founded on a simple observation: too many projects ship
@@ -213,7 +213,7 @@ export default function AboutPage() {
         <SectionHeader
           align="center"
           eyebrow="What guides us"
-          title="Core values"
+          title="Core Values"
           lead="Not poster slogans — actual operating principles you'll see in every sprint, demo, and standup."
         />
 
@@ -236,7 +236,7 @@ export default function AboutPage() {
       <Section>
         <SectionHeader
           eyebrow="Delivery coverage"
-          title="A compact team model"
+          title="A Compact Team Model"
           aside={
             <Link
               href="/contact"
@@ -278,7 +278,7 @@ export default function AboutPage() {
         <SectionHeader
           align="center"
           eyebrow="Our journey"
-          title="Where we are, and where we're going"
+          title="Where We Are, and Where We're Going"
           lead="A straightforward path from registration to reliable client delivery."
         />
 
@@ -310,7 +310,7 @@ export default function AboutPage() {
         <SectionHeader
           align="center"
           eyebrow="Capabilities"
-          title="Platforms we build with"
+          title="Platforms We Build With"
           lead="Practical tools and service areas used for client websites, apps, automations, and operations."
         />
 
@@ -338,7 +338,7 @@ export default function AboutPage() {
       {/* CTA */}
       <CtaBand
         eyebrow="Work with us"
-        title="Let's build something worth talking about"
+        title="Let's Build Something Worth Talking About"
         lead="Whether you're scoping a new product, modernising an old one, or scaling a team — we'd love to hear about it."
         primary={{ label: "Start a conversation", href: "/contact" }}
         secondary={{ label: "Browse our services", href: "/services" }}

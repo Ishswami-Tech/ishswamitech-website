@@ -77,7 +77,7 @@ export default function ServicesPage() {
       <PageHero
         breadcrumb="Services"
         eyebrow={`${siteConfig.shortName} services`}
-        title="Software services, end-to-end and under one roof"
+        title="Software Services, End-to-End and Under One Roof"
         lead="From idea to launch — and the long tail of iteration after. We design, engineer, deploy, and maintain modern digital products across every major platform."
         aside={
           <Card tone="highlight" padding="md">
@@ -198,7 +198,7 @@ export default function ServicesPage() {
         <SectionHeader
           align="center"
           eyebrow="How we work"
-          title="A practical delivery process for serious product builds"
+          title="A Practical Delivery Process for Serious Product Builds"
           lead="Seven repeatable phases that keep projects on time, on budget, and on track for the outcomes you actually care about."
         />
 
@@ -223,7 +223,7 @@ export default function ServicesPage() {
       {/* CTA */}
       <CtaBand
         eyebrow="Not sure where to start?"
-        title="Book a free 30-minute discovery call"
+        title="Book a Free 30-Minute Discovery Call"
         lead="Walk us through your idea, current state, or roadmap. We'll help you scope the right phase — even if it's not with us."
         primary={{ label: "Book free consultation", href: "/contact" }}
         secondary={{ label: "See pricing", href: "/pricing" }}

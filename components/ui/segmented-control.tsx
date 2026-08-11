@@ -1,7 +1,7 @@
 "use client";
 
 import { useId } from "react";
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
 import { transition } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
@@ -34,7 +34,6 @@ export function SegmentedControl<T extends string>({
   className?: string;
 }) {
   const layoutId = useId();
-  const reduced = useReducedMotion();
 
   return (
     <div
@@ -64,23 +63,19 @@ export function SegmentedControl<T extends string>({
                 : "text-[var(--text-tertiary)] hover:text-[var(--foreground)]"
             )}
           >
-            {active &&
-              (reduced ? (
-                <span
-                  aria-hidden
-                  className="absolute inset-0 rounded-[var(--radius-pill)] [background-image:var(--gradient-primary)]"
-                />
-              ) : (
-                <motion.span
-                  aria-hidden
-                  layoutId={layoutId}
-                  transition={transition.spring}
-                  className={cn(
-                    "absolute inset-0 rounded-[var(--radius-pill)]",
-                    "[background-image:var(--gradient-primary)] shadow-[var(--shadow-glow)]"
-                  )}
-                />
-              ))}
+                {/* MotionConfig disables layout animation under reduced
+                    motion, so the indicator simply appears in place. */}
+                {active && (
+                  <motion.span
+                    aria-hidden
+                    layoutId={layoutId}
+                    transition={transition.spring}
+                    className={cn(
+                      "absolute inset-0 rounded-[var(--radius-pill)]",
+                      "[background-image:var(--gradient-primary)] shadow-[var(--shadow-glow)]"
+                    )}
+                  />
+                )}
             <span className="relative">{option.label}</span>
           </button>
         );

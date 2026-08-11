@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
 import { pageVariants, transition } from "@/lib/motion";
 
 /**
@@ -15,13 +15,11 @@ import { pageVariants, transition } from "@/lib/motion";
  */
 export function PageTransition({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const reduced = useReducedMotion();
-
-  if (reduced) return <>{children}</>;
 
   return (
     <motion.div
       key={pathname}
+      data-reveal=""
       variants={pageVariants}
       initial="hidden"
       animate="visible"

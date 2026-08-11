@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
 import { revealVariants, staggerParent, transition, type RevealVariant } from "@/lib/motion";
 
 type Tag = "div" | "ul" | "ol" | "dl" | "section";
@@ -12,6 +12,9 @@ type ItemTag = "div" | "li" | "article" | "figure";
  * The parent owns the timing, so children never carry an index-based delay.
  * That matters for lists that filter or reorder — a hardcoded `index * 0.06`
  * makes the fifth card animate late even when it's the only one left.
+ *
+ * Reduced motion is handled globally by `<MotionConfig reducedMotion="user">`;
+ * see the note in `Reveal` for why this doesn't branch on the preference.
  */
 export function Stagger({
   children,
@@ -31,22 +34,12 @@ export function Stagger({
   immediate?: boolean;
   id?: string;
 }) {
-  const reduced = useReducedMotion();
-
-  if (reduced) {
-    const Tag = as;
-    return (
-      <Tag className={className} id={id}>
-        {children}
-      </Tag>
-    );
-  }
-
   const MotionTag = motion[as];
 
   return (
     <MotionTag
       id={id}
+      data-reveal=""
       className={className}
       variants={staggerParent(gap, delay)}
       initial="hidden"
@@ -71,17 +64,15 @@ export function StaggerItem({
   as?: ItemTag;
   variant?: RevealVariant;
 }) {
-  const reduced = useReducedMotion();
-
-  if (reduced) {
-    const Tag = as;
-    return <Tag className={className}>{children}</Tag>;
-  }
-
   const MotionTag = motion[as];
 
   return (
-    <MotionTag className={className} variants={revealVariants(variant, false)} transition={transition.slow}>
+    <MotionTag
+      data-reveal=""
+      className={className}
+      variants={revealVariants(variant)}
+      transition={transition.slow}
+    >
       {children}
     </MotionTag>
   );

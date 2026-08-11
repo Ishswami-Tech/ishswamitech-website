@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { ArrowUpRight, CalendarClock, Check, Sparkles, X } from "lucide-react";
 import { plans, type BillingMode } from "@/data/pricing";
 import { Button } from "@/components/ui/button";
@@ -22,12 +22,6 @@ const modes = [
  * having been swapped rather than having silently mutated.
  */
 function AnimatedPrice({ value, billing }: { value: string; billing: BillingMode }) {
-  const reduced = useReducedMotion();
-
-  if (reduced) {
-    return <span className="type-stat block text-3xl text-[var(--foreground)]">{value}</span>;
-  }
-
   return (
     <span className="block overflow-hidden">
       <AnimatePresence mode="wait" initial={false}>

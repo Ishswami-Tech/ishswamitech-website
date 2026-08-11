@@ -111,20 +111,16 @@ export default function Navbar() {
                           : "text-[var(--text-tertiary)] hover:text-[var(--foreground)]"
                       )}
                     >
-                      {active &&
-                        (reduced ? (
-                          <span
-                            aria-hidden
-                            className="absolute inset-0 rounded-[var(--radius-md)] bg-[var(--surface-tint-strong)]"
-                          />
-                        ) : (
-                          <motion.span
-                            aria-hidden
-                            layoutId="nav-active"
-                            transition={transition.spring}
-                            className="absolute inset-0 rounded-[var(--radius-md)] bg-[var(--surface-tint-strong)]"
-                          />
-                        ))}
+                      {/* Slides between items via shared layout. MotionConfig
+                          turns that into an instant swap under reduced motion. */}
+                      {active && (
+                        <motion.span
+                          aria-hidden
+                          layoutId="nav-active"
+                          transition={transition.spring}
+                          className="absolute inset-0 rounded-[var(--radius-md)] bg-[var(--surface-tint-strong)]"
+                        />
+                      )}
                       <span className="relative">{link.label}</span>
                     </Link>
                   </li>

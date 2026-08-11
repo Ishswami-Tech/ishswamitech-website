@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
 import { revealVariants, transition, type RevealVariant } from "@/lib/motion";
 
 type Tag = "div" | "section" | "article" | "figure" | "li" | "ul" | "ol" | "span" | "header";
@@ -22,8 +22,17 @@ export type RevealProps = {
  * The one scroll/mount entrance in the system.
  *
  * Exists so pages stay server components and ship only this small client
- * boundary instead of the whole subtree. Under reduced motion it renders a
- * plain element with no Motion runtime attached at all.
+ * boundary instead of the whole subtree.
+ *
+ * Reduced motion is handled by the `<MotionConfig reducedMotion="user">` in the
+ * root layout, not by branching here. Branching on `useReducedMotion()` during
+ * render swaps the element type between server and client and breaks hydration:
+ * the server has no way to know the preference. Letting Motion strip the
+ * transform keeps one tree and still honours the setting.
+ *
+ * `data-reveal` is the hook the no-JS fallback in the root layout uses to force
+ * these back to visible — Motion serialises `initial` into the SSR markup as
+ * `opacity: 0`, which without that override leaves the page blank.
  */
 export function Reveal({
   children,
@@ -34,24 +43,14 @@ export function Reveal({
   as = "div",
   id,
 }: RevealProps) {
-  const reduced = useReducedMotion();
-
-  if (reduced) {
-    const Tag = as;
-    return (
-      <Tag className={className} id={id}>
-        {children}
-      </Tag>
-    );
-  }
-
   const MotionTag = motion[as];
 
   return (
     <MotionTag
       id={id}
+      data-reveal=""
       className={className}
-      variants={revealVariants(variant, false)}
+      variants={revealVariants(variant)}
       initial="hidden"
       transition={{ ...transition.slow, delay }}
       {...(immediate

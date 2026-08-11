@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import StructuredData from "@/components/layout/structured-data";
+import { MotionProvider } from "@/components/motion/motion-provider";
 import { AnimatedBackground } from "@/components/ui/animated-background";
 import { siteConfig } from "@/lib/site";
 
@@ -75,12 +76,31 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" data-theme="dark" suppressHydrationWarning className={inter.variable}>
+      <head>
+        {/*
+          Motion serialises a reveal's `initial` variant into the server HTML,
+          so every scroll-revealed section ships as `opacity: 0` and is only
+          made visible once the bundle hydrates. If scripting is unavailable
+          that never happens and the page renders blank below the header —
+          which for a marketing site means no content for the visitor and
+          nothing meaningful for a non-executing crawler.
+
+          `scripting: none` covers browsers with JS turned off; the <noscript>
+          block covers everything that predates the media feature.
+        */}
+        <style>{`@media (scripting: none){[data-reveal]{opacity:1!important;transform:none!important}}`}</style>
+        <noscript>
+          <style>{`[data-reveal]{opacity:1!important;transform:none!important}`}</style>
+        </noscript>
+      </head>
       <body className="bg-[var(--background)] text-[var(--foreground)] antialiased">
         <StructuredData />
-        {/* Single ambient layer for the whole app. Sections that want something
-            louder mount their own <AnimatedBackground> locally. */}
-        <AnimatedBackground variant="minimal" position="fixed" intensity="subtle" />
-        {children}
+        <MotionProvider>
+          {/* Single ambient layer for the whole app. Sections that want
+              something louder mount their own <AnimatedBackground> locally. */}
+          <AnimatedBackground variant="minimal" position="fixed" intensity="subtle" />
+          {children}
+        </MotionProvider>
       </body>
     </html>
   );

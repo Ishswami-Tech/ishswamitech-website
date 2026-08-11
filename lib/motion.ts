@@ -55,10 +55,14 @@ const shown: Record<RevealVariant, Record<string, number>> = {
   scale: { opacity: 1, scale: 1 },
 };
 
-export function revealVariants(variant: RevealVariant, reduced: boolean): Variants {
-  if (reduced) {
-    return { hidden: { opacity: 1 }, visible: { opacity: 1 } };
-  }
+/**
+ * Reduced motion is applied globally by `<MotionConfig reducedMotion="user">`,
+ * which strips transform and layout animation while leaving opacity — so these
+ * variants describe the full-motion intent and never need a `reduced` branch.
+ * Deciding per-component would mean reading the preference during render, which
+ * the server can't do without producing a hydration mismatch.
+ */
+export function revealVariants(variant: RevealVariant): Variants {
   return { hidden: hidden[variant], visible: shown[variant] };
 }
 

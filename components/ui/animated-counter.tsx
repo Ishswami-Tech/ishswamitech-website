@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef } from "react";
 import { animate, useInView, useReducedMotion } from "motion/react";
 import { duration as durationToken, easeOut } from "@/lib/motion";
 
@@ -37,14 +37,15 @@ export default function AnimatedCounter({
   const inView = useInView(ref, { once: true, margin: "-40px" });
   const reduced = useReducedMotion();
 
-  const format = (value: number) => `${prefix}${Math.round(value)}${suffix}`;
+  const format = useCallback(
+    (value: number) => `${prefix}${Math.round(value)}${suffix}`,
+    [prefix, suffix]
+  );
 
   useIsomorphicLayoutEffect(() => {
     if (reduced || !ref.current) return;
     ref.current.textContent = format(0);
-    // Only on mount: once the tween owns the node, this must not stomp on it.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [reduced]);
+  }, [reduced, format]);
 
   useEffect(() => {
     const node = ref.current;
@@ -59,8 +60,7 @@ export default function AnimatedCounter({
     });
 
     return () => controls.stop();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [inView, end, duration, reduced]);
+  }, [inView, end, duration, reduced, format]);
 
   return (
     <span ref={ref} className={className}>

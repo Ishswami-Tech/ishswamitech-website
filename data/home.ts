@@ -1,9 +1,14 @@
 import {
   Code,
+  Focus,
+  Layers,
   Layout,
+  Lock,
   Rocket,
   Search,
   ShieldCheck,
+  TrendingUp,
+  Zap,
   type LucideIcon,
 } from "lucide-react";
 
@@ -83,10 +88,38 @@ export const industries: readonly string[] = [
   "Media & creator",
 ];
 
-export const heroHighlights: readonly string[] = [
-  "Brand-first visual systems",
-  "SEO-aware implementation",
-  "Full-stack under one roof",
+export type HeroHighlight = {
+  icon: LucideIcon;
+  title: string;
+  description: string;
+};
+
+export const heroHighlights: readonly HeroHighlight[] = [
+  {
+    icon: Focus,
+    title: "Brand-first visual systems",
+    description: "Interfaces that look beautiful and build trust instantly.",
+  },
+  {
+    icon: TrendingUp,
+    title: "SEO-aware implementation",
+    description: "Built to rank, structured to drive organic growth.",
+  },
+  {
+    icon: Layers,
+    title: "Full-stack under one roof",
+    description: "From idea to infrastructure, we handle it all.",
+  },
+  {
+    icon: Lock,
+    title: "Secure by default",
+    description: "Security best practices built into every layer.",
+  },
+  {
+    icon: Zap,
+    title: "Fast, scalable architecture",
+    description: "Systems built to scale with your ambition.",
+  },
 ];
 
 export const engagementIncludes: readonly string[] = [

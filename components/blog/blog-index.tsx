@@ -130,7 +130,10 @@ export function BlogIndex({ posts }: { posts: readonly BlogPost[] }) {
           <>
             {featured && (
               <Link href={`/blog/${featured.slug}`} className="mb-8 block">
-                <article className="group grid overflow-hidden rounded-[var(--radius-2xl)] border border-[var(--border)] bg-[var(--surface-raised)] shadow-[var(--shadow-md)] transition-[border-color,box-shadow,transform] duration-[var(--duration-normal)] ease-[var(--ease-out)] hover:-translate-y-1 hover:border-[var(--border-strong)] hover:shadow-[var(--shadow-lg)] motion-reduce:transform-none lg:grid-cols-[1.1fr_0.9fr]">
+                <article
+                  data-spotlight=""
+                  className="spotlight group grid overflow-hidden rounded-[var(--radius-2xl)] border border-[var(--border)] bg-[var(--surface-raised)] shadow-[var(--shadow-md)] transition-[border-color,box-shadow,transform] duration-[var(--duration-normal)] ease-[var(--ease-out)] hover:-translate-y-1 hover:border-[var(--border-strong)] hover:shadow-[var(--shadow-lg)] motion-reduce:transform-none lg:grid-cols-[1.1fr_0.9fr]"
+                >
                   <div className="relative aspect-[16/10] overflow-hidden lg:aspect-auto lg:min-h-[380px]">
                     <Image
                       src={featured.image}
@@ -197,7 +200,10 @@ export function BlogIndex({ posts }: { posts: readonly BlogPost[] }) {
                     {rest.map((post) => (
                       <StaggerItem as="li" key={post.id} className="h-full">
                         <Link href={`/blog/${post.slug}`} className="block h-full">
-                          <article className="group flex h-full flex-col overflow-hidden rounded-[var(--radius-2xl)] border border-[var(--border)] bg-[var(--surface-raised)] shadow-[var(--shadow-sm)] transition-[border-color,box-shadow,transform] duration-[var(--duration-normal)] ease-[var(--ease-out)] hover:-translate-y-1 hover:border-[var(--border-strong)] hover:shadow-[var(--shadow-lg)] motion-reduce:transform-none">
+                          <article
+                            data-spotlight=""
+                            className="spotlight group flex h-full flex-col overflow-hidden rounded-[var(--radius-2xl)] border border-[var(--border)] bg-[var(--surface-raised)] shadow-[var(--shadow-sm)] transition-[border-color,box-shadow,transform] duration-[var(--duration-normal)] ease-[var(--ease-out)] hover:-translate-y-1 hover:border-[var(--border-strong)] hover:shadow-[var(--shadow-lg)] motion-reduce:transform-none"
+                          >
                             <div className="relative aspect-video overflow-hidden">
                               <Image
                                 src={post.image}

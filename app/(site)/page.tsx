@@ -30,7 +30,6 @@ import {
 import { Container } from "@/components/ui/container";
 import { Section, SectionHeader } from "@/components/ui/section";
 import { Card, CardIcon } from "@/components/ui/card";
-import { SpotlightCard } from "@/components/ui/spotlight-card";
 import { Button } from "@/components/ui/button";
 import { Badge, StatusDot } from "@/components/ui/badge";
 import { CtaBand } from "@/components/ui/cta-band";
@@ -264,7 +263,7 @@ export default function HomePage() {
         <Stagger className="grid gap-5 md:grid-cols-3">
           {differentiators.map((item, index) => (
             <StaggerItem key={item.title}>
-              <SpotlightCard className="h-full p-6">
+              <Card tone="glass" interactive padding="none" className="h-full p-6">
                 <div className="mb-5 flex items-center justify-between">
                   <CardIcon>
                     <item.icon className="h-5 w-5" aria-hidden />
@@ -273,7 +272,7 @@ export default function HomePage() {
                 </div>
                 <h3 className="type-block-title mb-2.5 text-[var(--foreground)]">{item.title}</h3>
                 <p className="type-body text-[var(--text-secondary)]">{item.description}</p>
-              </SpotlightCard>
+              </Card>
             </StaggerItem>
           ))}
         </Stagger>
@@ -282,7 +281,7 @@ export default function HomePage() {
             here because "how we engage" answers the question the three cards
             above raise, and the fixed-price promise is too concrete to drop. */}
         <Reveal className="mt-5">
-          <SpotlightCard className="p-6 lg:p-7">
+          <Card tone="glass" interactive padding="none" className="p-6 lg:p-7">
             <div className="mb-5 flex items-start justify-between gap-4">
               <div>
                 <p className="type-eyebrow">How we engage</p>
@@ -311,7 +310,7 @@ export default function HomePage() {
               Every engagement starts with a written scope and a fixed-price quote before any code
               is written.
             </p>
-          </SpotlightCard>
+          </Card>
         </Reveal>
       </Section>
 
@@ -455,7 +454,10 @@ export default function HomePage() {
         <Stagger as="ul" className="grid gap-5 lg:grid-cols-3">
           {testimonials.slice(0, 3).map((testimonial) => (
             <StaggerItem as="li" key={testimonial.id} className="h-full">
-              <figure className="glass flex h-full flex-col rounded-[var(--radius-2xl)] p-6">
+              <figure
+                data-spotlight=""
+                className="glass spotlight flex h-full flex-col rounded-[var(--radius-2xl)] p-6"
+              >
                 <div
                   className="mb-4 flex items-center gap-0.5"
                   role="img"

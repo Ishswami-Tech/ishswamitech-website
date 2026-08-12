@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import StructuredData from "@/components/layout/structured-data";
 import { MotionProvider } from "@/components/motion/motion-provider";
+import { SpotlightRoot } from "@/components/motion/spotlight-root";
 import { AnimatedBackground } from "@/components/ui/animated-background";
 import { siteConfig } from "@/lib/site";
 
@@ -99,6 +100,8 @@ export default function RootLayout({
           {/* Single ambient layer for the whole app. Sections that want
               something louder mount their own <AnimatedBackground> locally. */}
           <AnimatedBackground variant="minimal" position="fixed" intensity="subtle" />
+          {/* Single pointer listener behind every `.spotlight` card surface. */}
+          <SpotlightRoot />
           {children}
         </MotionProvider>
       </body>

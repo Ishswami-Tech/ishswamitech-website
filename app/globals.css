@@ -513,6 +513,59 @@ img {
   pointer-events: none;
 }
 
+/* Pointer-tracking glow for card surfaces.
+
+   The coordinates come from a single document-level listener
+   (<SpotlightRoot>) that writes --spot-x / --spot-y onto whichever
+   [data-spotlight] element the pointer is over. Doing it in CSS from a shared
+   listener rather than per-card React handlers is what makes it affordable to
+   put on every card: one listener and one rAF for the whole page, no matter
+   how many surfaces are on it, and no component has to become a client island
+   to opt in.
+
+   ::after (not ::before) because .gradient-border already owns ::before. */
+.spotlight {
+  position: relative;
+  /* Contains the negative z-index below, so the glow lands above this
+     element's own background instead of behind whatever ancestor paints. */
+  isolation: isolate;
+  --spot-x: 50%;
+  --spot-y: 50%;
+  --spot-size: 340px;
+  --spot-tint: rgb(129 140 248 / 0.14);
+}
+
+.spotlight::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--duration-normal) var(--ease-out);
+  background: radial-gradient(
+    var(--spot-size) circle at var(--spot-x) var(--spot-y),
+    var(--spot-tint),
+    transparent 70%
+  );
+}
+
+/* Hover-capable, fine pointers only. A touch device has no hover state to
+   track, and the coarse-pointer fallback would just flash the glow on tap. */
+@media (hover: hover) and (pointer: fine) {
+  .spotlight:hover::after,
+  .spotlight:focus-within::after {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spotlight::after {
+    display: none;
+  }
+}
+
 /* ==========================================================================
    AMBIENT BACKGROUND LAYERS
    Consumed only by <AnimatedBackground>. Every animation here runs on

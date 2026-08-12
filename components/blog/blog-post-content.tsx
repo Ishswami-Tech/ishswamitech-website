@@ -239,7 +239,10 @@ export default function BlogPostContent({ post, relatedPosts }: BlogPostContentP
             <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
               {relatedPosts.map((p) => (
                 <Link key={p.id} href={`/blog/${p.slug}`}>
-                  <article className="glass group flex h-full flex-col overflow-hidden rounded-2xl border border-[var(--border)] transition-all hover:-translate-y-1 hover:border-[var(--border-strong)]">
+                  <article
+                    data-spotlight=""
+                    className="glass spotlight group flex h-full flex-col overflow-hidden rounded-2xl border border-[var(--border)] transition-all hover:-translate-y-1 hover:border-[var(--border-strong)]"
+                  >
                     <div className="relative aspect-video overflow-hidden">
                       <Image
                         src={p.image}

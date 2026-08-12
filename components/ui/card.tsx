@@ -24,6 +24,7 @@ const paddings: Record<CardPadding, string> = {
 export function Card({
   tone = "glass",
   interactive = false,
+  spotlight = true,
   padding = "md",
   className,
   children,
@@ -32,6 +33,12 @@ export function Card({
   tone?: CardTone;
   /** Adds lift, shadow and a border highlight on hover. */
   interactive?: boolean;
+  /**
+   * Pointer-tracking glow. On by default so card surfaces behave consistently
+   * across the site; turn it off for cards sitting on an already-busy
+   * background, where a second light source reads as muddle.
+   */
+  spotlight?: boolean;
   padding?: CardPadding;
   className?: string;
   children: React.ReactNode;
@@ -40,9 +47,11 @@ export function Card({
   return (
     <div
       id={id}
+      data-spotlight={spotlight ? "" : undefined}
       className={cn(
         "rounded-[var(--radius-2xl)]",
         tones[tone],
+        spotlight && "spotlight",
         paddings[padding],
         interactive && [
           "transition-[transform,box-shadow,border-color,background-color]",

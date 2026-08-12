@@ -57,8 +57,9 @@ export function PricingPlans() {
         {plans.map((plan) => (
           <StaggerItem as="li" key={plan.name} className="h-full">
             <div
+              data-spotlight=""
               className={cn(
-                "relative flex h-full flex-col rounded-[var(--radius-2xl)] p-7",
+                "spotlight flex h-full flex-col rounded-[var(--radius-2xl)] p-7",
                 "transition-[transform,box-shadow,border-color] duration-[var(--duration-normal)] ease-[var(--ease-out)]",
                 "hover:-translate-y-1 motion-reduce:transform-none motion-reduce:hover:transform-none",
                 plan.popular

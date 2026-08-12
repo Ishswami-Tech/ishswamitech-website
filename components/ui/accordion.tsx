@@ -56,7 +56,7 @@ export function Accordion({ items }: { items: readonly AccordionItem[] }) {
                 <span
                   className={cn(
                     "flex h-7 w-7 shrink-0 items-center justify-center rounded-full border",
-                    "transition-[transform,background-color,border-color,color]",
+                    "transition-[rotate,background-color,border-color,color]",
                     "duration-[var(--duration-normal)] ease-[var(--ease-out)]",
                     "motion-reduce:transition-none",
                     isOpen

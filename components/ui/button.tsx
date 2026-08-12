@@ -8,7 +8,7 @@ type Size = "sm" | "md" | "lg";
 const base = [
   "group/btn relative inline-flex items-center justify-center gap-2 overflow-hidden",
   "rounded-[var(--radius-lg)] font-medium whitespace-nowrap select-none",
-  "transition-[transform,box-shadow,background-color,border-color,color]",
+  "transition-[translate,scale,box-shadow,background-color,border-color,color]",
   "duration-[var(--duration-fast)] ease-[var(--ease-out)]",
   "hover:-translate-y-px active:translate-y-0 active:scale-[0.985]",
   "motion-reduce:transform-none motion-reduce:hover:transform-none",

@@ -135,7 +135,7 @@ export default function Navbar() {
                   "group/cta hidden items-center gap-1.5 rounded-[var(--radius-lg)] px-4 py-2.5",
                   "text-[var(--text-base)] font-medium text-[var(--text-on-brand)]",
                   "[background-image:var(--gradient-primary)] shadow-[var(--shadow-glow)]",
-                  "transition-[transform,box-shadow] duration-[var(--duration-fast)] ease-[var(--ease-out)]",
+                  "transition-[translate,scale,box-shadow] duration-[var(--duration-fast)] ease-[var(--ease-out)]",
                   "hover:-translate-y-px hover:shadow-[var(--shadow-glow-strong)]",
                   "motion-reduce:transform-none lg:inline-flex"
                 )}

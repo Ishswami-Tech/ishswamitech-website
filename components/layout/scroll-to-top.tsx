@@ -35,7 +35,7 @@ export default function ScrollToTop() {
           }
           className={cn(
             "glass-strong fixed bottom-6 right-6 z-40 rounded-full p-3 text-[var(--accent)]",
-            "transition-[transform,border-color,color] duration-[var(--duration-fast)] ease-[var(--ease-out)]",
+            "transition-[translate,border-color,color] duration-[var(--duration-fast)] ease-[var(--ease-out)]",
             "hover:-translate-y-0.5 hover:border-[var(--border-strong)] hover:text-[var(--foreground)]",
             "motion-reduce:transform-none"
           )}

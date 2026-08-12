@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 const action = cn(
   "inline-flex h-9 w-9 items-center justify-center rounded-[var(--radius-lg)]",
   "border border-[var(--border)] bg-[var(--surface-raised)] text-[var(--text-secondary)]",
-  "transition-[color,border-color,transform,box-shadow]",
+  "transition-[color,border-color,translate,box-shadow]",
   "duration-[var(--duration-fast)] ease-[var(--ease-out)]",
   "hover:-translate-y-0.5 hover:border-[var(--border-strong)] hover:text-[var(--accent)]",
   "hover:shadow-[var(--shadow-sm)] motion-reduce:transform-none"

@@ -102,7 +102,7 @@ export default function ServicesPage() {
                   <li key={service.id}>
                     <a
                       href={`#${service.slug}`}
-                      className="type-ui inline-flex items-center gap-2 rounded-[var(--radius-pill)] border border-[var(--border)] bg-[var(--surface-raised)] px-3.5 py-1.5 text-[var(--text-tertiary)] transition-[color,border-color,transform] duration-[var(--duration-fast)] hover:-translate-y-0.5 hover:border-[var(--border-strong)] hover:text-[var(--foreground)] motion-reduce:transform-none"
+                      className="type-ui inline-flex items-center gap-2 rounded-[var(--radius-pill)] border border-[var(--border)] bg-[var(--surface-raised)] px-3.5 py-1.5 text-[var(--text-tertiary)] transition-[color,border-color,translate] duration-[var(--duration-fast)] hover:-translate-y-0.5 hover:border-[var(--border-strong)] hover:text-[var(--foreground)] motion-reduce:transform-none"
                     >
                       <Icon className="h-3.5 w-3.5" style={{ color: service.color }} aria-hidden />
                       {service.title}

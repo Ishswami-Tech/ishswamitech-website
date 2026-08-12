@@ -60,7 +60,7 @@ export function PricingPlans() {
               data-spotlight=""
               className={cn(
                 "spotlight flex h-full flex-col rounded-[var(--radius-2xl)] p-7",
-                "transition-[transform,box-shadow,border-color] duration-[var(--duration-normal)] ease-[var(--ease-out)]",
+                "transition-[translate,box-shadow,border-color] duration-[var(--duration-normal)] ease-[var(--ease-out)]",
                 "hover:-translate-y-1 motion-reduce:transform-none motion-reduce:hover:transform-none",
                 plan.popular
                   ? "gradient-border bg-[linear-gradient(150deg,var(--surface-overlay),var(--surface))] shadow-[var(--shadow-glow)] hover:shadow-[var(--shadow-glow-strong)]"

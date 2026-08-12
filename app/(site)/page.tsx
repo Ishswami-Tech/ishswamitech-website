@@ -34,6 +34,8 @@ import { Button } from "@/components/ui/button";
 import { Badge, StatusDot } from "@/components/ui/badge";
 import { CtaBand } from "@/components/ui/cta-band";
 import { Reveal } from "@/components/motion/reveal";
+import { DrawLine } from "@/components/motion/draw-line";
+import { Parallax } from "@/components/motion/parallax";
 import { Stagger, StaggerItem } from "@/components/motion/stagger";
 import AnimatedCounter from "@/components/ui/animated-counter";
 import { absoluteUrl, siteConfig } from "@/lib/site";
@@ -81,7 +83,11 @@ export default function HomePage() {
           own, so no <AnimatedBackground> here — anything behind a full-bleed
           opaque image is paid for and never seen.
         */}
-        <div aria-hidden className="absolute inset-0 -z-10">
+        {/* The scrims travel with the artwork so their alignment over it never
+            shifts. What the lift exposes at the bottom of the section is the
+            page colour — which is exactly what the lowest scrim resolves to,
+            so the seam it would otherwise leave is invisible. */}
+        <Parallax aria-hidden className="absolute inset-0 -z-10">
           <Image
             src="/Assets/hero-visual.webp"
             alt=""
@@ -146,7 +152,7 @@ export default function HomePage() {
                 "linear-gradient(to top, var(--background) 22%, rgba(5,7,15,0.82) 55%, rgba(5,7,15,0.35) 80%, transparent)",
             }}
           />
-        </div>
+        </Parallax>
 
         <Container className="relative z-10 pb-16 pt-28">
           <div className="max-w-2xl">
@@ -159,7 +165,8 @@ export default function HomePage() {
 
             <Reveal immediate delay={0.06}>
               <h1 className="type-hero mb-6 text-[var(--foreground)]">
-                Software That <span className="gradient-text">Looks Sharp, Loads Fast,</span> and
+                Software That{" "}
+                <span className="gradient-text gradient-text--sweep">Looks Sharp, Loads Fast,</span> and
                 Earns Its Keep.
               </h1>
             </Reveal>
@@ -342,7 +349,7 @@ export default function HomePage() {
                   <Card
                     interactive
                     padding="md"
-                    className="group/card flex h-full flex-col"
+                    className="flex h-full flex-col"
                     tone="solid"
                   >
                     <CardIcon tint={service.color} className="mb-5">
@@ -383,22 +390,32 @@ export default function HomePage() {
           lead="No mystery, no surprises. Aligned goals, a concrete plan, iterative build cycles, and a launch checklist that covers performance and discovery."
         />
 
-        <Stagger as="ol" className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
-          {deliverySteps.map((step) => (
-            <StaggerItem as="li" key={step.title}>
-              <Card tone="solid" padding="md" className="h-full">
-                <div className="mb-5 flex items-center justify-between">
-                  <CardIcon>
-                    <step.icon className="h-5 w-5" aria-hidden />
-                  </CardIcon>
-                  <span className="type-index">{step.phase}</span>
-                </div>
-                <h3 className="type-block-title mb-2.5 text-[var(--foreground)]">{step.title}</h3>
-                <p className="type-body text-[var(--text-secondary)]">{step.detail}</p>
-              </Card>
-            </StaggerItem>
-          ))}
-        </Stagger>
+        {/* Connector behind the row. The cards are opaque, so what shows is a
+            lit segment bridging each gutter at icon height — enough to read the
+            four steps as one path. Only from lg, where they share a row. */}
+        <div className="relative">
+          <DrawLine
+            delay={0.15}
+            className="absolute inset-x-8 top-[2.875rem] hidden h-px opacity-50 [background-image:var(--gradient-primary)] lg:block"
+          />
+
+          <Stagger as="ol" className="relative grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+            {deliverySteps.map((step) => (
+              <StaggerItem as="li" key={step.title}>
+                <Card tone="solid" padding="md" className="h-full">
+                  <div className="mb-5 flex items-center justify-between">
+                    <CardIcon>
+                      <step.icon className="h-5 w-5" aria-hidden />
+                    </CardIcon>
+                    <span className="type-index">{step.phase}</span>
+                  </div>
+                  <h3 className="type-block-title mb-2.5 text-[var(--foreground)]">{step.title}</h3>
+                  <p className="type-body text-[var(--text-secondary)]">{step.detail}</p>
+                </Card>
+              </StaggerItem>
+            ))}
+          </Stagger>
+        </div>
       </Section>
 
       {/* --------------------------------------------------------- STATS STRIP */}
@@ -434,7 +451,7 @@ export default function HomePage() {
         <Stagger as="ul" gap={0.035} className="mx-auto flex max-w-4xl flex-wrap justify-center gap-2.5">
           {industries.map((industry) => (
             <StaggerItem as="li" key={industry} variant="scale">
-              <span className="type-ui block rounded-[var(--radius-pill)] border border-[var(--border)] bg-[var(--surface-raised)] px-4 py-2 text-[var(--text-secondary)] transition-[color,border-color,transform] duration-[var(--duration-fast)] hover:-translate-y-0.5 hover:border-[var(--border-strong)] hover:text-[var(--foreground)] motion-reduce:transform-none">
+              <span className="type-ui block rounded-[var(--radius-pill)] border border-[var(--border)] bg-[var(--surface-raised)] px-4 py-2 text-[var(--text-secondary)] transition-[color,border-color,translate] duration-[var(--duration-fast)] hover:-translate-y-0.5 hover:border-[var(--border-strong)] hover:text-[var(--foreground)] motion-reduce:transform-none">
                 {industry}
               </span>
             </StaggerItem>

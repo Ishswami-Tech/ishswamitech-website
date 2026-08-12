@@ -492,6 +492,27 @@ img {
   color: transparent;
 }
 
+/* A single sweep of the gradient across the text as the page settles, ending
+   exactly on the resting state so nothing shifts when it finishes.
+
+   Runs once, on load. A looping version repaints the headline for as long as
+   the tab is open — the one thing the performance budget here can least
+   afford, spent on an effect nobody watches twice. */
+.gradient-text--sweep {
+  animation: gradient-sweep 1.4s var(--ease-out) 0.25s 1 both;
+}
+
+@keyframes gradient-sweep {
+  from {
+    background-size: 320% 100%;
+    background-position: 100% 0;
+  }
+  to {
+    background-size: 100% 100%;
+    background-position: 0 0;
+  }
+}
+
 /* Gradient hairline border via mask — keeps the fill transparent so the
    animated background stays visible through the element. */
 .gradient-border {

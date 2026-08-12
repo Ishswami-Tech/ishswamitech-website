@@ -49,12 +49,17 @@ export function Card({
       id={id}
       data-spotlight={spotlight ? "" : undefined}
       className={cn(
-        "rounded-[var(--radius-2xl)]",
+        // Named group so nested pieces — CardIcon, arrows, titles — can react
+        // to the card being hovered without each call site wiring one up.
+        "group/card rounded-[var(--radius-2xl)]",
         tones[tone],
         spotlight && "spotlight",
         paddings[padding],
         interactive && [
-          "transition-[transform,box-shadow,border-color,background-color]",
+          // `translate` and `scale`, not `transform`: Tailwind v4 emits the
+          // individual properties, so a list naming only `transform` leaves
+          // the hover lift to snap.
+          "transition-[translate,scale,box-shadow,border-color,background-color]",
           "duration-[var(--duration-normal)] ease-[var(--ease-out)]",
           "hover:-translate-y-1 hover:border-[var(--border-strong)] hover:shadow-[var(--shadow-lg)]",
           "motion-reduce:transform-none motion-reduce:hover:transform-none",
@@ -86,6 +91,12 @@ export function CardIcon({
         "border border-[var(--border)] shadow-[var(--shadow-inset-top)]",
         size === "sm" ? "h-9 w-9" : "h-11 w-11",
         !tint && "bg-[var(--surface-tint-strong)] text-[var(--accent)]",
+        // Picks up the hover of an enclosing <Card>; inert anywhere else.
+        // Reduced motion is covered globally — that block collapses every
+        // transition duration, so the lift lands instantly rather than moving.
+        "transition-[translate,scale,border-color,box-shadow] duration-[var(--duration-normal)] ease-[var(--ease-out)]",
+        "group-hover/card:-translate-y-0.5 group-hover/card:scale-[1.06]",
+        "group-hover/card:border-[var(--border-strong)] group-hover/card:shadow-[var(--shadow-md)]",
         className
       )}
       style={

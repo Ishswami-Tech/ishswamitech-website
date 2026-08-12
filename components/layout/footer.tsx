@@ -63,7 +63,7 @@ function LinkColumn({
           <li key={link.href}>
             <Link
               href={link.href}
-              className="text-[var(--text-base)] text-[var(--text-secondary)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--foreground)]"
+              className="inline-block text-[var(--text-base)] text-[var(--text-secondary)] transition-[color,translate] duration-[var(--duration-fast)] ease-[var(--ease-out)] hover:translate-x-0.5 hover:text-[var(--foreground)]"
             >
               {link.label}
             </Link>
@@ -132,7 +132,7 @@ export default function Footer() {
                         href={href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex h-9 w-9 items-center justify-center rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface-raised)] text-[var(--text-tertiary)] transition-[color,border-color,transform] duration-[var(--duration-fast)] hover:-translate-y-0.5 hover:border-[var(--border-strong)] hover:text-[var(--accent)] motion-reduce:transform-none"
+                        className="flex h-9 w-9 items-center justify-center rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface-raised)] text-[var(--text-tertiary)] transition-[color,border-color,translate] duration-[var(--duration-fast)] hover:-translate-y-0.5 hover:border-[var(--border-strong)] hover:text-[var(--accent)] motion-reduce:transform-none"
                         aria-label={`${label} (opens in a new tab)`}
                       >
                         <Icon size={15} aria-hidden />

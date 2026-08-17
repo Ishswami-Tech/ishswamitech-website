@@ -118,25 +118,31 @@ function hasPrebuiltGatewayTarget(
   }
 
   const record = payload as Record<string, unknown>;
-  return Boolean(
-    getAllowedRedirectUrl(
-      getFirstString(
-        record.gatewayRedirectUrl,
-        record.paymentLink,
-        record.redirectUrl,
-        record.redirect_url,
-        record.checkoutUrl,
-        record.url,
-        getRedirectUrlCandidate(record),
-        getRedirectUrlCandidate(record.data as Record<string, unknown> | undefined),
-        getRedirectUrlCandidate(record.result as Record<string, unknown> | undefined),
-        getRedirectUrlCandidate(record.response as Record<string, unknown> | undefined),
-      ),
-    ) ||
-      record.orderId ||
-      record.paymentSessionId ||
-      record.paymentIntentId,
+  const provider = String(record.provider || "").toLowerCase();
+  const gatewayUrl = getAllowedRedirectUrl(
+    getFirstString(
+      record.gatewayRedirectUrl,
+      record.paymentLink,
+      record.redirectUrl,
+      record.redirect_url,
+      record.checkoutUrl,
+      record.url,
+      getRedirectUrlCandidate(record),
+      getRedirectUrlCandidate(record.data as Record<string, unknown> | undefined),
+      getRedirectUrlCandidate(record.result as Record<string, unknown> | undefined),
+      getRedirectUrlCandidate(record.response as Record<string, unknown> | undefined),
+    ),
   );
+
+  if (gatewayUrl) {
+    return true;
+  }
+
+  if (provider === "razorpay") {
+    return Boolean(record.orderId && record.razorpayKeyId);
+  }
+
+  return false;
 }
 
 function loadRazorpayScript(): Promise<void> {

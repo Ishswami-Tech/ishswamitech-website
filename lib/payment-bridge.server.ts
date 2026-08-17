@@ -363,12 +363,23 @@ function buildPaymentIntentEndpoint(
 }
 
 export function isPrebuiltPaymentIntent(payload: PaymentBridgePayload): boolean {
-  return Boolean(
-    payload.orderId ||
-      payload.paymentSessionId ||
-      payload.paymentLink ||
-      payload.gatewayRedirectUrl
+  const gatewayRedirectUrl = getAllowedRedirectUrl(
+    getFirstString(
+      payload.gatewayRedirectUrl,
+      payload.paymentLink,
+    ),
   );
+
+  if (gatewayRedirectUrl) {
+    return true;
+  }
+
+  const provider = String(payload.provider || "").toLowerCase();
+  if (provider === "razorpay") {
+    return Boolean(payload.orderId && payload.razorpayKeyId);
+  }
+
+  return false;
 }
 
 export async function createPaymentIntentOnServer(

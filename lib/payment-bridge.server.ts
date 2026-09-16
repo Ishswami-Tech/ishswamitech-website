@@ -1,7 +1,7 @@
 import { headers as getHeaders } from "next/headers";
 
 export type PaymentBridgePayload = {
-  provider: string;
+  provider?: string;
   amount: number;
   displayAmount?: string;
   currency: string;
@@ -330,32 +330,33 @@ async function fetchJson(
 
 function buildPaymentIntentEndpoint(
   payload: PaymentBridgePayload,
-  provider: string
+  provider?: string
 ): { url: string; body?: string } {
   const backendBase = getBackendBaseUrl();
+  const providerQuery = provider ? `?provider=${encodeURIComponent(provider)}` : "";
 
   if (payload.subscriptionId) {
     return {
-      url: `${backendBase}/api/v1/billing/subscriptions/${payload.subscriptionId}/process-payment?provider=${provider}`,
+      url: `${backendBase}/api/v1/billing/subscriptions/${payload.subscriptionId}/process-payment${providerQuery}`,
     };
   }
 
   if (payload.appointmentId) {
     return {
-      url: `${backendBase}/api/v1/billing/appointments/${payload.appointmentId}/process-payment?provider=${provider}`,
+      url: `${backendBase}/api/v1/billing/appointments/${payload.appointmentId}/process-payment${providerQuery}`,
       body: payload.appointmentType ? JSON.stringify({ appointmentType: payload.appointmentType }) : undefined,
     };
   }
 
   if (payload.invoiceId) {
     return {
-      url: `${backendBase}/api/v1/billing/invoices/${payload.invoiceId}/process-payment?provider=${provider}`,
+      url: `${backendBase}/api/v1/billing/invoices/${payload.invoiceId}/process-payment${providerQuery}`,
     };
   }
 
   if (payload.prescriptionId) {
     return {
-      url: `${backendBase}/api/v1/pharmacy/prescriptions/${payload.prescriptionId}/process-payment?provider=${provider}`,
+      url: `${backendBase}/api/v1/pharmacy/prescriptions/${payload.prescriptionId}/process-payment${providerQuery}`,
     };
   }
 
@@ -384,7 +385,7 @@ export function isPrebuiltPaymentIntent(payload: PaymentBridgePayload): boolean 
 
 export async function createPaymentIntentOnServer(
   payload: PaymentBridgePayload,
-  provider: string
+  provider?: string
 ): Promise<PaymentIntentRecord> {
   const request = buildPaymentIntentEndpoint(payload, provider);
   const forwardedHeaders = await getForwardHeaders({ "X-Clinic-ID": payload.clinicId });

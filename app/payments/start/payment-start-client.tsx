@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { load as loadCashfree } from "@cashfreepayments/cashfree-js";
 import { Loader2 } from "lucide-react";
 
 type PaymentBridgePayload = {
-  provider: string;
+  provider?: string;
   amount: number;
   displayAmount?: string;
   currency: string;
@@ -327,7 +328,9 @@ export default function PaymentStartClient({
         }
       }
 
-      const provider = String(resolvedPayload.provider || "").toLowerCase();
+      const provider = String(
+        paymentIntent?.provider || resolvedPayload.provider || "",
+      ).toLowerCase();
       const amount = Number(resolvedPaymentIntent.amount || resolvedPayload.amount);
       const displayAmount = String(resolvedPayload.displayAmount || "");
       const orderId = String(
@@ -357,6 +360,17 @@ export default function PaymentStartClient({
         getAllowedRedirectUrl(
           String(resolvedPaymentIntent.callbackUrl || resolvedPayload.callbackUrl || ""),
         ) || "";
+      const paymentMetadata =
+        (resolvedPaymentIntent.metadata as Record<string, unknown> | undefined) || {};
+      const providerResponse =
+        (resolvedPaymentIntent.providerResponse as Record<string, unknown> | undefined) || {};
+      const paymentSessionId = String(
+        resolvedPaymentIntent.paymentSessionId ||
+          resolvedPayload.paymentSessionId ||
+          paymentMetadata.paymentSessionId ||
+          providerResponse.payment_session_id ||
+          "",
+      );
 
       try {
         setStatus("loading");
@@ -366,6 +380,40 @@ export default function PaymentStartClient({
             : "Connecting to payment gateway...",
         );
         setErrorMessage("");
+
+        if (provider === "cashfree") {
+          setStatusLabel("Opening Cashfree checkout...");
+          if (!orderId || !paymentSessionId) {
+            throw new Error("Cashfree payment session was not returned by the server.");
+          }
+
+          const cashfreeMode =
+            process.env.NEXT_PUBLIC_CASHFREE_MODE === "production" ? "production" : "sandbox";
+          const cashfree = await loadCashfree({ mode: cashfreeMode });
+          if (!cashfree) {
+            throw new Error("Cashfree checkout is not available.");
+          }
+
+          const redirectTarget = buildCallbackRedirectUrl(
+            callbackUrl || resolvedFallbackUrl,
+            {
+              paymentId: orderId,
+              orderId,
+              provider,
+              clinicId: String(
+                resolvedPaymentIntent.clinicId || resolvedPayload.clinicId || "",
+              ),
+              appointmentId: resolvedPayload.appointmentId,
+              appointmentType: resolvedPayload.appointmentType,
+            },
+          );
+          await cashfree.checkout({
+            paymentSessionId,
+            returnUrl: redirectTarget,
+            redirectTarget: "_self",
+          });
+          return;
+        }
 
         if (provider === "razorpay") {
           setStatusLabel("Opening Razorpay checkout...");
@@ -471,7 +519,7 @@ export default function PaymentStartClient({
     };
 
     void openGateway();
-  }, [initialRawPayload, paymentIntent, payload, status]);
+  }, [initialRawPayload, paymentIntent, payload, resolvedFallbackUrl, status]);
 
   return (
     <div className="flex min-h-[60vh] items-center justify-center px-4 py-16">

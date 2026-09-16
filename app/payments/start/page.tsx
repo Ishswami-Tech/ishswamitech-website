@@ -51,29 +51,23 @@ export default async function PaymentStartPage(props: {
     );
   }
 
-  const provider = String(payload.provider || "").toLowerCase();
+  const provider = String(payload.provider || "").toLowerCase() || undefined;
 
+  let paymentIntent: Record<string, unknown> | null = null;
   try {
-    const paymentIntent = isPrebuiltPaymentIntent(payload)
+    paymentIntent = isPrebuiltPaymentIntent(payload)
       ? payload
       : await createPaymentIntentOnServer(payload, provider);
-
-    return (
-      <PaymentStartClient
-        payload={payload}
-        paymentIntent={paymentIntent}
-        initialRawPayload={payloadParam}
-        fallbackUrl={fallbackUrl}
-      />
-    );
   } catch {
-    return (
-      <PaymentStartClient
-        payload={payload}
-        paymentIntent={null}
-        initialRawPayload={payloadParam}
-        fallbackUrl={fallbackUrl}
-      />
-    );
+    paymentIntent = null;
   }
+
+  return (
+    <PaymentStartClient
+      payload={payload}
+      paymentIntent={paymentIntent}
+      initialRawPayload={payloadParam}
+      fallbackUrl={fallbackUrl}
+    />
+  );
 }

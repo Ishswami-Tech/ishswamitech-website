@@ -339,7 +339,7 @@ async function fetchJson(
 
 function buildPaymentIntentEndpoint(
   payload: PaymentBridgePayload,
-  provider?: string
+  _provider?: string
 ): { url: string; body?: string } {
   const backendBase = getBackendBaseUrl();
 
@@ -351,7 +351,6 @@ function buildPaymentIntentEndpoint(
         amount: payload.amount,
         currency: payload.currency || "INR",
         description: payload.description,
-        provider,
       }),
     };
   }
@@ -365,7 +364,6 @@ function buildPaymentIntentEndpoint(
         currency: payload.currency || "INR",
         description: payload.description,
         appointmentType: payload.appointmentType,
-        provider,
       }),
     };
   }
@@ -378,7 +376,6 @@ function buildPaymentIntentEndpoint(
         amount: payload.amount,
         currency: payload.currency || "INR",
         description: payload.description,
-        provider,
       }),
     };
   }
@@ -391,7 +388,6 @@ function buildPaymentIntentEndpoint(
         amount: payload.amount,
         currency: payload.currency || "INR",
         description: payload.description,
-        provider,
       }),
     };
   }

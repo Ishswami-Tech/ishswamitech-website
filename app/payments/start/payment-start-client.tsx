@@ -488,12 +488,14 @@ export default function PaymentStartClient({
             modal: {
               ondismiss: () => {
                 setStatus("error");
+                setErrorMessage("Payment was cancelled. You can try again when you're ready.");
               },
             },
           });
 
           checkout.on("payment.failed", () => {
             setStatus("error");
+            setErrorMessage("Payment failed. Please try again or use a different payment method.");
           });
 
           checkout.open();

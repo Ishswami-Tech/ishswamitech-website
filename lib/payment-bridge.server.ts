@@ -342,30 +342,57 @@ function buildPaymentIntentEndpoint(
   provider?: string
 ): { url: string; body?: string } {
   const backendBase = getBackendBaseUrl();
-  const providerQuery = provider ? `?provider=${encodeURIComponent(provider)}` : "";
 
   if (payload.subscriptionId) {
     return {
-      url: `${backendBase}/api/v1/billing/subscriptions/${payload.subscriptionId}/process-payment${providerQuery}`,
+      url: `${backendBase}/api/v1/payments/payment-intents`,
+      body: JSON.stringify({
+        subscriptionId: payload.subscriptionId,
+        amount: payload.amount,
+        currency: payload.currency || "INR",
+        description: payload.description,
+        provider,
+      }),
     };
   }
 
   if (payload.appointmentId) {
     return {
-      url: `${backendBase}/api/v1/billing/appointments/${payload.appointmentId}/process-payment${providerQuery}`,
-      body: payload.appointmentType ? JSON.stringify({ appointmentType: payload.appointmentType }) : undefined,
+      url: `${backendBase}/api/v1/payments/payment-intents`,
+      body: JSON.stringify({
+        appointmentId: payload.appointmentId,
+        amount: payload.amount,
+        currency: payload.currency || "INR",
+        description: payload.description,
+        appointmentType: payload.appointmentType,
+        provider,
+      }),
     };
   }
 
   if (payload.invoiceId) {
     return {
-      url: `${backendBase}/api/v1/billing/invoices/${payload.invoiceId}/process-payment${providerQuery}`,
+      url: `${backendBase}/api/v1/payments/payment-intents`,
+      body: JSON.stringify({
+        invoiceId: payload.invoiceId,
+        amount: payload.amount,
+        currency: payload.currency || "INR",
+        description: payload.description,
+        provider,
+      }),
     };
   }
 
   if (payload.prescriptionId) {
     return {
-      url: `${backendBase}/api/v1/pharmacy/prescriptions/${payload.prescriptionId}/process-payment${providerQuery}`,
+      url: `${backendBase}/api/v1/payments/payment-intents`,
+      body: JSON.stringify({
+        prescriptionId: payload.prescriptionId,
+        amount: payload.amount,
+        currency: payload.currency || "INR",
+        description: payload.description,
+        provider,
+      }),
     };
   }
 

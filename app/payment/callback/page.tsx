@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import {
-  buildFallbackCallbackUrl,
   buildViddhakarmaRedirectUrl,
   verifyPaymentCallbackOnServer,
 } from "@/lib/payment-bridge.server";
@@ -54,9 +53,14 @@ export default async function PaymentCallbackPage({
   const appointmentId = getSearchParam(searchParams, "appointmentId");
   const appointmentType = getSearchParam(searchParams, "appointmentType");
   const handoffToken = getSearchParam(searchParams, "handoff_token");
-  const queryString = normalizedSearchParams.toString();
-  const verifiedQueryString = queryString ? `${queryString}&paymentVerified=1` : "paymentVerified=1";
-  const failedQueryString = queryString ? `${queryString}&paymentVerified=0` : "paymentVerified=0";
+
+  let responseSuccess = false;
+  let responseAppointmentType: string | undefined;
+  let responseAppointmentId: string | undefined;
+  let responseOrderId: string | undefined;
+  let responsePaymentId: string | undefined;
+  let responseProvider: string | undefined;
+  let responseClinicId: string | undefined;
 
   try {
     const response = await verifyPaymentCallbackOnServer({
@@ -66,27 +70,84 @@ export default async function PaymentCallbackPage({
       provider,
       handoffToken,
     });
+    responseSuccess = response.success;
+    responseAppointmentType = response.appointmentType;
+    responseAppointmentId = response.appointmentId;
+    responseOrderId = response.orderId;
+    responsePaymentId = response.paymentId;
+    responseProvider = response.provider;
+    responseClinicId = response.clinicId;
+  } catch {
+    redirect(
+      buildViddhakarmaRedirectUrl({
+        appointmentType,
+        appointmentId,
+        orderId,
+        paymentId,
+        provider,
+        clinicId,
+        paymentVerified: "0",
+        paymentStatus: "FAILED",
+      }),
+    );
+  }
 
-    if (handoffToken) {
-      if (response.success) {
-        redirect(
-          buildViddhakarmaRedirectUrl({
-            appointmentType: response.appointmentType || appointmentType,
-            appointmentId: response.appointmentId || appointmentId,
-            orderId: response.orderId || orderId,
-            paymentId: response.paymentId || paymentId,
-            provider: response.provider || provider,
-            clinicId: response.clinicId || clinicId,
-            paymentVerified: "1",
-          })
-        );
-      }
-
-      redirect(buildFallbackCallbackUrl(failedQueryString));
+  if (handoffToken) {
+    if (responseSuccess) {
+      redirect(
+        buildViddhakarmaRedirectUrl({
+          appointmentType: responseAppointmentType || appointmentType,
+          appointmentId: responseAppointmentId || appointmentId,
+          orderId: responseOrderId || orderId,
+          paymentId: responsePaymentId || paymentId,
+          provider: responseProvider || provider,
+          clinicId: responseClinicId || clinicId,
+          paymentVerified: "1",
+          paymentStatus: "SUCCESS",
+        }),
+      );
     }
 
-    redirect(buildFallbackCallbackUrl(verifiedQueryString));
-  } catch {
-    redirect(buildFallbackCallbackUrl(failedQueryString));
+    redirect(
+      buildViddhakarmaRedirectUrl({
+        appointmentType,
+        appointmentId,
+        orderId,
+        paymentId,
+        provider,
+        clinicId,
+        paymentVerified: "0",
+        paymentStatus: "FAILED",
+      }),
+    );
+    return;
   }
+
+  if (responseSuccess) {
+    redirect(
+      buildViddhakarmaRedirectUrl({
+        appointmentType,
+        appointmentId,
+        orderId: responseOrderId || orderId,
+        paymentId: responsePaymentId || paymentId,
+        provider: responseProvider || provider,
+        clinicId: responseClinicId || clinicId,
+        paymentVerified: "1",
+        paymentStatus: "SUCCESS",
+      }),
+    );
+  }
+
+  redirect(
+    buildViddhakarmaRedirectUrl({
+      appointmentType,
+      appointmentId,
+      orderId,
+      paymentId,
+      provider,
+      clinicId,
+      paymentVerified: "0",
+      paymentStatus: "FAILED",
+    }),
+  );
 }

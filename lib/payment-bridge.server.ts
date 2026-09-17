@@ -27,8 +27,17 @@ type PaymentIntentRecord = Record<string, unknown>;
 const DEFAULT_BACKEND_BASE_URL = "https://backend-service-v1.ishswami.in";
 const DEFAULT_VIDDHAKARMA_BASE_URL = "https://www.viddhakarma.com";
 
+let backendUrlWarningLogged = false;
+
 function normalizeBaseUrl(rawUrl: string, fallback: string): string {
   const value = (rawUrl || fallback || "").trim().replace(/\/+$/u, "");
+  if (!rawUrl && !backendUrlWarningLogged && fallback === DEFAULT_BACKEND_BASE_URL) {
+    backendUrlWarningLogged = true;
+    console.warn(
+      `[payment-bridge] NEXT_PUBLIC_BACKEND_URL is not set — falling back to hardcoded ${DEFAULT_BACKEND_BASE_URL}. ` +
+        "Set the environment variable to avoid routing payments to the wrong server."
+    );
+  }
   return value || fallback;
 }
 

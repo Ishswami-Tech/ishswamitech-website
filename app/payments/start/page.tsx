@@ -40,7 +40,13 @@ export default async function PaymentStartPage(props: {
   );
   const payload = decodePaymentBridgePayload(payloadParam);
 
-  if (!payload || !payload.clinicId || !payload.appointmentId || Number.isFinite(payload.amount) === false || payload.amount <= 0) {
+  if (
+    !payload ||
+    !payload.clinicId ||
+    !Number.isFinite(payload.amount) ||
+    payload.amount <= 0 ||
+    (!payload.appointmentId && !payload.subscriptionId && !payload.invoiceId && !payload.prescriptionId)
+  ) {
     return (
       <PaymentStartClient
         payload={null}

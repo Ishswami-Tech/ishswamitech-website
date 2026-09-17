@@ -380,6 +380,10 @@ export function isPrebuiltPaymentIntent(payload: PaymentBridgePayload): boolean 
     return Boolean(payload.orderId && payload.razorpayKeyId);
   }
 
+  if (provider === "cashfree") {
+    return Boolean(payload.orderId && payload.paymentSessionId);
+  }
+
   return false;
 }
 

@@ -116,8 +116,8 @@ export default function PaymentCallbackClient({ queryString }: { queryString: st
       }
 
       try {
-        const callbackPath = handoffToken ? "/api/v1/payments/callback/handoff" : "/api/v1/payments/callback";
-        const response = await fetch(`${backendBase}${callbackPath}?${callbackQuery.toString()}`, {
+        let callbackPath = handoffToken ? "/api/v1/payments/callback/handoff" : "/api/v1/payments/callback";
+        let response = await fetch(`${backendBase}${callbackPath}?${callbackQuery.toString()}`, {
           method: "POST",
           credentials: "include",
           mode: "cors",
@@ -128,13 +128,54 @@ export default function PaymentCallbackClient({ queryString }: { queryString: st
           body: JSON.stringify({ orderId }),
         });
 
+        // If handoff token is expired/invalid and we have fallback params, try legacy callback
+        if (!response.ok && handoffToken && clinicId && orderId && (response.status === 401 || response.status === 403)) {
+          const legacyQuery = new URLSearchParams();
+          legacyQuery.set("clinicId", clinicId);
+          legacyQuery.set("orderId", orderId);
+          legacyQuery.set("provider", provider);
+          if (paymentId) {
+            legacyQuery.set("paymentId", paymentId);
+          }
+          if (appointmentId) {
+            legacyQuery.set("appointmentId", appointmentId);
+          }
+          if (appointmentType) {
+            legacyQuery.set("appointmentType", appointmentType);
+          }
+
+          callbackPath = "/api/v1/payments/callback";
+          response = await fetch(`${backendBase}${callbackPath}?${legacyQuery.toString()}`, {
+            method: "POST",
+            credentials: "include",
+            mode: "cors",
+            headers: {
+              "Content-Type": "application/json",
+              "X-Clinic-ID": clinicId,
+            },
+            body: JSON.stringify({ orderId }),
+          });
+        }
+
         if (!response.ok) {
           const text = await response.text();
           throw new Error(text || "Payment verification failed");
         }
 
         const responseBody = (await response.json().catch(() => ({}))) as Record<string, unknown>;
-        if (handoffToken) {
+        if (handoffToken && callbackPath.includes("handoff")) {
+          const isSuccessful = responseBody.success === true;
+          if (!isSuccessful) {
+            const errorUrl = new URL(fallbackRedirectUrl);
+            errorUrl.searchParams.set("paymentVerified", "0");
+            errorUrl.searchParams.set("paymentError", "payment_not_completed");
+            if (responseBody.message && typeof responseBody.message === 'string') {
+              errorUrl.searchParams.set("message", responseBody.message);
+            }
+            window.location.replace(errorUrl.toString());
+            return;
+          }
+
           const resolvedClinicId = String(responseBody.clinicId || clinicId || "");
           const resolvedOrderId = String(responseBody.orderId || orderId || "");
           const resolvedPaymentId = String(responseBody.paymentId || paymentId || "");
@@ -156,7 +197,7 @@ export default function PaymentCallbackClient({ queryString }: { queryString: st
           targetUrl.search = callbackQuery.toString();
           window.location.replace(targetUrl.toString());
         }
-      } catch (error) {
+      } catch {
         setState("error");
       }
     };

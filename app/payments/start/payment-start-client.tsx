@@ -143,6 +143,10 @@ function hasPrebuiltGatewayTarget(
     return Boolean(record.orderId && record.razorpayKeyId);
   }
 
+  if (provider === "cashfree") {
+    return Boolean(record.orderId && record.paymentSessionId);
+  }
+
   return false;
 }
 

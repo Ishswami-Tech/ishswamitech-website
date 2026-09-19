@@ -339,10 +339,10 @@ export default function PaymentStartClient({
       const displayAmount = String(resolvedPayload.displayAmount || "");
       const orderId = String(
         resolvedPaymentIntent.orderId ||
-          resolvedPaymentIntent.paymentId ||
-          resolvedPaymentIntent.paymentIntentId ||
-          resolvedPayload.orderId ||
-          "",
+        resolvedPaymentIntent.paymentId ||
+        resolvedPaymentIntent.paymentIntentId ||
+        resolvedPayload.orderId ||
+        "",
       );
       const gatewayRedirectUrl =
         getAllowedRedirectUrl(
@@ -352,11 +352,11 @@ export default function PaymentStartClient({
             getRedirectUrlCandidate(resolvedPaymentIntent),
             getRedirectUrlCandidate(
               (resolvedPaymentIntent.metadata as Record<string, unknown> | undefined) ||
-                undefined,
+              undefined,
             ),
             getRedirectUrlCandidate(
               (resolvedPaymentIntent.providerResponse as Record<string, unknown> | undefined) ||
-                undefined,
+              undefined,
             ),
           ),
         ) || "";
@@ -370,10 +370,10 @@ export default function PaymentStartClient({
         (resolvedPaymentIntent.providerResponse as Record<string, unknown> | undefined) || {};
       const paymentSessionId = String(
         resolvedPaymentIntent.paymentSessionId ||
-          resolvedPayload.paymentSessionId ||
-          paymentMetadata.paymentSessionId ||
-          providerResponse.payment_session_id ||
-          "",
+        resolvedPayload.paymentSessionId ||
+        paymentMetadata.paymentSessionId ||
+        providerResponse.payment_session_id ||
+        "",
       );
 
       try {
@@ -423,9 +423,9 @@ export default function PaymentStartClient({
           setStatusLabel("Opening Razorpay checkout...");
           const razorpayKeyId = String(
             resolvedPaymentIntent.razorpayKeyId ||
-              resolvedPayload.razorpayKeyId ||
-              process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID ||
-              "",
+            resolvedPayload.razorpayKeyId ||
+            process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID ||
+            "",
           );
           if (!razorpayKeyId) {
             throw new Error("Razorpay key is not configured.");
@@ -462,8 +462,8 @@ export default function PaymentStartClient({
             name: "Payment",
             description: String(
               resolvedPaymentIntent.description ||
-                resolvedPayload.description ||
-                "Payment",
+              resolvedPayload.description ||
+              "Payment",
             ),
             order_id: orderId,
             theme: { color: "#0B5E45" },
@@ -487,8 +487,11 @@ export default function PaymentStartClient({
             },
             modal: {
               ondismiss: () => {
-                setStatus("error");
-                setErrorMessage("Payment was cancelled. You can try again when you're ready.");
+                setStatus("loading");
+                setStatusLabel("Payment cancelled. Redirecting back...");
+                setTimeout(() => {
+                  window.location.replace(resolvedFallbackUrl);
+                }, 200);
               },
             },
           });

@@ -1,7 +1,7 @@
 export const testimonials = [
   {
     id: 1,
-    name: "Clinic founder",
+    name: "Clinic Founder",
     company: "Healthcare platform",
     role: "Founder",
     avatar: "/Assets/Programmers_4.jpg",
@@ -11,7 +11,7 @@ export const testimonials = [
   },
   {
     id: 2,
-    name: "Operations lead",
+    name: "Operations Lead",
     company: "Service business",
     role: "Operations",
     avatar: "/Assets/Programmers_4.jpg",
@@ -21,7 +21,7 @@ export const testimonials = [
   },
   {
     id: 3,
-    name: "Product owner",
+    name: "Product Owner",
     company: "Digital product",
     role: "Product",
     avatar: "/Assets/Programmers_4.jpg",

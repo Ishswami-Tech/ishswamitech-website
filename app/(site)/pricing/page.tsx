@@ -21,9 +21,9 @@ export const metadata: Metadata = createPageMetadata({
 });
 
 const pricingAssurances = [
-  { icon: MessageSquare, text: "A plan recommendation, not a pitch" },
-  { icon: FileCheck2, text: "Fixed-scope quote before any code" },
-  { icon: ShieldCheck, text: "NDA signed before you share details" },
+  { icon: MessageSquare, text: "A Plan Recommendation, Not a Pitch" },
+  { icon: FileCheck2, text: "Fixed-Scope Quote Before Any Code" },
+  { icon: ShieldCheck, text: "NDA Signed Before You Share Details" },
 ];
 
 export default function PricingPage() {
@@ -33,7 +33,7 @@ export default function PricingPage() {
         breadcrumb="Pricing"
         align="center"
         background="spotlight"
-        eyebrow={`${siteConfig.shortName} pricing`}
+        eyebrow={`${siteConfig.shortName} Pricing`}
         title="Plans That Scale With Your Stage"
         lead="Honest ranges, fixed-scope quotes, and the flexibility to mix project and retainer work. Every engagement starts with a free discovery call — no commitment required."
       />
@@ -47,7 +47,7 @@ export default function PricingPage() {
       {/* Included in every plan */}
       <section className="site-section--tight border-y border-[var(--border)] bg-[var(--surface)]">
         <Container>
-          <h2 className="type-band-label mb-8 text-center">Included in every plan</h2>
+          <h2 className="type-band-label mb-8 text-center">Included in Every Plan</h2>
           <Stagger as="ul" gap={0.04} className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-6">
             {includedAcrossAll.map((item) => (
               <StaggerItem as="li" key={item}>
@@ -65,7 +65,7 @@ export default function PricingPage() {
       <Section>
         <SectionHeader
           align="center"
-          eyebrow="Add-on services"
+          eyebrow="Add-On Services"
           title="Add-On Capabilities, Scoped Separately"
           lead="Layer these onto any plan, or use them as a stand-alone engagement on an existing product."
         />
@@ -96,11 +96,11 @@ export default function PricingPage() {
 
       {/* CTA */}
       <CtaBand
-        eyebrow="Still deciding?"
+        eyebrow="Still Deciding?"
         title="Not Sure Which Plan Fits Your Project?"
         lead="Tell us about your idea in a 30-minute call. We'll recommend the right plan — or honestly tell you if we're not the right fit."
-        primary={{ label: "Book free consultation", href: "/contact" }}
-        secondary={{ label: "Browse services", href: "/services" }}
+        primary={{ label: "Book Free Consultation", href: "/contact" }}
+        secondary={{ label: "Browse Services", href: "/services" }}
         assurances={pricingAssurances}
       />
     </>

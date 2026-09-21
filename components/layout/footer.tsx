@@ -14,29 +14,36 @@ import {
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import { AnimatedBackground } from "@/components/ui/animated-background";
-import { activeSocialLinks, legalEntity, siteConfig, type SocialPlatform } from "@/lib/site";
+import { cn } from "@/lib/utils";
+import {
+  activeSocialLinks,
+  legalEntity,
+  siteConfig,
+  telHref,
+  type SocialPlatform,
+} from "@/lib/site";
 
 const footerLinks = {
   company: [
-    { href: "/about", label: "About us" },
+    { href: "/about", label: "About Us" },
     { href: "/blog", label: "Insights" },
     { href: "/pricing", label: "Pricing" },
-    { href: "/contact", label: "Contact us" },
+    { href: "/contact", label: "Contact Us" },
   ],
   services: [
-    { href: "/services#web-development", label: "Web development" },
-    { href: "/services#mobile-development", label: "Mobile apps" },
+    { href: "/services#web-development", label: "Web Development" },
+    { href: "/services#mobile-development", label: "Mobile Apps" },
     { href: "/services#ai-ml", label: "AI / ML" },
     { href: "/services#cloud-solutions", label: "Cloud & DevOps" },
-    { href: "/services#ui-ux-design", label: "UI / UX design" },
-    { href: "/services#ecommerce", label: "E-commerce" },
+    { href: "/services#ui-ux-design", label: "UI / UX Design" },
+    { href: "/services#ecommerce", label: "E-Commerce" },
   ],
   legal: [
-    { href: "/privacy-policy", label: "Privacy policy" },
-    { href: "/terms-and-conditions", label: "Terms & conditions" },
-    { href: "/refund-cancellation", label: "Refund & cancellation" },
-    { href: "/shipping-delivery", label: "Shipping & delivery" },
-    { href: "/privacy-policy#cookies", label: "Cookie policy" },
+    { href: "/privacy-policy", label: "Privacy Policy" },
+    { href: "/terms-and-conditions", label: "Terms & Conditions" },
+    { href: "/refund-cancellation", label: "Refund & Cancellation" },
+    { href: "/shipping-delivery", label: "Shipping & Delivery" },
+    { href: "/privacy-policy#cookies", label: "Cookie Policy" },
   ],
 };
 
@@ -92,11 +99,11 @@ export default function Footer() {
             </div>
             <div className="flex flex-col gap-3 sm:flex-row md:justify-end">
               <Button href="/contact">
-                Start a project
+                Start a Project
                 <ArrowUpRight className="h-4 w-4" aria-hidden />
               </Button>
               <Button href="/services" variant="secondary">
-                Browse services
+                Browse Services
               </Button>
             </div>
           </div>
@@ -149,7 +156,7 @@ export default function Footer() {
           <LinkColumn heading="Legal" links={footerLinks.legal} />
 
           <div>
-            <h2 className="type-band-label mb-4">Get in touch</h2>
+            <h2 className="type-band-label mb-4">Get in Touch</h2>
             <ul className="flex flex-col gap-2.5">
               <li>
                 <a
@@ -160,15 +167,22 @@ export default function Footer() {
                   <span className="break-all">{siteConfig.email}</span>
                 </a>
               </li>
-              <li>
-                <a
-                  href={`tel:${siteConfig.phone}`}
-                  className="inline-flex items-start gap-2 text-[var(--text-base)] text-[var(--text-secondary)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--foreground)]"
-                >
-                  <Phone className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
-                  {siteConfig.phone}
-                </a>
-              </li>
+              {siteConfig.phones.map(({ number }, index) => (
+                <li key={number}>
+                  <a
+                    href={telHref(number)}
+                    className="inline-flex items-start gap-2 text-[var(--text-base)] text-[var(--text-secondary)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--foreground)]"
+                  >
+                    {/* The icon marks the group, not each line — repeating it
+                        down a two-item list reads as two unrelated channels. */}
+                    <Phone
+                      className={cn("mt-0.5 h-4 w-4 shrink-0", index > 0 && "opacity-0")}
+                      aria-hidden
+                    />
+                    {number}
+                  </a>
+                </li>
+              ))}
               <li className="inline-flex items-start gap-2 text-[var(--text-base)] text-[var(--text-secondary)]">
                 <MapPin className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
                 {legalEntity.publicLocation}

@@ -11,15 +11,13 @@ const organizationSchema = {
   email: siteConfig.email,
   telephone: siteConfig.phone,
   sameAs: Object.values(siteConfig.social).filter(Boolean),
-  contactPoint: [
-    {
-      "@type": "ContactPoint",
-      contactType: "sales",
-      email: siteConfig.email,
-      telephone: siteConfig.phone,
-      availableLanguage: ["English"],
-    },
-  ],
+  contactPoint: siteConfig.phones.map(({ number }) => ({
+    "@type": "ContactPoint",
+    contactType: "sales",
+    email: siteConfig.email,
+    telephone: number,
+    availableLanguage: ["English"],
+  })),
 };
 
 const websiteSchema = {

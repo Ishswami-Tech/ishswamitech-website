@@ -13,8 +13,8 @@ import { transition } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
 const modes = [
-  { value: "project" as const, label: "Project-based" },
-  { value: "monthly" as const, label: "Monthly retainer" },
+  { value: "project" as const, label: "Project-Based" },
+  { value: "monthly" as const, label: "Monthly Retainer" },
 ];
 
 /**
@@ -49,7 +49,7 @@ export function PricingPlans() {
         options={modes}
         value={billing}
         onChange={setBilling}
-        label="Billing mode"
+        label="Billing Mode"
         className="mb-12"
       />
 
@@ -92,7 +92,7 @@ export function PricingPlans() {
 
               <div className="mb-6 rounded-[var(--radius-xl)] border border-[var(--border)] bg-[var(--surface)] p-5">
                 <span className="type-stat-label mb-1.5 block">
-                  {billing === "project" ? "Project range" : "Monthly retainer"}
+                  {billing === "project" ? "Project range" : "Monthly Retainer"}
                 </span>
                 <AnimatedPrice value={plan.price[billing]} billing={billing} />
               </div>

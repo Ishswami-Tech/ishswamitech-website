@@ -33,10 +33,13 @@ import { Card, CardIcon } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge, StatusDot } from "@/components/ui/badge";
 import { CtaBand } from "@/components/ui/cta-band";
+import { MediaFrame } from "@/components/ui/media-frame";
 import { Reveal } from "@/components/motion/reveal";
 import { DrawLine } from "@/components/motion/draw-line";
 import { Parallax } from "@/components/motion/parallax";
 import { Stagger, StaggerItem } from "@/components/motion/stagger";
+import { Tilt } from "@/components/motion/tilt";
+import { WordReveal } from "@/components/motion/word-reveal";
 import AnimatedCounter from "@/components/ui/animated-counter";
 import { absoluteUrl, siteConfig } from "@/lib/site";
 
@@ -50,9 +53,9 @@ const serviceIcons: Record<string, React.ElementType> = {
 };
 
 const ctaAssurances = [
-  { icon: Headphones, text: "Free 30-minute discovery" },
-  { icon: FileCheck2, text: "Honest, fixed-scope quotes" },
-  { icon: ShieldCheck, text: "NDA signed before kickoff" },
+  { icon: Headphones, text: "Free 30-Minute Discovery" },
+  { icon: FileCheck2, text: "Honest, Fixed-Scope Quotes" },
+  { icon: ShieldCheck, text: "NDA Signed Before Kickoff" },
 ];
 
 const serviceSchema = {
@@ -159,17 +162,23 @@ export default function HomePage() {
             <Reveal immediate variant="fade">
               <p className="type-ui mb-8 inline-flex items-center gap-2.5 rounded-[var(--radius-pill)] border border-[var(--border)] bg-[var(--surface-glass)] px-3.5 py-1.5 text-[var(--text-secondary)] backdrop-blur-md">
                 <StatusDot />
-                Accepting new projects · Senior-led delivery
+                Accepting New Projects · Senior-Led Delivery
               </p>
             </Reveal>
 
-            <Reveal immediate delay={0.06}>
-              <h1 className="type-hero mb-6 text-[var(--foreground)]">
-                Software That{" "}
-                <span className="gradient-text gradient-text--sweep">Looks Sharp, Loads Fast,</span> and
-                Earns Its Keep.
-              </h1>
-            </Reveal>
+            {/* Word-by-word rather than a single <Reveal>: this is the first
+                thing on the page and the only place worth spending that much
+                animation on. Everything below it still uses the shared fade. */}
+            <h1 className="type-hero mb-6 text-[var(--foreground)]">
+              <WordReveal
+                delay={0.06}
+                segments={[
+                  { text: "Software That" },
+                  { text: "Looks Sharp, Loads Fast,", accent: true },
+                  { text: "and Earns Its Keep." },
+                ]}
+              />
+            </h1>
 
             <Reveal immediate delay={0.12}>
               <p className="type-lead mb-10 max-w-xl">
@@ -182,11 +191,11 @@ export default function HomePage() {
             <Reveal immediate delay={0.18}>
               <div className="flex flex-col gap-3 sm:flex-row">
                 <Button href="/contact" size="lg">
-                  Start your project
+                  Start Your Project
                   <ArrowUpRight className="h-4 w-4" aria-hidden />
                 </Button>
                 <Button href="/services" variant="ghost" size="lg">
-                  Explore services
+                  Explore Services
                 </Button>
               </div>
             </Reveal>
@@ -226,7 +235,7 @@ export default function HomePage() {
         className="site-section--tight relative overflow-hidden border-y border-[var(--border)] bg-[var(--surface)]"
       >
         <h2 id="tech-marquee-heading" className="type-band-label mb-6 text-center">
-          Technologies we engineer with
+          Technologies We Engineer With
         </h2>
         {/* Edge fade so items enter and leave rather than clipping at the border. */}
         <div
@@ -257,7 +266,7 @@ export default function HomePage() {
       {/* -------------------------------------------------------------- WHY US */}
       <Section>
         <SectionHeader
-          eyebrow="Why teams choose us"
+          eyebrow="Why Teams Choose Us"
           title="A Cleaner Delivery Model, With Stronger Product Thinking"
           aside={
             <p className="type-lead max-w-xl">
@@ -269,17 +278,19 @@ export default function HomePage() {
 
         <Stagger className="grid gap-5 md:grid-cols-3">
           {differentiators.map((item, index) => (
-            <StaggerItem key={item.title}>
-              <Card tone="glass" interactive padding="none" className="h-full p-6">
-                <div className="mb-5 flex items-center justify-between">
-                  <CardIcon>
-                    <item.icon className="h-5 w-5" aria-hidden />
-                  </CardIcon>
-                  <span className="type-index">{String(index + 1).padStart(2, "0")}</span>
-                </div>
-                <h3 className="type-block-title mb-2.5 text-[var(--foreground)]">{item.title}</h3>
-                <p className="type-body text-[var(--text-secondary)]">{item.description}</p>
-              </Card>
+            <StaggerItem key={item.title} className="h-full">
+              <Tilt className="h-full">
+                <Card tone="glass" interactive padding="none" className="h-full p-6">
+                  <div className="mb-5 flex items-center justify-between">
+                    <CardIcon>
+                      <item.icon className="h-5 w-5" aria-hidden />
+                    </CardIcon>
+                    <span className="type-index">{String(index + 1).padStart(2, "0")}</span>
+                  </div>
+                  <h3 className="type-block-title mb-2.5 text-[var(--foreground)]">{item.title}</h3>
+                  <p className="type-body text-[var(--text-secondary)]">{item.description}</p>
+                </Card>
+              </Tilt>
             </StaggerItem>
           ))}
         </Stagger>
@@ -291,13 +302,13 @@ export default function HomePage() {
           <Card tone="glass" interactive padding="none" className="p-6 lg:p-7">
             <div className="mb-5 flex items-start justify-between gap-4">
               <div>
-                <p className="type-eyebrow">How we engage</p>
+                <p className="type-eyebrow">How We Engage</p>
                 <p className="type-panel-title mt-1.5 text-[var(--foreground)]">
-                  Premium execution, zero agency clutter
+                  Premium Execution, Zero Agency Clutter
                 </p>
               </div>
               <Badge tone="gradient" className="shrink-0">
-                Senior-led
+                Senior-Led
               </Badge>
             </div>
 
@@ -324,14 +335,14 @@ export default function HomePage() {
       {/* ------------------------------------------------------------ SERVICES */}
       <Section tone="ruled">
         <SectionHeader
-          eyebrow="What we build"
+          eyebrow="What We Build"
           title="End-to-End Software, Designed and Delivered In-House"
           aside={
             <Link
               href="/services"
               className="type-ui group inline-flex items-center gap-1.5 text-[var(--accent)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--accent-strong)]"
             >
-              View all services
+              View All Services
               <ArrowUpRight
                 className="h-4 w-4 transition-transform duration-[var(--duration-fast)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                 aria-hidden
@@ -348,10 +359,24 @@ export default function HomePage() {
                 <Link href={`/services#${service.slug}`} className="block h-full">
                   <Card
                     interactive
-                    padding="md"
-                    className="flex h-full flex-col"
+                    padding="none"
+                    className="flex h-full flex-col overflow-hidden"
                     tone="solid"
                   >
+                    {/* Duotoned to the service's own accent, which is what keeps
+                        six different stock sources reading as one set. */}
+                    <MediaFrame
+                      src={service.image}
+                      alt=""
+                      ratio="wide"
+                      tint={service.color}
+                      strength={0.5}
+                      framed={false}
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      className="border-b border-[var(--border)]"
+                    />
+
+                    <div className="flex flex-1 flex-col p-5 md:p-6">
                     <CardIcon tint={service.color} className="mb-5">
                       <Icon className="h-5 w-5" aria-hidden />
                     </CardIcon>
@@ -373,6 +398,7 @@ export default function HomePage() {
                         aria-hidden
                       />
                     </span>
+                    </div>
                   </Card>
                 </Link>
               </StaggerItem>
@@ -385,7 +411,7 @@ export default function HomePage() {
       <Section tone="band" className="relative overflow-hidden">
         <SectionHeader
           align="center"
-          eyebrow="Proven process"
+          eyebrow="Proven Process"
           title="A Simple Path From Idea to Launch"
           lead="No mystery, no surprises. Aligned goals, a concrete plan, iterative build cycles, and a launch checklist that covers performance and discovery."
         />
@@ -440,11 +466,68 @@ export default function HomePage() {
         </Container>
       </section>
 
+      {/* ------------------------------------------------------------ SHOWCASE */}
+      <Section tone="ruled">
+        <SectionHeader
+          eyebrow="Inside the Work"
+          title="Craft You Can See, Engineering You Can Audit"
+          aside={
+            <p className="type-lead max-w-xl">
+              Interface, intelligence and infrastructure are one job here, not three vendors — which
+              is why the seams between them never end up being your problem.
+            </p>
+          }
+        />
+
+        {/* Deliberately unequal: a 3-up of identical tiles is the stock agency
+            grid. One dominant frame with two supporting ones gives the band a
+            subject instead of an inventory. */}
+        <Stagger className="grid gap-5 lg:grid-cols-3">
+          <StaggerItem className="lg:col-span-2">
+            <MediaFrame
+              src="/Assets/aiml.jpg"
+              alt="An AI assistant surface running on a laptop during a build review"
+              ratio="video"
+              sizes="(max-width: 1024px) 100vw, 66vw"
+              className="h-full"
+            >
+              <p className="type-eyebrow mb-1.5">AI &amp; Automation</p>
+              <p className="type-panel-title text-[var(--foreground)]">
+                Assistants and workflows wired into the product, not bolted beside it
+              </p>
+            </MediaFrame>
+          </StaggerItem>
+
+          <StaggerItem className="flex flex-col gap-5">
+            <MediaFrame
+              src="/Assets/double-exposure-caucasian-man-virtual-reality-vr-headset-is-presumably-gamer-hacker-cracking-code-into-secure-network-server-with-lines-code.jpg"
+              alt="Source code projected across a developer during a security review"
+              ratio="square"
+              tint="var(--cyan-400)"
+              sizes="(max-width: 1024px) 100vw, 33vw"
+              className="flex-1"
+            >
+              <p className="type-ui text-[var(--foreground)]">Security &amp; QA From Day One</p>
+            </MediaFrame>
+            <MediaFrame
+              src="/Assets/hero_img.jpg"
+              alt="A cloud platform dashboard surfacing live delivery metrics"
+              ratio="square"
+              tint="var(--violet-500)"
+              sizes="(max-width: 1024px) 100vw, 33vw"
+              className="flex-1"
+            >
+              <p className="type-ui text-[var(--foreground)]">Cloud That Scales Quietly</p>
+            </MediaFrame>
+          </StaggerItem>
+        </Stagger>
+      </Section>
+
       {/* ---------------------------------------------------------- INDUSTRIES */}
       <Section>
         <SectionHeader
           align="center"
-          eyebrow="Industries we serve"
+          eyebrow="Industries We Serve"
           title="Domain Depth Across the Products People Actually Use"
         />
 
@@ -463,7 +546,7 @@ export default function HomePage() {
       <Section tone="elevated">
         <SectionHeader
           align="center"
-          eyebrow="Client feedback"
+          eyebrow="Client Feedback"
           title="What Clients Say About Working With Us"
           lead="Recurring themes from the kind of work we focus on: clarity, speed, and practical execution."
         />
@@ -509,7 +592,7 @@ export default function HomePage() {
       <Section tone="ruled">
         <SectionHeader
           align="center"
-          eyebrow="Our stack"
+          eyebrow="Our Stack"
           title="Modern, Battle-Tested Tooling"
           lead="We pick the right tool for the job, not the trendy one — production-grade frameworks your team can actually hire for."
         />
@@ -534,11 +617,11 @@ export default function HomePage() {
 
       {/* ------------------------------------------------------------ CTA BAND */}
       <CtaBand
-        eyebrow="Let's build"
+        eyebrow="Let's Build"
         title="Ready to Turn Your Vision Into a Product That Ships?"
         lead="Tell us about your project in a 30-minute discovery call. You'll walk away with a concrete scope, a timeline, and an honest sense of what it'll take."
-        primary={{ label: "Book a discovery call", href: "/contact" }}
-        secondary={{ label: "See pricing", href: "/pricing" }}
+        primary={{ label: "Book a Discovery Call", href: "/contact" }}
+        secondary={{ label: "See Pricing", href: "/pricing" }}
         assurances={ctaAssurances}
       />
     </>

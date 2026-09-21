@@ -17,7 +17,7 @@ export default function BlogPage() {
     <>
       <PageHero
         breadcrumb="Insights"
-        eyebrow={`${siteConfig.shortName} insights`}
+        eyebrow={`${siteConfig.shortName} Insights`}
         title="Practical Writing on Building Modern Software"
         lead="Field notes, deep dives, and case studies covering web engineering, AI, mobile, design, and the operating model behind shipping products that grow."
       />

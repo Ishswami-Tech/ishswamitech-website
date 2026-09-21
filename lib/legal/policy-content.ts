@@ -248,7 +248,7 @@ export type LegalSlug =
 export const legalDocuments: Record<LegalSlug, LegalDocument> = {
   "privacy-policy": {
     slug: "privacy-policy",
-    breadcrumb: "Privacy policy",
+    breadcrumb: "Privacy Policy",
     title: "Privacy Policy",
     eyebrow: `${legalEntity.displayName} legal`,
     metaTitle: "Privacy Policy",
@@ -262,7 +262,7 @@ export const legalDocuments: Record<LegalSlug, LegalDocument> = {
   },
   "terms-and-conditions": {
     slug: "terms-and-conditions",
-    breadcrumb: "Terms & conditions",
+    breadcrumb: "Terms & Conditions",
     title: "Terms and Conditions",
     eyebrow: `${legalEntity.displayName} legal`,
     metaTitle: "Terms and Conditions",
@@ -275,7 +275,7 @@ export const legalDocuments: Record<LegalSlug, LegalDocument> = {
   },
   "refund-cancellation": {
     slug: "refund-cancellation",
-    breadcrumb: "Refund & cancellation",
+    breadcrumb: "Refund & Cancellation",
     title: "Refund & Cancellation Policy",
     eyebrow: `${legalEntity.displayName} legal`,
     metaTitle: "Refund & Cancellation Policy",
@@ -288,7 +288,7 @@ export const legalDocuments: Record<LegalSlug, LegalDocument> = {
   },
   "shipping-delivery": {
     slug: "shipping-delivery",
-    breadcrumb: "Shipping & delivery",
+    breadcrumb: "Shipping & Delivery",
     title: "Shipping & Delivery Policy",
     eyebrow: `${legalEntity.displayName} legal`,
     metaTitle: "Shipping & Delivery Policy",

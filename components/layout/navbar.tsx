@@ -140,7 +140,7 @@ export default function Navbar() {
                   "motion-reduce:transform-none lg:inline-flex"
                 )}
               >
-                Get a quote
+                Get a Quote
                 <ArrowUpRight
                   className="h-3.5 w-3.5 transition-transform duration-[var(--duration-fast)] group-hover/cta:translate-x-0.5 group-hover/cta:-translate-y-0.5"
                   aria-hidden
@@ -257,7 +257,7 @@ export default function Navbar() {
                     "[background-image:var(--gradient-primary)] shadow-[var(--shadow-glow)]"
                   )}
                 >
-                  Get a quote
+                  Get a Quote
                   <ArrowUpRight className="h-4 w-4" aria-hidden />
                 </Link>
               </div>

@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import {
   Sparkles,
@@ -20,8 +19,10 @@ import { Container } from "@/components/ui/container";
 import { Card, CardIcon } from "@/components/ui/card";
 import { PageHero } from "@/components/ui/page-hero";
 import { CtaBand } from "@/components/ui/cta-band";
+import { MediaFrame } from "@/components/ui/media-frame";
 import { Reveal } from "@/components/motion/reveal";
 import { Stagger, StaggerItem } from "@/components/motion/stagger";
+import { Tilt } from "@/components/motion/tilt";
 import { createPageMetadata, siteConfig } from "@/lib/site";
 
 export const metadata: Metadata = createPageMetadata({
@@ -47,12 +48,12 @@ const values = [
   },
   {
     icon: CheckCircle,
-    title: "Craft & quality",
+    title: "Craft & Quality",
     desc: "Typed, tested, observable code — and interfaces that feel obvious. Nothing ships we wouldn't be proud of.",
   },
   {
     icon: Heart,
-    title: "Client-first",
+    title: "Client-First",
     desc: "Your roadmap, your business, your wins. We measure success by your KPIs, not our line items.",
   },
 ];
@@ -60,19 +61,19 @@ const values = [
 const milestones = [
   {
     year: "2026",
-    title: `${siteConfig.shortName} registered`,
+    title: `${siteConfig.shortName} Registered`,
     detail:
       "Started as a Pune-based technology services business focused on practical software delivery.",
   },
   {
     year: "Now",
-    title: "Client-platform focus",
+    title: "Client-Platform Focus",
     detail:
       "Building websites, apps, payment flows, automation, and operational platforms for growing businesses.",
   },
   {
     year: "Next",
-    title: "Reliable delivery systems",
+    title: "Reliable Delivery Systems",
     detail:
       "Strengthening reusable engineering patterns, support processes, and production-ready platform components.",
   },
@@ -80,22 +81,22 @@ const milestones = [
 
 const stats = [
   { icon: Award, value: "2026", label: "Registered" },
-  { icon: Globe2, value: "Pune", label: "India based" },
-  { icon: Users, value: "Focused", label: "Delivery model" },
-  { icon: Sparkles, value: "Multi", label: "Domain capability" },
+  { icon: Globe2, value: "Pune", label: "India Based" },
+  { icon: Users, value: "Focused", label: "Delivery Model" },
+  { icon: Sparkles, value: "Multi", label: "Domain Capability" },
 ];
 
 const capabilities = [
-  { name: "Cloud deployments", desc: "AWS, Azure, GCP, Vercel" },
-  { name: "Web platforms", desc: "Next.js, React, APIs" },
-  { name: "Mobile apps", desc: "Android, iOS, cross-platform" },
-  { name: "AI workflows", desc: "Assistants, automation, search" },
+  { name: "Cloud Deployments", desc: "AWS, Azure, GCP, Vercel" },
+  { name: "Web Platforms", desc: "Next.js, React, APIs" },
+  { name: "Mobile Apps", desc: "Android, iOS, cross-platform" },
+  { name: "AI Workflows", desc: "Assistants, automation, search" },
 ];
 
 const aboutAssurances = [
-  { icon: Users, text: "Senior people on your project, not juniors" },
-  { icon: Eye, text: "Weekly demos, no status theatre" },
-  { icon: Heart, text: "We measure success by your KPIs" },
+  { icon: Users, text: "Senior People on Your Project, Not Juniors" },
+  { icon: Eye, text: "Weekly Demos, No Status Theatre" },
+  { icon: Heart, text: "We Measure Success by Your KPIs" },
 ];
 
 export default function AboutPage() {
@@ -109,7 +110,7 @@ export default function AboutPage() {
         background="aurora"
         aside={
           <Card tone="highlight" padding="md">
-            <p className="type-eyebrow mb-3">In one line</p>
+            <p className="type-eyebrow mb-3">In One Line</p>
             <p className="type-quote text-[var(--foreground)]">
               Premium engineering, design that converts, and a team that genuinely cares about your
               launch.
@@ -150,15 +151,13 @@ export default function AboutPage() {
               className="absolute -inset-5 rounded-[var(--radius-3xl)] bg-[var(--gradient-primary)] opacity-15 blur-3xl"
               aria-hidden
             />
-            <div className="relative aspect-video overflow-hidden rounded-[var(--radius-2xl)] border border-[var(--border)] shadow-[var(--shadow-xl)]">
-              <Image
-                src="/Assets/Programmers_4.jpg"
-                alt={`${siteConfig.shortName} engineering team collaborating`}
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 50vw"
-              />
-            </div>
+            <MediaFrame
+              src="/Assets/Programmers_4.jpg"
+              alt={`${siteConfig.shortName} engineering team collaborating`}
+              ratio="video"
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              className="shadow-[var(--shadow-xl)]"
+            />
             <p className="glass-strong absolute -bottom-6 -right-6 hidden rounded-[var(--radius-xl)] p-4 md:block">
               <span className="type-stat block text-2xl text-[var(--foreground)]">2026</span>
               <span className="type-stat-label">Registered in Pune</span>
@@ -166,7 +165,7 @@ export default function AboutPage() {
           </Reveal>
 
           <Reveal delay={0.08}>
-            <p className="type-eyebrow mb-3">Our story</p>
+            <p className="type-eyebrow mb-3">Our Story</p>
             <h2 className="type-section-title mb-5 text-[var(--foreground)]">
               Born From a Frustration With How Software Gets Built
             </h2>
@@ -212,7 +211,7 @@ export default function AboutPage() {
       <Section tone="band">
         <SectionHeader
           align="center"
-          eyebrow="What guides us"
+          eyebrow="What Guides Us"
           title="Core Values"
           lead="Not poster slogans — actual operating principles you'll see in every sprint, demo, and standup."
         />
@@ -220,13 +219,15 @@ export default function AboutPage() {
         <Stagger as="ul" className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {values.map((value) => (
             <StaggerItem as="li" key={value.title} className="h-full">
-              <Card tone="solid" className="h-full" interactive padding="md">
-                <CardIcon className="mb-5">
-                  <value.icon className="h-5 w-5" aria-hidden />
-                </CardIcon>
-                <h3 className="type-card-title mb-2 text-[var(--foreground)]">{value.title}</h3>
-                <p className="type-body text-[var(--text-secondary)]">{value.desc}</p>
-              </Card>
+              <Tilt className="h-full">
+                <Card tone="solid" className="h-full" interactive padding="md">
+                  <CardIcon className="mb-5">
+                    <value.icon className="h-5 w-5" aria-hidden />
+                  </CardIcon>
+                  <h3 className="type-card-title mb-2 text-[var(--foreground)]">{value.title}</h3>
+                  <p className="type-body text-[var(--text-secondary)]">{value.desc}</p>
+                </Card>
+              </Tilt>
             </StaggerItem>
           ))}
         </Stagger>
@@ -235,7 +236,7 @@ export default function AboutPage() {
       {/* Team */}
       <Section>
         <SectionHeader
-          eyebrow="Delivery coverage"
+          eyebrow="Delivery Coverage"
           title="A Compact Team Model"
           aside={
             <Link
@@ -251,22 +252,28 @@ export default function AboutPage() {
         <Stagger as="ul" className="grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-4">
           {team.map((member) => (
             <StaggerItem as="li" key={member.id} className="h-full">
-              <Card tone="solid" className="group h-full text-center" interactive padding="sm">
-                <div className="relative mx-auto mb-4 aspect-square w-20 overflow-hidden rounded-[var(--radius-xl)] ring-1 ring-[var(--border)]">
-                  <Image
-                    src={member.image}
-                    alt=""
-                    fill
-                    className="object-cover transition-transform duration-[var(--duration-slow)] ease-[var(--ease-out)] group-hover:scale-105 motion-reduce:transition-none"
-                    sizes="80px"
-                  />
+              <Card
+                tone="solid"
+                className="flex h-full flex-col overflow-hidden"
+                interactive
+                padding="none"
+              >
+                <MediaFrame
+                  src={member.image}
+                  alt=""
+                  ratio="video"
+                  framed={false}
+                  sizes="(max-width: 768px) 50vw, 25vw"
+                  className="border-b border-[var(--border)]"
+                />
+                <div className="flex-1 p-4">
+                  <h3 className="type-card-title text-[var(--text-md)] text-[var(--foreground)]">
+                    {member.name}
+                  </h3>
+                  <p className="mt-1 text-[var(--text-base)] text-[var(--text-tertiary)]">
+                    {member.role}
+                  </p>
                 </div>
-                <h3 className="type-card-title text-[var(--text-md)] text-[var(--foreground)]">
-                  {member.name}
-                </h3>
-                <p className="mt-1 text-[var(--text-base)] text-[var(--text-tertiary)]">
-                  {member.role}
-                </p>
               </Card>
             </StaggerItem>
           ))}
@@ -277,7 +284,7 @@ export default function AboutPage() {
       <Section tone="band">
         <SectionHeader
           align="center"
-          eyebrow="Our journey"
+          eyebrow="Our Journey"
           title="Where We Are, and Where We're Going"
           lead="A straightforward path from registration to reliable client delivery."
         />
@@ -337,11 +344,11 @@ export default function AboutPage() {
 
       {/* CTA */}
       <CtaBand
-        eyebrow="Work with us"
+        eyebrow="Work With Us"
         title="Let's Build Something Worth Talking About"
         lead="Whether you're scoping a new product, modernising an old one, or scaling a team — we'd love to hear about it."
-        primary={{ label: "Start a conversation", href: "/contact" }}
-        secondary={{ label: "Browse our services", href: "/services" }}
+        primary={{ label: "Start a Conversation", href: "/contact" }}
+        secondary={{ label: "Browse Our Services", href: "/services" }}
         assurances={aboutAssurances}
       />
     </>

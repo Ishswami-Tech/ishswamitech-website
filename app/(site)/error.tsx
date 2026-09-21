@@ -30,10 +30,10 @@ export default function SiteError({
         action={
           <div className="flex flex-col gap-3 sm:flex-row">
             <Button type="button" onClick={reset}>
-              Try again
+              Try Again
             </Button>
             <Button href="/contact" variant="secondary">
-              Report the problem
+              Report the Problem
             </Button>
           </div>
         }

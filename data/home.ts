@@ -21,19 +21,19 @@ export type Differentiator = {
 export const differentiators: readonly Differentiator[] = [
   {
     icon: Rocket,
-    title: "Outcome-focused delivery",
+    title: "Outcome-Focused Delivery",
     description:
       "Product and engineering ownership from discovery to launch — not ticket-takers waiting for direction.",
   },
   {
     icon: Search,
-    title: "Search-ready foundation",
+    title: "Search-Ready Foundation",
     description:
       "Performant pages, semantic structure, and conversion-aware UX baked into every build, so growth doesn't require a rewrite.",
   },
   {
     icon: ShieldCheck,
-    title: "Scalable architecture",
+    title: "Scalable Architecture",
     description:
       "Modern, well-typed stacks and clean systems built for integrations, growth, and the features you will ship next.",
   },
@@ -78,14 +78,14 @@ export const deliverySteps: readonly DeliveryStep[] = [
 ];
 
 export const industries: readonly string[] = [
-  "SaaS & platforms",
+  "SaaS & Platforms",
   "Fintech",
   "Healthtech",
-  "E-commerce",
+  "E-Commerce",
   "EdTech",
   "Logistics",
-  "Real estate",
-  "Media & creator",
+  "Real Estate",
+  "Media & Creator",
 ];
 
 export type HeroHighlight = {
@@ -97,36 +97,36 @@ export type HeroHighlight = {
 export const heroHighlights: readonly HeroHighlight[] = [
   {
     icon: Focus,
-    title: "Brand-first visual systems",
+    title: "Brand-First Visual Systems",
     description: "Interfaces that look beautiful and build trust instantly.",
   },
   {
     icon: TrendingUp,
-    title: "SEO-aware implementation",
+    title: "SEO-Aware Implementation",
     description: "Built to rank, structured to drive organic growth.",
   },
   {
     icon: Layers,
-    title: "Full-stack under one roof",
+    title: "Full-Stack Under One Roof",
     description: "From idea to infrastructure, we handle it all.",
   },
   {
     icon: Lock,
-    title: "Secure by default",
+    title: "Secure by Default",
     description: "Security best practices built into every layer.",
   },
   {
     icon: Zap,
-    title: "Fast, scalable architecture",
+    title: "Fast, Scalable Architecture",
     description: "Systems built to scale with your ambition.",
   },
 ];
 
 export const engagementIncludes: readonly string[] = [
-  "Conversion-aware interface design",
-  "Semantic, crawlable page structure",
-  "Performance-minded media decisions",
-  "Launch support with analytics ready",
+  "Conversion-Aware Interface Design",
+  "Semantic, Crawlable Page Structure",
+  "Performance-Minded Media Decisions",
+  "Launch Support with Analytics Ready",
 ];
 
 export type StatItem = {
@@ -139,9 +139,9 @@ export type StatItem = {
 
 export const companyStats: readonly StatItem[] = [
   { value: "2026", label: "Registered in Pune" },
-  { value: "10", count: 10, suffix: "", label: "Core service areas" },
-  { value: "4", count: 4, suffix: "", label: "Platforms covered" },
-  { value: "24h", label: "Response window" },
+  { value: "10", count: 10, suffix: "", label: "Core Service Areas" },
+  { value: "4", count: 4, suffix: "", label: "Platforms Covered" },
+  { value: "24h", label: "Response Window" },
 ];
 
 export const stackGroups: ReadonlyArray<{ label: string; techs: readonly string[] }> = [

@@ -67,7 +67,7 @@ export const plans: readonly Plan[] = [
       "Architecture and DevOps consulting",
     ],
     notIncluded: [],
-    cta: "Contact us",
+    cta: "Contact Us",
     popular: false,
   },
 ];
@@ -80,25 +80,25 @@ export const addOns: ReadonlyArray<{
 }> = [
   {
     icon: Brush,
-    name: "UI/UX design",
+    name: "UI/UX Design",
     price: "From Rs. 25,000",
     desc: "Wireframes, prototypes, and a complete brand-aligned visual system.",
   },
   {
     icon: Search,
-    name: "SEO optimisation",
+    name: "SEO Optimisation",
     price: "From Rs. 15,000",
     desc: "Technical SEO audit, schema, page speed, and content recommendations.",
   },
   {
     icon: Wrench,
-    name: "Maintenance retainer",
+    name: "Maintenance Retainer",
     price: "From Rs. 15,000 / mo",
     desc: "Bug fixes, security patches, dependency upgrades, and small features.",
   },
   {
     icon: Brain,
-    name: "AI integration",
+    name: "AI Integration",
     price: "From Rs. 50,000",
     desc: "GPT, embeddings, RAG, or custom models added to an existing product.",
   },

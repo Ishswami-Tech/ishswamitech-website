@@ -227,7 +227,7 @@ Startups need to move fast. But the wrong choices create technical debt that slo
     `,
     category: "Business",
     tag: "business",
-    image: "/Assets/computer-screen-with-blue-background-with-keyboard-mouse.jpg",
+    image: "/Assets/aiml.jpg",
     author: "IshSwamiTech Team",
     authorAvatar: "/Assets/Programmers_4.jpg",
     date: "2025-02-10",
@@ -275,7 +275,7 @@ We delivered a cross-platform Flutter client with Firebase for auth, sync, and p
   {
     id: 8,
     slug: "case-study-shopnest",
-    title: "Build Concept: ShopNest - Eâ€‘Commerce at Scale",
+    title: "Build Concept: ShopNest - E-Commerce at Scale",
     excerpt:
       "A React and Node.js storefront with Stripe, real-time inventory, and a 3Ã— lift in conversion for RetailPro Ltd.",
     content: `
@@ -304,7 +304,7 @@ We built a React storefront and Node.js APIs with Stripe, real-time inventory, a
     `,
     category: "Case Study",
     tag: "case-study",
-    image: "/Assets/computer-screen-with-blue-background-with-keyboard-mouse.jpg",
+    image: "/Assets/hero-visual.webp",
     author: "IshSwamiTech Team",
     authorAvatar: "/Assets/Programmers_4.jpg",
     date: "2025-01-22",
@@ -347,7 +347,7 @@ We combined a React client with Python services and OpenAI to turn transactions 
   {
     id: 10,
     slug: "case-study-taskflow",
-    title: "Build Concept: TaskFlow - Offlineâ€‘First Project Management",
+    title: "Build Concept: TaskFlow - Offline-First Project Management",
     excerpt:
       "Electron + Vue desktop app for AgileWorks: Kanban, sync when online, and a measurable productivity gain.",
     content: `
@@ -404,7 +404,7 @@ Dashboards for content, cohorts, and basic analytics.
     `,
     category: "Case Study",
     tag: "case-study",
-    image: "/Assets/computer-screen-with-blue-background-with-keyboard-mouse.jpg",
+    image: "/Assets/20945284.jpg",
     author: "IshSwamiTech Team",
     authorAvatar: "/Assets/Programmers_4.jpg",
     date: "2025-01-08",
@@ -413,7 +413,7 @@ Dashboards for content, cohorts, and basic analytics.
   {
     id: 12,
     slug: "case-study-safevault",
-    title: "Build Concept: SafeVault - SOC2â€‘Ready Security Operations",
+    title: "Build Concept: SafeVault - SOC2-Ready Security Operations",
     excerpt:
       "React + FastAPI threat dashboard for SecureNet: faster incident response and audit-ready reporting.",
     content: `
@@ -470,7 +470,7 @@ Laravel APIs, Vue SPA-style modules, virtual tours, and agent CRM-lite features.
   {
     id: 14,
     slug: "case-study-foodieapp",
-    title: "Build Concept: FoodieApp - Multiâ€‘Restaurant Delivery",
+    title: "Build Concept: FoodieApp - Multi-Restaurant Delivery",
     excerpt:
       "React Native + Firebase ordering with live tracking for Foodie Inc - 100K+ downloads.",
     content: `

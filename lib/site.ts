@@ -9,7 +9,16 @@ export const siteConfig = {
     "IshSwamiTech builds high-performance web apps, mobile apps, AI products, cloud platforms, and UX systems for startups and growing businesses.",
   tagline: "Turning Vision Into Digital Reality",
   email: "info@ishswami.in",
+  /**
+   * Primary line. Stays a scalar because schema.org `telephone`, the legal
+   * pages and the payment disclosures all want exactly one canonical number.
+   * `phones` is what the UI lists wherever it has room for more than one.
+   */
   phone: "+91-7218378311",
+  phones: [
+    { number: "+91-7218378311", label: "Primary" },
+    { number: "+91-7888154917", label: "Direct" },
+  ],
   logo: "/Assets/brand/logo-mark.svg",
   ogImage: "/Assets/hero_img.jpg",
   locale: "en_US",
@@ -62,6 +71,15 @@ export const activeSocialLinks: ReadonlyArray<{ platform: SocialPlatform; href: 
 
 export function absoluteUrl(path = "") {
   return path ? `${siteConfig.url}${path}` : siteConfig.url;
+}
+
+/**
+ * `tel:` target for a display number. The separators we print for legibility
+ * are not valid in the URI, and some Android dialers silently drop everything
+ * after the first one rather than failing loudly.
+ */
+export function telHref(number: string) {
+  return `tel:${number.replace(/[^\d+]/g, "")}`;
 }
 
 type MetadataInput = {

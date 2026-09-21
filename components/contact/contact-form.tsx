@@ -12,15 +12,15 @@ import { Field, Input, Select, Textarea } from "@/components/ui/field";
 import { modalVariants, transition } from "@/lib/motion";
 
 const serviceOptions = [
-  "Web development",
+  "Web Development",
   "Mobile app development",
   "Desktop software",
   "AI / ML integration",
   "Cloud & DevOps",
-  "UI / UX design",
+  "UI / UX Design",
   "API & integrations",
   "Cybersecurity & QA",
-  "E-commerce",
+  "E-Commerce",
   "ERP / CRM",
   "Other",
 ];
@@ -142,7 +142,7 @@ export function ContactForm() {
           </div>
 
           <div className="grid gap-5 md:grid-cols-2">
-            <Field label="Full name" htmlFor={fieldId("name")} required error={errors.name?.message}>
+            <Field label="Full Name" htmlFor={fieldId("name")} required error={errors.name?.message}>
               <Input
                 id={fieldId("name")}
                 autoComplete="name"
@@ -186,7 +186,7 @@ export function ContactForm() {
               />
             </Field>
 
-            <Field label="Service of interest" htmlFor={fieldId("service")}>
+            <Field label="Service of Interest" htmlFor={fieldId("service")}>
               <Select id={fieldId("service")} defaultValue="" {...register("service")}>
                 <option value="">Select a service…</option>
                 {serviceOptions.map((option) => (
@@ -197,7 +197,7 @@ export function ContactForm() {
               </Select>
             </Field>
 
-            <Field label="Estimated budget" htmlFor={fieldId("budget")}>
+            <Field label="Estimated Budget" htmlFor={fieldId("budget")}>
               <Select id={fieldId("budget")} defaultValue="" {...register("budget")}>
                 <option value="">Select a range…</option>
                 {budgetOptions.map((option) => (
@@ -209,7 +209,7 @@ export function ContactForm() {
             </Field>
 
             <Field
-              label="Project description"
+              label="Project Description"
               htmlFor={fieldId("message")}
               required
               error={errors.message?.message}

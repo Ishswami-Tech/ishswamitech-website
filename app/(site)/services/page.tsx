@@ -30,8 +30,10 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { PageHero } from "@/components/ui/page-hero";
 import { CtaBand } from "@/components/ui/cta-band";
+import { MediaFrame } from "@/components/ui/media-frame";
 import { Reveal } from "@/components/motion/reveal";
 import { Stagger, StaggerItem } from "@/components/motion/stagger";
+import { Tilt } from "@/components/motion/tilt";
 import { createPageMetadata, siteConfig } from "@/lib/site";
 
 export const metadata: Metadata = createPageMetadata({
@@ -66,9 +68,9 @@ const processSteps = [
 ];
 
 const consultationPoints = [
-  { icon: MessageSquare, text: "No sales pressure — just useful advice" },
-  { icon: FileCheck2, text: "Fixed-scope quotes if we're a fit" },
-  { icon: ShieldCheck, text: "NDA-protected from the first email" },
+  { icon: MessageSquare, text: "No Sales Pressure — Just Useful Advice" },
+  { icon: FileCheck2, text: "Fixed-Scope Quotes if We're a Fit" },
+  { icon: ShieldCheck, text: "NDA-Protected From the First Email" },
 ];
 
 export default function ServicesPage() {
@@ -76,12 +78,12 @@ export default function ServicesPage() {
     <>
       <PageHero
         breadcrumb="Services"
-        eyebrow={`${siteConfig.shortName} services`}
+        eyebrow={`${siteConfig.shortName} Services`}
         title="Software Services, End-to-End and Under One Roof"
         lead="From idea to launch — and the long tail of iteration after. We design, engineer, deploy, and maintain modern digital products across every major platform."
         aside={
           <Card tone="highlight" padding="md">
-            <p className="type-eyebrow mb-3">{services.length} capabilities</p>
+            <p className="type-eyebrow mb-3">{services.length} Capabilities</p>
             <p className="type-body text-[var(--text-secondary)]">
               One team, {services.length} core capabilities. No outsourcing, no handoffs, no
               &ldquo;that&apos;s not our scope&rdquo; — just senior people who can take your project
@@ -162,13 +164,24 @@ export default function ServicesPage() {
                       </div>
 
                       <Button href="/contact">
-                        Get a quote
+                        Get a Quote
                         <ArrowUpRight className="h-4 w-4" aria-hidden />
                       </Button>
                     </div>
 
                     <div className={reverse ? "lg:order-1" : undefined}>
-                      <h3 className="type-band-label mb-4">What&apos;s included</h3>
+                      <MediaFrame
+                        src={service.image}
+                        alt=""
+                        ratio="video"
+                        tint={service.color}
+                        strength={0.5}
+                        interactive={false}
+                        sizes="(max-width: 1024px) 100vw, 55vw"
+                        className="mb-6"
+                      />
+
+                      <h3 className="type-band-label mb-4">What&apos;s Included</h3>
                       <ul className="grid gap-2.5 sm:grid-cols-2">
                         {service.features.map((feature) => (
                           <li
@@ -197,24 +210,26 @@ export default function ServicesPage() {
       <Section tone="band">
         <SectionHeader
           align="center"
-          eyebrow="How we work"
+          eyebrow="How We Work"
           title="A Practical Delivery Process for Serious Product Builds"
           lead="Seven repeatable phases that keep projects on time, on budget, and on track for the outcomes you actually care about."
         />
 
         <Stagger as="ol" className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {processSteps.map((step, index) => (
-            <StaggerItem as="li" key={step.title}>
-              <Card tone="solid" className="h-full" padding="md">
-                <div className="mb-4 flex items-center justify-between">
-                  <CardIcon>
-                    <step.icon className="h-5 w-5" aria-hidden />
-                  </CardIcon>
-                  <span className="type-index">{String(index + 1).padStart(2, "0")}</span>
-                </div>
-                <h3 className="type-card-title mb-2 text-[var(--foreground)]">{step.title}</h3>
-                <p className="type-body text-[var(--text-secondary)]">{step.desc}</p>
-              </Card>
+            <StaggerItem as="li" key={step.title} className="h-full">
+              <Tilt className="h-full">
+                <Card tone="solid" className="h-full" interactive padding="md">
+                  <div className="mb-4 flex items-center justify-between">
+                    <CardIcon>
+                      <step.icon className="h-5 w-5" aria-hidden />
+                    </CardIcon>
+                    <span className="type-index">{String(index + 1).padStart(2, "0")}</span>
+                  </div>
+                  <h3 className="type-card-title mb-2 text-[var(--foreground)]">{step.title}</h3>
+                  <p className="type-body text-[var(--text-secondary)]">{step.desc}</p>
+                </Card>
+              </Tilt>
             </StaggerItem>
           ))}
         </Stagger>
@@ -222,11 +237,11 @@ export default function ServicesPage() {
 
       {/* CTA */}
       <CtaBand
-        eyebrow="Not sure where to start?"
+        eyebrow="Not Sure Where to Start?"
         title="Book a Free 30-Minute Discovery Call"
         lead="Walk us through your idea, current state, or roadmap. We'll help you scope the right phase — even if it's not with us."
-        primary={{ label: "Book free consultation", href: "/contact" }}
-        secondary={{ label: "See pricing", href: "/pricing" }}
+        primary={{ label: "Book Free Consultation", href: "/contact" }}
+        secondary={{ label: "See Pricing", href: "/pricing" }}
         assurances={consultationPoints}
       />
     </>

@@ -122,7 +122,7 @@ export function BlogIndex({ posts }: { posts: readonly BlogPost[] }) {
             description="Try a different category, or clear the filters to see everything we've published."
             action={
               <Button type="button" variant="secondary" size="sm" onClick={resetFilters}>
-                Clear filters
+                Clear Filters
               </Button>
             }
           />
@@ -281,7 +281,7 @@ export function BlogIndex({ posts }: { posts: readonly BlogPost[] }) {
                     facing, tell us about it.
                   </p>
                   <Button href="/contact" size="sm" fullWidth>
-                    Start a conversation
+                    Start a Conversation
                     <ArrowUpRight className="h-4 w-4" aria-hidden />
                   </Button>
                 </Card>

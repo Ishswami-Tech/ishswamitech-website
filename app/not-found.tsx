@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowUpRight, Briefcase, Compass, Home, Mail, Tag } from "lucide-react";
+import { ArrowUpRight, Briefcase, Compass, Home, Mail } from "lucide-react";
 import Navbar from "@/components/layout/navbar";
 import Footer from "@/components/layout/footer";
 import ScrollToTop from "@/components/layout/scroll-to-top";
@@ -11,7 +11,6 @@ import { Stagger, StaggerItem } from "@/components/motion/stagger";
 
 const quickLinks = [
   { href: "/services", label: "Services", icon: Briefcase, desc: "What we build & how" },
-  { href: "/pricing", label: "Pricing", icon: Tag, desc: "Plans & ranges" },
   { href: "/about", label: "About", icon: Compass, desc: "Who we are" },
   { href: "/contact", label: "Contact", icon: Mail, desc: "Start a conversation" },
 ];

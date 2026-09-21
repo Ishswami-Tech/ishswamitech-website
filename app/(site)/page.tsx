@@ -81,7 +81,7 @@ export default function HomePage() {
       />
 
       {/* ---------------------------------------------------------------- HERO */}
-      <section className="relative isolate flex min-h-[92svh] items-center overflow-hidden">
+      <section className="relative isolate flex min-h-[86svh] items-center overflow-hidden">
         {/*
           The artwork is the section's backdrop rather than a column of its
           own, so no <AnimatedBackground> here — anything behind a full-bleed
@@ -92,63 +92,53 @@ export default function HomePage() {
             page colour — which is exactly what the lowest scrim resolves to,
             so the seam it would otherwise leave is invisible. */}
         <Parallax aria-hidden className="absolute inset-0 -z-10">
+          {/*
+            Cyan particle field. Unsplash, free licence for commercial use
+            (photo r5lbaK3fDaM). It replaced a laptop render, and the swap
+            simplifies everything below it: a render has a subject that has to
+            survive the crop, so it needed `object-contain` and a right anchor
+            at desktop plus a different fit on phones. A texture has no subject
+            — it covers at every width and crops wherever it likes.
+          */}
           <Image
-            src="/Assets/hero-visual.webp"
+            src="/Assets/hero-particles.webp"
             alt=""
             fill
             priority
             fetchPriority="high"
             sizes="100vw"
             placeholder="blur"
-            blurDataURL="data:image/webp;base64,UklGRkIAAABXRUJQVlA4IDYAAADwAQCdASoQAAsAA8BgJagC7AEO+51yuwAA/vhOjxjazHsxMANMIrfztD9iarjpziH37PjgAAA="
-            /*
-               Contained and right-aligned from lg up. The hero is wider than
-               the 3:2 source there, so covering it would scale the render up
-               and slice the top of the arc and the base of the rock off — the
-               scene reads as cropped rather than composed. Fitting it to the
-               height keeps the whole composition and lands the laptop clear of
-               the copy; the strip of page colour it leaves on the left is
-               within a few points of the render's own backdrop and sits under
-               the heaviest part of the scrim, so no seam shows.
-
-               Below lg the hero is taller than it is wide and fitting would
-               strand the artwork in a thin band, so it covers instead —
-               positioned right of centre, because a phone crops to roughly a
-               third of the width and centring would show empty sky.
-             */
-            className="object-cover object-[62%_50%] lg:object-contain lg:object-right"
+            blurDataURL="data:image/webp;base64,UklGRjgAAABXRUJQVlA4ICwAAADQAQCdASoQAAkAA8BgJQBOgCHgNO3mAAD+95qu2tdha+rRrjbVejDVvbQAAA=="
+            /* Anchored right of centre so the densest part of the wave sits
+               opposite the copy instead of behind it. */
+            className="object-cover object-[70%_50%]"
           />
 
           {/*
-            Readability scrim. Two of them, because the text sits in different
-            places at different widths: down the left above lg, over the whole
-            frame below it. Contrast has to hold in both cases, and a single
-            gradient that works for one washes out the artwork in the other.
-
-            Neither reaches full opacity at the text end — 0.94 keeps the
-            purple wave faintly alive behind the headline, and over a near-black
-            render that is still far past the contrast floor for white type.
+            Readability scrim. Far lighter than the previous artwork needed —
+            this source is already near-black where the headline sits, so the
+            old 0.94 wash would have flattened it to a plain dark rectangle and
+            thrown the image away. 0.82 down the left still clears the contrast
+            floor for white type by a wide margin.
           */}
           <div
             className="absolute inset-0 lg:hidden"
             style={{
               background:
-                "linear-gradient(to bottom, rgba(5,7,15,0.92) 0%, rgba(5,7,15,0.74) 42%, rgba(5,7,15,0.93) 100%)",
+                "linear-gradient(to bottom, rgba(5,7,15,0.88) 0%, rgba(5,7,15,0.62) 45%, rgba(5,7,15,0.9) 100%)",
             }}
           />
           <div
             className="absolute inset-0 hidden lg:block"
             style={{
               background:
-                "linear-gradient(to right, rgba(5,7,15,0.94) 0%, rgba(5,7,15,0.88) 30%, rgba(5,7,15,0.55) 54%, rgba(5,7,15,0.12) 80%, rgba(5,7,15,0) 100%)",
+                "linear-gradient(to right, rgba(5,7,15,0.82) 0%, rgba(5,7,15,0.66) 34%, rgba(5,7,15,0.3) 58%, rgba(5,7,15,0.05) 82%, rgba(5,7,15,0) 100%)",
             }}
           />
 
           {/* Hands off to the page colour so the next section doesn't begin
-              with a visible horizontal seam, and — the reason it reaches this
-              far up — darkens the band the proof row sits in. The horizontal
-              scrim above has faded out by then, leaving those last two items
-              over the lit laptop with nothing behind them. */}
+              with a visible horizontal seam, and darkens the band the proof
+              row sits in — the horizontal scrim above has faded out by then. */}
           <div
             className="absolute inset-x-0 bottom-0 h-56 lg:h-72"
             style={{
@@ -158,8 +148,8 @@ export default function HomePage() {
           />
         </Parallax>
 
-        <Container className="relative z-10 pb-16 pt-28">
-          <div className="max-w-2xl">
+        <Container className="relative z-10 pb-12 pt-28">
+          <div className="max-w-xl lg:max-w-[35rem] xl:max-w-[39rem]">
             <Reveal immediate variant="fade">
               <p className="type-ui mb-8 inline-flex items-center gap-2.5 rounded-[var(--radius-pill)] border border-[var(--border)] bg-[var(--surface-glass)] px-3.5 py-1.5 text-[var(--text-secondary)] backdrop-blur-md">
                 <StatusDot />
@@ -209,7 +199,7 @@ export default function HomePage() {
             immediate
             delay={0.24}
             gap={0.05}
-            className="mt-12 grid gap-x-8 gap-y-8 sm:grid-cols-2 lg:mt-14 lg:grid-cols-5"
+            className="mt-10 grid gap-x-8 gap-y-8 sm:grid-cols-2 lg:mt-12 lg:grid-cols-5"
           >
             {heroHighlights.map((item) => (
               <StaggerItem as="li" key={item.title}>
@@ -484,17 +474,24 @@ export default function HomePage() {
             grid. One dominant frame with two supporting ones gives the band a
             subject instead of an inventory. */}
         <Stagger className="grid gap-5 lg:grid-cols-3">
+          {/* The laptop render that used to run the hero. It reads better here
+              than it did up there: a literal product shot is the right thing to
+              show under "craft you can see", and it no longer has to compete
+              with a headline sitting on top of it. Its own violet is close
+              enough to the brand ramp that it takes almost no tint. */}
           <StaggerItem className="lg:col-span-2">
             <MediaFrame
-              src="/Assets/aiml.jpg"
-              alt="An AI assistant surface running on a laptop during a build review"
+              src="/Assets/hero-visual.webp"
+              alt="A product build in progress — editor, analytics and performance panels side by side"
               ratio="video"
+              tint="var(--violet-500)"
+              strength={0.22}
               sizes="(max-width: 1024px) 100vw, 66vw"
               className="h-full"
             >
-              <p className="type-eyebrow mb-1.5">AI &amp; Automation</p>
+              <p className="type-eyebrow mb-1.5">Product Engineering</p>
               <p className="type-panel-title text-[var(--foreground)]">
-                Assistants and workflows wired into the product, not bolted beside it
+                Interface, API and infrastructure shipped as one system
               </p>
             </MediaFrame>
           </StaggerItem>
@@ -511,14 +508,14 @@ export default function HomePage() {
               <p className="type-ui text-[var(--foreground)]">Security &amp; QA From Day One</p>
             </MediaFrame>
             <MediaFrame
-              src="/Assets/hero_img.jpg"
-              alt="A cloud platform dashboard surfacing live delivery metrics"
+              src="/Assets/aiml.jpg"
+              alt="An AI assistant surface running alongside a build review"
               ratio="square"
-              tint="var(--violet-500)"
+              tint="var(--indigo-400)"
               sizes="(max-width: 1024px) 100vw, 33vw"
               className="flex-1"
             >
-              <p className="type-ui text-[var(--foreground)]">Cloud That Scales Quietly</p>
+              <p className="type-ui text-[var(--foreground)]">AI Wired Into the Product</p>
             </MediaFrame>
           </StaggerItem>
         </Stagger>
@@ -633,7 +630,7 @@ export default function HomePage() {
         title="Ready to Turn Your Vision Into a Product That Ships?"
         lead="Tell us about your project in a 30-minute discovery call. You'll walk away with a concrete scope, a timeline, and an honest sense of what it'll take."
         primary={{ label: "Book a Discovery Call", href: "/contact" }}
-        secondary={{ label: "See Pricing", href: "/pricing" }}
+        secondary={{ label: "Explore Services", href: "/services" }}
         assurances={ctaAssurances}
       />
     </>

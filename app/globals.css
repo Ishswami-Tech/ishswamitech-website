@@ -128,8 +128,10 @@
   --space-8: 4rem;
 
   /* ---------------------------------------------------------------- Layout */
-  --page-gutter: clamp(1.125rem, 3.4vw, 2rem);
-  --content-width: 1200px;
+  --page-gutter: clamp(1.125rem, 3.4vw, 2.5rem);
+  /* Widened from 1200px. The old measure left deep empty margins on a 1440
+     and up, which made the cards look small rather than the page look calm. */
+  --content-width: 1440px;
   --section-space: clamp(4.5rem, 8vw, 7.5rem);
   --section-space-tight: clamp(2.5rem, 5vw, 4.25rem);
   --navbar-height: 4.5rem;
@@ -316,7 +318,10 @@ img {
   padding-inline: var(--page-gutter);
 }
 
-.container--narrow { max-width: 56rem; }
+/* These two are measure-bound, not width-bound: they exist so long-form text
+   stays readable. They do NOT scale with --content-width — a 100-character
+   line is hard to read no matter how wide the window is. */
+.container--narrow { max-width: 62rem; }
 .container--prose { max-width: 46rem; }
 
 .site-section { padding-block: var(--section-space); }
@@ -350,8 +355,11 @@ img {
 .type-hero {
   font-family: var(--font-display-stack);
   font-weight: 600;
-  font-size: clamp(2.5rem, 4.4vw + 1rem, 4.25rem);
-  line-height: 1.02;
+  /* Capped lower than it was. Sora sets wider than Inter at the same size, so
+     the old 4.25rem ceiling pushed the headline onto a fourth line and shoved
+     the proof row under the fold. */
+  font-size: clamp(2.25rem, 3.2vw + 1rem, 3.625rem);
+  line-height: 1.04;
   letter-spacing: -0.032em;
   text-wrap: balance;
 }

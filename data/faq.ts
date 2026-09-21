@@ -25,21 +25,3 @@ export const contactFaq = [
     answer: "Yes, we're happy to sign NDAs to protect your intellectual property and confidential information. This is standard practice for us.",
   },
 ];
-
-export const pricingFaq = [
-  {
-    id: 1,
-    question: "Are these fixed prices?",
-    answer: "Our pricing ranges are estimates based on typical project scopes. Final pricing is determined after our discovery call when we understand your specific requirements. We provide fixed quotes for defined scope.",
-  },
-  {
-    id: 2,
-    question: "Can I upgrade my plan?",
-    answer: "Yes! You can upgrade your plan at any time. We'll prorate the difference and ensure a smooth transition. Many clients start with Starter and move to Growth as their needs evolve.",
-  },
-  {
-    id: 3,
-    question: "Is there a free consultation?",
-    answer: "Yes, we offer a free 30-minute consultation to discuss your project, understand your needs, and provide initial guidance. No commitment required.",
-  },
-];

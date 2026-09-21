@@ -241,7 +241,7 @@ export default function ServicesPage() {
         title="Book a Free 30-Minute Discovery Call"
         lead="Walk us through your idea, current state, or roadmap. We'll help you scope the right phase — even if it's not with us."
         primary={{ label: "Book Free Consultation", href: "/contact" }}
-        secondary={{ label: "See Pricing", href: "/pricing" }}
+        secondary={{ label: "About Us", href: "/about" }}
         assurances={consultationPoints}
       />
     </>

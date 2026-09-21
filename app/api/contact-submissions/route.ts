@@ -1,6 +1,7 @@
 import { createSign } from "node:crypto";
 import { NextResponse } from "next/server";
 import { contactFormSchema } from "@/lib/contact-schema";
+import { formatDateTimeInIST } from "@/lib/utils/date-time";
 
 export const runtime = "nodejs";
 
@@ -95,7 +96,7 @@ export async function POST(request: Request) {
 
   try {
     const row = [
-      new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
+      formatDateTimeInIST(new Date()),
       parsed.data.name,
       parsed.data.email,
       parsed.data.phone || "",

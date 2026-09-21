@@ -40,7 +40,13 @@ export default async function PaymentStartPage(props: {
   );
   const payload = decodePaymentBridgePayload(payloadParam);
 
-  if (!payload || !payload.clinicId || !payload.appointmentId || Number.isFinite(payload.amount) === false || payload.amount <= 0) {
+  if (
+    !payload ||
+    !payload.clinicId ||
+    !Number.isFinite(payload.amount) ||
+    payload.amount <= 0 ||
+    (!payload.appointmentId && !payload.subscriptionId && !payload.invoiceId && !payload.prescriptionId)
+  ) {
     return (
       <PaymentStartClient
         payload={null}
@@ -51,29 +57,23 @@ export default async function PaymentStartPage(props: {
     );
   }
 
-  const provider = String(payload.provider || "").toLowerCase();
+  const provider = String(payload.provider || "").toLowerCase() || undefined;
 
+  let paymentIntent: Record<string, unknown> | null = null;
   try {
-    const paymentIntent = isPrebuiltPaymentIntent(payload)
+    paymentIntent = isPrebuiltPaymentIntent(payload)
       ? payload
       : await createPaymentIntentOnServer(payload, provider);
-
-    return (
-      <PaymentStartClient
-        payload={payload}
-        paymentIntent={paymentIntent}
-        initialRawPayload={payloadParam}
-        fallbackUrl={fallbackUrl}
-      />
-    );
   } catch {
-    return (
-      <PaymentStartClient
-        payload={payload}
-        paymentIntent={null}
-        initialRawPayload={payloadParam}
-        fallbackUrl={fallbackUrl}
-      />
-    );
+    paymentIntent = null;
   }
+
+  return (
+    <PaymentStartClient
+      payload={payload}
+      paymentIntent={paymentIntent}
+      initialRawPayload={payloadParam}
+      fallbackUrl={fallbackUrl}
+    />
+  );
 }

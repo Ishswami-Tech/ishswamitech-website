@@ -1,7 +1,7 @@
 import { headers as getHeaders } from "next/headers";
 
 export type PaymentBridgePayload = {
-  provider: string;
+  provider?: string;
   amount: number;
   displayAmount?: string;
   currency: string;
@@ -27,8 +27,17 @@ type PaymentIntentRecord = Record<string, unknown>;
 const DEFAULT_BACKEND_BASE_URL = "https://backend-service-v1.ishswami.in";
 const DEFAULT_VIDDHAKARMA_BASE_URL = "https://www.viddhakarma.com";
 
+let backendUrlWarningLogged = false;
+
 function normalizeBaseUrl(rawUrl: string, fallback: string): string {
   const value = (rawUrl || fallback || "").trim().replace(/\/+$/u, "");
+  if (!rawUrl && !backendUrlWarningLogged && fallback === DEFAULT_BACKEND_BASE_URL) {
+    backendUrlWarningLogged = true;
+    console.warn(
+      `[payment-bridge] NEXT_PUBLIC_BACKEND_URL is not set — falling back to hardcoded ${DEFAULT_BACKEND_BASE_URL}. ` +
+        "Set the environment variable to avoid routing payments to the wrong server."
+    );
+  }
   return value || fallback;
 }
 
@@ -330,32 +339,56 @@ async function fetchJson(
 
 function buildPaymentIntentEndpoint(
   payload: PaymentBridgePayload,
-  provider: string
+  _provider?: string
 ): { url: string; body?: string } {
   const backendBase = getBackendBaseUrl();
 
   if (payload.subscriptionId) {
     return {
-      url: `${backendBase}/api/v1/billing/subscriptions/${payload.subscriptionId}/process-payment?provider=${provider}`,
+      url: `${backendBase}/api/v1/payments/payment-intents`,
+      body: JSON.stringify({
+        subscriptionId: payload.subscriptionId,
+        amount: payload.amount,
+        currency: payload.currency || "INR",
+        description: payload.description,
+      }),
     };
   }
 
   if (payload.appointmentId) {
     return {
-      url: `${backendBase}/api/v1/billing/appointments/${payload.appointmentId}/process-payment?provider=${provider}`,
-      body: payload.appointmentType ? JSON.stringify({ appointmentType: payload.appointmentType }) : undefined,
+      url: `${backendBase}/api/v1/payments/payment-intents`,
+      body: JSON.stringify({
+        appointmentId: payload.appointmentId,
+        amount: payload.amount,
+        currency: payload.currency || "INR",
+        description: payload.description,
+        appointmentType: payload.appointmentType,
+      }),
     };
   }
 
   if (payload.invoiceId) {
     return {
-      url: `${backendBase}/api/v1/billing/invoices/${payload.invoiceId}/process-payment?provider=${provider}`,
+      url: `${backendBase}/api/v1/payments/payment-intents`,
+      body: JSON.stringify({
+        invoiceId: payload.invoiceId,
+        amount: payload.amount,
+        currency: payload.currency || "INR",
+        description: payload.description,
+      }),
     };
   }
 
   if (payload.prescriptionId) {
     return {
-      url: `${backendBase}/api/v1/pharmacy/prescriptions/${payload.prescriptionId}/process-payment?provider=${provider}`,
+      url: `${backendBase}/api/v1/payments/payment-intents`,
+      body: JSON.stringify({
+        prescriptionId: payload.prescriptionId,
+        amount: payload.amount,
+        currency: payload.currency || "INR",
+        description: payload.description,
+      }),
     };
   }
 
@@ -363,17 +396,32 @@ function buildPaymentIntentEndpoint(
 }
 
 export function isPrebuiltPaymentIntent(payload: PaymentBridgePayload): boolean {
-  return Boolean(
-    payload.orderId ||
-      payload.paymentSessionId ||
-      payload.paymentLink ||
-      payload.gatewayRedirectUrl
+  const gatewayRedirectUrl = getAllowedRedirectUrl(
+    getFirstString(
+      payload.gatewayRedirectUrl,
+      payload.paymentLink,
+    ),
   );
+
+  if (gatewayRedirectUrl) {
+    return true;
+  }
+
+  const provider = String(payload.provider || "").toLowerCase();
+  if (provider === "razorpay") {
+    return Boolean(payload.orderId && payload.razorpayKeyId);
+  }
+
+  if (provider === "cashfree") {
+    return Boolean(payload.orderId && payload.paymentSessionId);
+  }
+
+  return false;
 }
 
 export async function createPaymentIntentOnServer(
   payload: PaymentBridgePayload,
-  provider: string
+  provider?: string
 ): Promise<PaymentIntentRecord> {
   const request = buildPaymentIntentEndpoint(payload, provider);
   const forwardedHeaders = await getForwardHeaders({ "X-Clinic-ID": payload.clinicId });

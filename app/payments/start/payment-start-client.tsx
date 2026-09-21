@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { load as loadCashfree } from "@cashfreepayments/cashfree-js";
 import { Loader2 } from "lucide-react";
 
 type PaymentBridgePayload = {
-  provider: string;
+  provider?: string;
   amount: number;
   displayAmount?: string;
   currency: string;
@@ -118,25 +119,35 @@ function hasPrebuiltGatewayTarget(
   }
 
   const record = payload as Record<string, unknown>;
-  return Boolean(
-    getAllowedRedirectUrl(
-      getFirstString(
-        record.gatewayRedirectUrl,
-        record.paymentLink,
-        record.redirectUrl,
-        record.redirect_url,
-        record.checkoutUrl,
-        record.url,
-        getRedirectUrlCandidate(record),
-        getRedirectUrlCandidate(record.data as Record<string, unknown> | undefined),
-        getRedirectUrlCandidate(record.result as Record<string, unknown> | undefined),
-        getRedirectUrlCandidate(record.response as Record<string, unknown> | undefined),
-      ),
-    ) ||
-      record.orderId ||
-      record.paymentSessionId ||
-      record.paymentIntentId,
+  const provider = String(record.provider || "").toLowerCase();
+  const gatewayUrl = getAllowedRedirectUrl(
+    getFirstString(
+      record.gatewayRedirectUrl,
+      record.paymentLink,
+      record.redirectUrl,
+      record.redirect_url,
+      record.checkoutUrl,
+      record.url,
+      getRedirectUrlCandidate(record),
+      getRedirectUrlCandidate(record.data as Record<string, unknown> | undefined),
+      getRedirectUrlCandidate(record.result as Record<string, unknown> | undefined),
+      getRedirectUrlCandidate(record.response as Record<string, unknown> | undefined),
+    ),
   );
+
+  if (gatewayUrl) {
+    return true;
+  }
+
+  if (provider === "razorpay") {
+    return Boolean(record.orderId && record.razorpayKeyId);
+  }
+
+  if (provider === "cashfree") {
+    return Boolean(record.orderId && record.paymentSessionId);
+  }
+
+  return false;
 }
 
 function loadRazorpayScript(): Promise<void> {
@@ -321,15 +332,17 @@ export default function PaymentStartClient({
         }
       }
 
-      const provider = String(resolvedPayload.provider || "").toLowerCase();
+      const provider = String(
+        paymentIntent?.provider || resolvedPayload.provider || "",
+      ).toLowerCase();
       const amount = Number(resolvedPaymentIntent.amount || resolvedPayload.amount);
       const displayAmount = String(resolvedPayload.displayAmount || "");
       const orderId = String(
         resolvedPaymentIntent.orderId ||
-          resolvedPaymentIntent.paymentId ||
-          resolvedPaymentIntent.paymentIntentId ||
-          resolvedPayload.orderId ||
-          "",
+        resolvedPaymentIntent.paymentId ||
+        resolvedPaymentIntent.paymentIntentId ||
+        resolvedPayload.orderId ||
+        "",
       );
       const gatewayRedirectUrl =
         getAllowedRedirectUrl(
@@ -339,11 +352,11 @@ export default function PaymentStartClient({
             getRedirectUrlCandidate(resolvedPaymentIntent),
             getRedirectUrlCandidate(
               (resolvedPaymentIntent.metadata as Record<string, unknown> | undefined) ||
-                undefined,
+              undefined,
             ),
             getRedirectUrlCandidate(
               (resolvedPaymentIntent.providerResponse as Record<string, unknown> | undefined) ||
-                undefined,
+              undefined,
             ),
           ),
         ) || "";
@@ -351,6 +364,17 @@ export default function PaymentStartClient({
         getAllowedRedirectUrl(
           String(resolvedPaymentIntent.callbackUrl || resolvedPayload.callbackUrl || ""),
         ) || "";
+      const paymentMetadata =
+        (resolvedPaymentIntent.metadata as Record<string, unknown> | undefined) || {};
+      const providerResponse =
+        (resolvedPaymentIntent.providerResponse as Record<string, unknown> | undefined) || {};
+      const paymentSessionId = String(
+        resolvedPaymentIntent.paymentSessionId ||
+        resolvedPayload.paymentSessionId ||
+        paymentMetadata.paymentSessionId ||
+        providerResponse.payment_session_id ||
+        "",
+      );
 
       try {
         setStatus("loading");
@@ -361,13 +385,47 @@ export default function PaymentStartClient({
         );
         setErrorMessage("");
 
+        if (provider === "cashfree") {
+          setStatusLabel("Opening Cashfree checkout...");
+          if (!orderId || !paymentSessionId) {
+            throw new Error("Cashfree payment session was not returned by the server.");
+          }
+
+          const cashfreeMode =
+            process.env.NEXT_PUBLIC_CASHFREE_MODE === "production" ? "production" : "sandbox";
+          const cashfree = await loadCashfree({ mode: cashfreeMode });
+          if (!cashfree) {
+            throw new Error("Cashfree checkout is not available.");
+          }
+
+          const redirectTarget = buildCallbackRedirectUrl(
+            callbackUrl || resolvedFallbackUrl,
+            {
+              paymentId: orderId,
+              orderId,
+              provider,
+              clinicId: String(
+                resolvedPaymentIntent.clinicId || resolvedPayload.clinicId || "",
+              ),
+              appointmentId: resolvedPayload.appointmentId,
+              appointmentType: resolvedPayload.appointmentType,
+            },
+          );
+          await cashfree.checkout({
+            paymentSessionId,
+            returnUrl: redirectTarget,
+            redirectTarget: "_self",
+          });
+          return;
+        }
+
         if (provider === "razorpay") {
           setStatusLabel("Opening Razorpay checkout...");
           const razorpayKeyId = String(
             resolvedPaymentIntent.razorpayKeyId ||
-              resolvedPayload.razorpayKeyId ||
-              process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID ||
-              "",
+            resolvedPayload.razorpayKeyId ||
+            process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID ||
+            "",
           );
           if (!razorpayKeyId) {
             throw new Error("Razorpay key is not configured.");
@@ -404,8 +462,8 @@ export default function PaymentStartClient({
             name: "Payment",
             description: String(
               resolvedPaymentIntent.description ||
-                resolvedPayload.description ||
-                "Payment",
+              resolvedPayload.description ||
+              "Payment",
             ),
             order_id: orderId,
             theme: { color: "#0B5E45" },
@@ -429,13 +487,18 @@ export default function PaymentStartClient({
             },
             modal: {
               ondismiss: () => {
-                setStatus("error");
+                setStatus("loading");
+                setStatusLabel("Payment cancelled. Redirecting back...");
+                setTimeout(() => {
+                  window.location.replace(resolvedFallbackUrl);
+                }, 200);
               },
             },
           });
 
           checkout.on("payment.failed", () => {
             setStatus("error");
+            setErrorMessage("Payment failed. Please try again or use a different payment method.");
           });
 
           checkout.open();
@@ -465,7 +528,7 @@ export default function PaymentStartClient({
     };
 
     void openGateway();
-  }, [initialRawPayload, paymentIntent, payload, status]);
+  }, [initialRawPayload, paymentIntent, payload, resolvedFallbackUrl, status]);
 
   return (
     <div className="flex min-h-[60vh] items-center justify-center px-4 py-16">

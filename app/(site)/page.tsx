@@ -31,7 +31,8 @@ import { Container } from "@/components/ui/container";
 import { Section, SectionHeader } from "@/components/ui/section";
 import { Card, CardIcon } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge, StatusDot } from "@/components/ui/badge";
+import { Badge, StatusDot, TechBadge } from "@/components/ui/badge";
+import { techIcon } from "@/lib/tech-icons";
 import { CtaBand } from "@/components/ui/cta-band";
 import { MediaFrame } from "@/components/ui/media-frame";
 import { Reveal } from "@/components/motion/reveal";
@@ -388,7 +389,7 @@ export default function HomePage() {
                     </p>
                     <div className="mb-4 flex flex-wrap gap-1.5">
                       {service.technologies.slice(0, 3).map((tech) => (
-                        <Badge key={tech}>{tech}</Badge>
+                        <TechBadge key={tech} name={tech} />
                       ))}
                     </div>
                     <span className="type-ui flex items-center gap-1 text-[var(--accent)]">
@@ -602,12 +603,23 @@ export default function HomePage() {
             <StaggerItem key={group.label}>
               <Card tone="solid" padding="sm" className="h-full">
                 <h3 className="type-band-label mb-3 text-[var(--accent)]">{group.label}</h3>
-                <ul className="flex flex-col gap-1.5">
-                  {group.techs.map((tech) => (
-                    <li key={tech} className="text-[var(--text-base)] text-[var(--text-secondary)]">
-                      {tech}
-                    </li>
-                  ))}
+                <ul className="flex flex-col gap-2">
+                  {group.techs.map((tech) => {
+                    const Icon = techIcon(tech);
+                    return (
+                      <li
+                        key={tech}
+                        className="flex items-center gap-2 text-[var(--text-base)] text-[var(--text-secondary)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--foreground)]"
+                      >
+                        {/* Fixed-width slot whether or not a mark exists, so the
+                            names stay on one left edge down the column. */}
+                        <span className="flex h-4 w-4 shrink-0 items-center justify-center text-[var(--text-tertiary)]">
+                          {Icon && <Icon className="h-3.5 w-3.5" aria-hidden />}
+                        </span>
+                        {tech}
+                      </li>
+                    );
+                  })}
                 </ul>
               </Card>
             </StaggerItem>

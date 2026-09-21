@@ -27,7 +27,7 @@ import { Container } from "@/components/ui/container";
 import { Section, SectionHeader } from "@/components/ui/section";
 import { Card, CardIcon } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { TechBadge } from "@/components/ui/badge";
 import { PageHero } from "@/components/ui/page-hero";
 import { CtaBand } from "@/components/ui/cta-band";
 import { MediaFrame } from "@/components/ui/media-frame";
@@ -157,7 +157,7 @@ export default function ServicesPage() {
                         <ul className="flex flex-wrap gap-1.5">
                           {service.technologies.map((tech) => (
                             <li key={tech}>
-                              <Badge tone="outline">{tech}</Badge>
+                              <TechBadge name={tech} tone="outline" />
                             </li>
                           ))}
                         </ul>

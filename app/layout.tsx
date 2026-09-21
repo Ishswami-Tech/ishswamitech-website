@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Sora } from "next/font/google";
 import "./globals.css";
 import StructuredData from "@/components/layout/structured-data";
 import { MotionProvider } from "@/components/motion/motion-provider";
@@ -12,6 +12,26 @@ const inter = Inter({
   weight: ["400", "500", "600", "700"],
   style: ["normal", "italic"],
   variable: "--font-inter",
+  display: "swap",
+});
+
+/**
+ * Display face, headings only.
+ *
+ * Inter is the right workhorse for a dense dark UI and stays on body, labels
+ * and controls. What the page lacked was any contrast between the two roles —
+ * `--font-heading` was aliased straight back to Inter, so a heading and a form
+ * label were the same typeface at different weights.
+ *
+ * Sora is geometric where Inter is neutral, which reads as a deliberate pair
+ * rather than a size change, and it holds the tight negative tracking the hero
+ * sets at 4rem+. Only the three weights the heading roles actually use are
+ * loaded — 600 does nearly all of the work.
+ */
+const sora = Sora({
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
+  variable: "--font-sora",
   display: "swap",
 });
 
@@ -76,7 +96,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" data-theme="dark" suppressHydrationWarning className={inter.variable}>
+    <html
+      lang="en"
+      data-theme="dark"
+      suppressHydrationWarning
+      className={`${inter.variable} ${sora.variable}`}
+    >
       <head>
         {/*
           Motion serialises a reveal's `initial` variant into the server HTML,

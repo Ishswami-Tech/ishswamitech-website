@@ -1,3 +1,5 @@
+import type { IconType } from "react-icons";
+import { techIcon } from "@/lib/tech-icons";
 import { cn } from "@/lib/utils";
 
 type Tone = "neutral" | "accent" | "outline" | "success" | "warning" | "gradient";
@@ -14,10 +16,13 @@ const tones: Record<Tone, string> = {
 
 export function Badge({
   tone = "neutral",
+  icon: Icon,
   className,
   children,
 }: {
   tone?: Tone;
+  /** Leading mark. Inherits the badge's text colour. */
+  icon?: IconType;
   className?: string;
   children: React.ReactNode;
 }) {
@@ -29,8 +34,33 @@ export function Badge({
         className
       )}
     >
+      {Icon && <Icon className="h-3.5 w-3.5 shrink-0 opacity-80" aria-hidden />}
       {children}
     </span>
+  );
+}
+
+/**
+ * A badge that looks its own mark up by name.
+ *
+ * Exists so call sites stay `<TechBadge name={tech} />` instead of each one
+ * importing the registry and handling the undefined case. Technologies without
+ * a bundled mark degrade to a plain text badge rather than a gap or a
+ * placeholder glyph.
+ */
+export function TechBadge({
+  name,
+  tone = "neutral",
+  className,
+}: {
+  name: string;
+  tone?: Tone;
+  className?: string;
+}) {
+  return (
+    <Badge tone={tone} icon={techIcon(name)} className={className}>
+      {name}
+    </Badge>
   );
 }
 

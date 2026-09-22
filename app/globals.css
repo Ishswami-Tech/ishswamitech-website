@@ -784,6 +784,95 @@ img {
 }
 
 /* ==========================================================================
+   AI CORE
+   Consumed only by <AiCore>. Everything animates transform, opacity or
+   stroke-dashoffset, so the whole mark stays on the compositor and the
+   component needs no JavaScript.
+   ========================================================================== */
+
+.ai-core svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+@keyframes ai-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.ai-ring {
+  animation: ai-spin linear infinite;
+}
+
+/* Counter-rotation, so adjacent rings never look locked together. */
+.ai-ring--reverse {
+  animation-direction: reverse;
+}
+
+/* Pulse travelling from the core out to a node. The dash pattern is set
+   per-node in the component, because the gap has to exceed that ring's radius
+   for only one pulse to be in flight at a time. */
+@keyframes ai-signal {
+  0% { stroke-dashoffset: 0; opacity: 0; }
+  12% { opacity: 0.9; }
+  85% { opacity: 0.35; }
+  100% { stroke-dashoffset: -220; opacity: 0; }
+}
+
+.ai-signal {
+  animation: ai-signal 3.2s var(--ease-in-out) infinite;
+}
+
+@keyframes ai-node {
+  0%, 100% { opacity: 0.45; }
+  50% { opacity: 1; }
+}
+
+.ai-node {
+  animation: ai-node 2.8s var(--ease-in-out) infinite;
+}
+
+@keyframes ai-breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.045); }
+}
+
+.ai-breathe {
+  animation: ai-breathe 6s var(--ease-in-out) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Stops the movement without hiding the mark — the composition still reads
+     when it is still, so there is nothing to replace it with. */
+  .ai-ring,
+  .ai-node,
+  .ai-breathe {
+    animation: none !important;
+  }
+
+  /* The signal has to be pinned visible as well as stopped: its keyframes
+     start and end at opacity 0, so merely halting it would leave the spokes
+     blank. */
+  .ai-signal {
+    animation: none !important;
+    opacity: 0.4;
+    stroke-dasharray: none !important;
+  }
+}
+
+/* The mark is decoration, and on a phone it would sit under the copy rather
+   than beside it. Dropped entirely below lg — see the hidden/lg:block at the
+   call site; this only guards against the animation running if it is shown. */
+@media (max-width: 48rem) {
+  .ai-ring,
+  .ai-breathe {
+    animation: none;
+  }
+}
+
+/* ==========================================================================
    REDUCED MOTION
    Strip ambient and decorative movement; keep state transitions short but
    present so interactions still read as responsive.

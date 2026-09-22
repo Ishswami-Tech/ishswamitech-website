@@ -35,6 +35,7 @@ import { Badge, StatusDot, TechBadge } from "@/components/ui/badge";
 import { techIcon } from "@/lib/tech-icons";
 import { CtaBand } from "@/components/ui/cta-band";
 import { MediaFrame } from "@/components/ui/media-frame";
+import { AiCore } from "@/components/ui/ai-core";
 import { Reveal } from "@/components/motion/reveal";
 import { DrawLine } from "@/components/motion/draw-line";
 import { Parallax } from "@/components/motion/parallax";
@@ -115,6 +116,18 @@ export default function HomePage() {
           />
 
           {/*
+            Hue correction. The source is lit teal-cyan, which read as a foreign
+            accent next to an indigo/violet brand ramp — it was the only place
+            on the page with its own colour temperature. `mix-blend-color`
+            replaces the hue while keeping the photograph's luminance, so the
+            particles keep their shape and glow and simply arrive in-palette.
+          */}
+          <div
+            className="absolute inset-0 mix-blend-color"
+            style={{ backgroundColor: "var(--indigo-500)", opacity: 0.62 }}
+          />
+
+          {/*
             Readability scrim. Far lighter than the previous artwork needed —
             this source is already near-black where the headline sits, so the
             old 0.94 wash would have flattened it to a plain dark rectangle and
@@ -147,6 +160,19 @@ export default function HomePage() {
             }}
           />
         </Parallax>
+
+        {/* The animated mark, in the band of empty artwork to the right of the
+            copy. Absolutely positioned rather than a grid cell so it can not
+            affect the height of the hero or the position of the proof row —
+            and so it can bleed past the container's right gutter, which is what
+            keeps it feeling like part of the backdrop rather than a boxed-in
+            illustration. Hidden below lg, where there is no space beside the
+            copy for it to occupy. */}
+        {/* -translate-y-[54%] rather than -1/2: the hero's optical centre sits
+            above its geometric one, because the proof row weights the bottom
+            third. Lifting it by that 4% lines the chip up with the headline
+            instead of with the middle of the box. */}
+        <AiCore className="absolute right-[1%] top-1/2 hidden w-[36vw] max-w-[34rem] -translate-y-[54%] lg:block xl:right-[5%] xl:w-[33vw]" />
 
         <Container className="relative z-10 pb-12 pt-28">
           <div className="max-w-xl lg:max-w-[35rem] xl:max-w-[39rem]">

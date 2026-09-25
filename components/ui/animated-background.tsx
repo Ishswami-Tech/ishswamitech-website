@@ -63,8 +63,7 @@ export function AnimatedBackground({
       <div
         className="absolute inset-0"
         style={{
-          background:
-            "radial-gradient(120% 100% at 50% 0%, rgba(19,25,48,0.85) 0%, rgba(5,7,15,0) 70%)",
+          background: "var(--ambient-base)",
           opacity: scale,
         }}
       />
@@ -80,7 +79,7 @@ export function AnimatedBackground({
               left: "-10%",
               width: "46rem",
               height: "46rem",
-              background: "radial-gradient(circle, rgba(99,102,241,0.5), transparent 68%)",
+              background: "radial-gradient(circle, var(--ambient-a), transparent 68%)",
               opacity: 0.55 * scale,
             }}
           />
@@ -92,7 +91,7 @@ export function AnimatedBackground({
               right: "-12%",
               width: "40rem",
               height: "40rem",
-              background: "radial-gradient(circle, rgba(139,92,246,0.42), transparent 68%)",
+              background: "radial-gradient(circle, var(--ambient-b), transparent 68%)",
               opacity: 0.5 * scale,
             }}
           />
@@ -109,7 +108,7 @@ export function AnimatedBackground({
               left: "8%",
               width: "42rem",
               height: "42rem",
-              background: "radial-gradient(circle, rgba(79,107,255,0.4), transparent 70%)",
+              background: "radial-gradient(circle, var(--ambient-a), transparent 70%)",
               opacity: 0.5 * scale,
             }}
           />
@@ -121,7 +120,7 @@ export function AnimatedBackground({
               right: "-14%",
               width: "36rem",
               height: "36rem",
-              background: "radial-gradient(circle, rgba(139,92,246,0.34), transparent 70%)",
+              background: "radial-gradient(circle, var(--ambient-b), transparent 70%)",
               opacity: 0.45 * scale,
             }}
           />
@@ -133,7 +132,7 @@ export function AnimatedBackground({
               left: "34%",
               width: "34rem",
               height: "34rem",
-              background: "radial-gradient(circle, rgba(34,211,238,0.2), transparent 72%)",
+              background: "radial-gradient(circle, var(--ambient-c), transparent 72%)",
               opacity: 0.4 * scale,
             }}
           />
@@ -151,7 +150,7 @@ export function AnimatedBackground({
               left: "22%",
               width: "40rem",
               height: "40rem",
-              background: "radial-gradient(circle, rgba(99,102,241,0.3), transparent 70%)",
+              background: "radial-gradient(circle, var(--ambient-a), transparent 70%)",
               opacity: 0.45 * scale,
             }}
           />
@@ -169,7 +168,7 @@ export function AnimatedBackground({
               right: "5%",
               width: "32rem",
               height: "32rem",
-              background: "radial-gradient(circle, rgba(129,140,248,0.26), transparent 72%)",
+              background: "radial-gradient(circle, var(--ambient-a), transparent 72%)",
               opacity: 0.4 * scale,
             }}
           />
@@ -191,7 +190,7 @@ export function AnimatedBackground({
             className="absolute inset-x-0 top-0 h-[42rem]"
             style={{
               background:
-                "radial-gradient(60% 50% at 50% 0%, rgba(129,140,248,0.22), transparent 70%)",
+                "radial-gradient(60% 50% at 50% 0%, var(--ambient-a), transparent 70%)",
               opacity: scale,
             }}
           />
@@ -205,7 +204,7 @@ export function AnimatedBackground({
       {/* Fade to the page background at the bottom edge so sections join cleanly. */}
       <div
         className="absolute inset-x-0 bottom-0 h-40"
-        style={{ background: "linear-gradient(to bottom, transparent, var(--background))" }}
+        style={{ background: "linear-gradient(to bottom, transparent, var(--ambient-fade))" }}
       />
     </div>
   );

@@ -63,12 +63,17 @@ export default function Navbar() {
     <>
       <header
         className={cn(
-          "fixed inset-x-0 top-0 z-50 border-b",
-          "transition-[background-color,border-color,backdrop-filter,box-shadow]",
+          "fixed inset-x-0 top-0 z-50 border-b backdrop-blur-xl",
+          "transition-[background-color,border-color,box-shadow]",
           "duration-[var(--duration-normal)] ease-[var(--ease-out)]",
+          // Glass from the top rather than transparent-until-scrolled. The bar
+          // now spans a dark home hero and light heroes on every other page,
+          // and no single text colour survives both; carrying its own surface
+          // is what lets one treatment work everywhere. It still firms up on
+          // scroll, so the page keeps the sense of lifting under it.
           isScrolled
-            ? "border-[var(--border)] bg-[var(--surface-glass-strong)] shadow-[var(--shadow-lg)] backdrop-blur-xl"
-            : "border-transparent bg-transparent"
+            ? "border-[var(--border)] bg-[var(--surface-glass-strong)] shadow-[var(--shadow-md)]"
+            : "border-transparent bg-[var(--surface-glass)]"
         )}
       >
         <nav aria-label="Main" className="container">
@@ -188,7 +193,7 @@ export default function Navbar() {
           >
             <button
               type="button"
-              className="absolute inset-0 h-full w-full cursor-default bg-[rgba(3,5,12,0.7)] backdrop-blur-sm"
+              className="absolute inset-0 h-full w-full cursor-default bg-[rgb(var(--scrim-rgb)/0.55)] backdrop-blur-sm"
               onClick={() => setIsMenuOpen(false)}
               aria-label="Close menu"
               tabIndex={-1}

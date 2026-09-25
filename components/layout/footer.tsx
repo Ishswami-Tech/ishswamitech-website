@@ -82,7 +82,10 @@ function LinkColumn({
 
 export default function Footer() {
   return (
-    <footer className="relative border-t border-[var(--border)] bg-[var(--surface)]">
+    <footer
+      data-scheme="dark"
+      className="relative border-t border-[var(--border)] bg-[var(--background)]"
+    >
       <div className="relative overflow-hidden border-b border-[var(--border)]">
         <AnimatedBackground variant="gradient" intensity="subtle" />
         <Container className="relative z-10 py-14">

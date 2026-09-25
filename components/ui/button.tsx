@@ -26,8 +26,10 @@ const variants: Record<Variant, string> = {
     "hover:border-[var(--border-strong)] hover:bg-[var(--surface-overlay)] hover:shadow-[var(--shadow-md)]",
   ].join(" "),
   ghost: [
-    "border border-[var(--border)] bg-white/[0.03] text-[var(--foreground)] backdrop-blur-md",
-    "hover:border-[var(--border-hover)] hover:bg-white/[0.07]",
+    // Was a white wash at 3% — invisible on anything but a dark surface. The
+    // tint tokens carry the same "barely there" intent in both schemes.
+    "border border-[var(--border)] bg-[var(--surface-tint)] text-[var(--foreground)] backdrop-blur-md",
+    "hover:border-[var(--border-hover)] hover:bg-[var(--surface-tint-strong)]",
   ].join(" "),
   subtle:
     "text-[var(--text-secondary)] hover:bg-[var(--surface-tint)] hover:text-[var(--foreground)]",

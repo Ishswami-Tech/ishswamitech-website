@@ -59,6 +59,13 @@ export function MediaFrame({
 }) {
   return (
     <div
+      /*
+        The interior is always dark — a duotoned photograph under a navy scrim —
+        regardless of the page around it. Declaring the scheme here is what
+        keeps `children` legible: a caption using --foreground would otherwise
+        resolve to near-black on a light page and vanish into the scrim.
+      */
+      data-scheme="dark"
       className={cn(
         "media-frame group/media relative overflow-hidden bg-[var(--surface-raised)]",
         ratioClass[ratio],
@@ -111,7 +118,7 @@ export function MediaFrame({
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(to top, rgba(5,7,15,0.92) 0%, rgba(5,7,15,0.45) 38%, rgba(5,7,15,0.06) 72%, rgba(5,7,15,0.22) 100%)",
+            "linear-gradient(to top, rgb(var(--scrim-rgb) / 0.92) 0%, rgb(var(--scrim-rgb) / 0.45) 38%, rgb(var(--scrim-rgb) / 0.06) 72%, rgb(var(--scrim-rgb) / 0.22) 100%)",
         }}
       />
 

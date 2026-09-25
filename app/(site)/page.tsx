@@ -82,7 +82,10 @@ export default function HomePage() {
       />
 
       {/* ---------------------------------------------------------------- HERO */}
-      <section className="relative isolate flex min-h-[86svh] items-center overflow-hidden">
+      <section
+        data-scheme="dark"
+        className="relative isolate flex min-h-[86svh] items-center overflow-hidden bg-[var(--background)]"
+      >
         {/*
           The artwork is the section's backdrop rather than a column of its
           own, so no <AnimatedBackground> here — anything behind a full-bleed
@@ -92,7 +95,11 @@ export default function HomePage() {
             shifts. What the lift exposes at the bottom of the section is the
             page colour — which is exactly what the lowest scrim resolves to,
             so the seam it would otherwise leave is invisible. */}
-        <Parallax aria-hidden className="absolute inset-0 -z-10">
+        {/* z-0, not -z-10. The section now paints its own dark background (it
+            declares the scheme), and `isolate` means a negative z-index child
+            renders *behind* that background — which silently hid the artwork.
+            Sitting at 0 keeps it above the fill and below the copy at z-10. */}
+        <Parallax aria-hidden className="absolute inset-0 z-0">
           {/*
             Cyan particle field. Unsplash, free licence for commercial use
             (photo r5lbaK3fDaM). It replaced a laptop render, and the swap
@@ -138,14 +145,14 @@ export default function HomePage() {
             className="absolute inset-0 lg:hidden"
             style={{
               background:
-                "linear-gradient(to bottom, rgba(5,7,15,0.88) 0%, rgba(5,7,15,0.62) 45%, rgba(5,7,15,0.9) 100%)",
+                "linear-gradient(to bottom, rgb(var(--scrim-rgb) / 0.88) 0%, rgb(var(--scrim-rgb) / 0.62) 45%, rgb(var(--scrim-rgb) / 0.9) 100%)",
             }}
           />
           <div
             className="absolute inset-0 hidden lg:block"
             style={{
               background:
-                "linear-gradient(to right, rgba(5,7,15,0.82) 0%, rgba(5,7,15,0.66) 34%, rgba(5,7,15,0.3) 58%, rgba(5,7,15,0.05) 82%, rgba(5,7,15,0) 100%)",
+                "linear-gradient(to right, rgb(var(--scrim-rgb) / 0.82) 0%, rgb(var(--scrim-rgb) / 0.66) 34%, rgb(var(--scrim-rgb) / 0.3) 58%, rgb(var(--scrim-rgb) / 0.05) 82%, rgb(var(--scrim-rgb) / 0) 100%)",
             }}
           />
 
@@ -156,7 +163,7 @@ export default function HomePage() {
             className="absolute inset-x-0 bottom-0 h-56 lg:h-72"
             style={{
               background:
-                "linear-gradient(to top, var(--background) 22%, rgba(5,7,15,0.82) 55%, rgba(5,7,15,0.35) 80%, transparent)",
+                "linear-gradient(to top, var(--background) 22%, rgb(var(--scrim-rgb) / 0.82) 55%, rgb(var(--scrim-rgb) / 0.35) 80%, transparent)",
             }}
           />
         </Parallax>
@@ -172,7 +179,7 @@ export default function HomePage() {
             above its geometric one, because the proof row weights the bottom
             third. Lifting it by that 4% lines the chip up with the headline
             instead of with the middle of the box. */}
-        <AiCore className="absolute right-[1%] top-1/2 hidden w-[36vw] max-w-[34rem] -translate-y-[54%] lg:block xl:right-[5%] xl:w-[33vw]" />
+        <AiCore className="absolute right-[1%] top-1/2 z-0 hidden w-[36vw] max-w-[34rem] -translate-y-[54%] lg:block xl:right-[5%] xl:w-[33vw]" />
 
         <Container className="relative z-10 pb-12 pt-28">
           <div className="max-w-xl lg:max-w-[35rem] xl:max-w-[39rem]">
@@ -484,7 +491,7 @@ export default function HomePage() {
       </section>
 
       {/* ------------------------------------------------------------ SHOWCASE */}
-      <Section tone="ruled">
+      <Section tone="plain" scheme="dark">
         <SectionHeader
           eyebrow="Inside the Work"
           title="Craft You Can See, Engineering You Can Audit"

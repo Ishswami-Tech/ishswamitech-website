@@ -15,6 +15,7 @@ export function Section({
   tone = "plain",
   spacing = "default",
   width = "default",
+  scheme,
   id,
   className,
   children,
@@ -22,6 +23,13 @@ export function Section({
   tone?: SectionTone;
   spacing?: "default" | "tight" | "none";
   width?: "default" | "narrow" | "prose";
+  /**
+   * Opts the whole section into the dark palette. The page is light; this is
+   * how a band inverts. Everything inside follows automatically — cards,
+   * badges, borders, shadows and text all read semantic tokens, so nothing
+   * below this needs to know which scheme it is rendering in.
+   */
+  scheme?: "dark";
   id?: string;
   className?: string;
   children: React.ReactNode;
@@ -29,6 +37,7 @@ export function Section({
   return (
     <section
       id={id}
+      data-scheme={scheme}
       className={cn(
         spacing === "default" && "site-section",
         spacing === "tight" && "site-section--tight",

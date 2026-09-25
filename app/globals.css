@@ -7,11 +7,13 @@
    ========================================================================== */
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
 
   /* ---------------------------------------------------------------- Palette
-     Navy-tinted neutral ramp. Deliberately not pure grey — the blue cast is
-     what separates a premium dark UI from a generic one. */
+     Two neutral ramps, both carrying the same blue cast. Keeping the navy
+     ramp here rather than inside the dark scheme matters: the dark sections
+     are not a "mode" the user toggles, they are bands inside a light page, so
+     both ramps are live on every render. */
   --navy-950: #05070f;
   --navy-900: #080b16;
   --navy-850: #0a0e1c;
@@ -21,57 +23,75 @@
   --navy-600: #232c52;
   --navy-500: #313c69;
 
+  /* Light ramp. Tinted toward the brand indigo for the same reason the dark
+     ramp is navy rather than grey — a neutral white reads as unfinished. */
+  --paper-50: #ffffff;
+  --paper-100: #f7f9fe;
+  --paper-200: #eef2fb;
+  --paper-300: #e4eaf7;
+  --paper-400: #d5deef;
+
   /* Brand ramp: blue → indigo → violet, with cyan reserved as a highlight. */
+  --blue-600: #2563eb;
   --blue-500: #3b82f6;
   --blue-400: #60a5fa;
+  --indigo-700: #4338ca;
   --indigo-600: #4f46e5;
   --indigo-500: #6366f1;
   --indigo-400: #818cf8;
+  --violet-700: #6d28d9;
+  --violet-600: #7c3aed;
   --violet-500: #8b5cf6;
   --violet-400: #a78bfa;
   --cyan-400: #22d3ee;
   --cyan-300: #67e8f9;
   --pink-400: #f472b6;
 
-  /* ------------------------------------------------------------- Semantic */
-  --primary: var(--indigo-500);
-  --primary-hover: var(--indigo-400);
-  --secondary: var(--violet-500);
-  --accent: var(--indigo-400);
-  --accent-strong: var(--violet-400);
-  --accent-cyan: var(--cyan-400);
+  /* ------------------------------------------------------------- Semantic
+     Light is the default scheme. Accents step two stops darker than their
+     dark-scheme counterparts — indigo-400 reads fine on navy and fails
+     against white, so the token moves rather than every call site. */
+  --primary: var(--indigo-600);
+  --primary-hover: var(--indigo-500);
+  --secondary: var(--violet-600);
+  --accent: var(--indigo-600);
+  --accent-strong: var(--violet-700);
+  --accent-cyan: #0891b2;
 
-  --success: #34d399;
-  --warning: #fbbf24;
-  --danger: #fb7185;
-  --info: var(--blue-400);
+  --success: #059669;
+  --warning: #b45309;
+  --danger: #dc2626;
+  --info: var(--blue-600);
 
   /* -------------------------------------------------------------- Surfaces
-     Layered by elevation: background sits behind surface sits behind raised. */
-  --background: var(--navy-950);
-  --surface: var(--navy-900);
-  --surface-raised: var(--navy-850);
-  --surface-overlay: var(--navy-800);
+     Elevation still runs from background to overlay; on light that means
+     stepping toward white rather than away from black. */
+  --background: var(--paper-100);
+  --surface: var(--paper-50);
+  --surface-raised: var(--paper-50);
+  --surface-overlay: var(--paper-200);
 
-  /* Translucent surfaces for content that sits over the animated background. */
-  --surface-glass: rgba(14, 19, 36, 0.72);
-  --surface-glass-strong: rgba(10, 14, 28, 0.88);
-  --surface-tint: rgba(99, 102, 241, 0.07);
-  --surface-tint-strong: rgba(99, 102, 241, 0.13);
+  --surface-glass: rgba(255, 255, 255, 0.72);
+  --surface-glass-strong: rgba(255, 255, 255, 0.85);
+  --surface-tint: rgba(79, 70, 229, 0.05);
+  --surface-tint-strong: rgba(79, 70, 229, 0.1);
 
   /* ------------------------------------------------------------------ Text */
-  --foreground: #eef1f8;
-  --text-primary: #eef1f8;
-  --text-secondary: #b4bcd4;
-  --text-tertiary: #7b86a4;
+  --foreground: #0f1428;
+  --text-primary: #0f1428;
+  --text-secondary: #49527a;
+  /* #6a7496 measured 4.38:1 against the page — under the 4.5 floor, and this
+     token carries the small uppercase band labels, which is exactly where the
+     floor matters. Darkened until it clears. */
+  --text-tertiary: #5f6988;
   --text-on-brand: #ffffff;
 
   /* ----------------------------------------------------------------- Lines */
-  --border: rgba(148, 163, 214, 0.13);
-  --border-hover: rgba(148, 163, 214, 0.24);
-  --border-strong: rgba(129, 140, 248, 0.36);
-  --border-brand: rgba(99, 102, 241, 0.5);
-  --grid-line: rgba(129, 140, 248, 0.055);
+  --border: rgba(20, 28, 60, 0.1);
+  --border-hover: rgba(20, 28, 60, 0.18);
+  --border-strong: rgba(79, 70, 229, 0.34);
+  --border-brand: rgba(79, 70, 229, 0.45);
+  --grid-line: rgba(79, 70, 229, 0.06);
 
   /* ------------------------------------------------------------- Gradients
      Used for hero copy, primary CTAs, selected states and decoration only.
@@ -80,32 +100,54 @@
   --gradient-secondary: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
   --gradient-accent: linear-gradient(135deg, #3b82f6 0%, #22d3ee 100%);
   --gradient-warm: linear-gradient(135deg, #8b5cf6 0%, #f472b6 100%);
-  --gradient-text: linear-gradient(115deg, #ffffff 0%, #c7d2fe 38%, #a78bfa 72%, #67e8f9 100%);
+  --gradient-text: linear-gradient(115deg, #1b2148 0%, #4f46e5 42%, #7c3aed 74%, #2563eb 100%);
   --gradient-hero: radial-gradient(
       120% 90% at 12% 8%,
-      rgba(99, 102, 241, 0.22) 0%,
+      rgba(79, 70, 229, 0.1) 0%,
       transparent 55%
     ),
-    radial-gradient(100% 80% at 88% 20%, rgba(139, 92, 246, 0.17) 0%, transparent 58%),
-    radial-gradient(90% 90% at 60% 100%, rgba(34, 211, 238, 0.1) 0%, transparent 62%);
+    radial-gradient(100% 80% at 88% 20%, rgba(124, 58, 237, 0.08) 0%, transparent 58%),
+    radial-gradient(90% 90% at 60% 100%, rgba(37, 99, 235, 0.06) 0%, transparent 62%);
   --gradient-border: linear-gradient(
     135deg,
-    rgba(129, 140, 248, 0.45),
-    rgba(139, 92, 246, 0.16) 45%,
+    rgba(79, 70, 229, 0.34),
+    rgba(124, 58, 237, 0.12) 45%,
     transparent 75%
   );
 
   /* --------------------------------------------------------------- Shadows
      A real elevation scale plus a separate brand glow. Glow is an accent,
-     never a substitute for elevation. */
-  --shadow-xs: 0 1px 2px rgba(2, 4, 12, 0.4);
-  --shadow-sm: 0 2px 8px rgba(2, 4, 12, 0.45);
-  --shadow-md: 0 8px 24px -6px rgba(2, 4, 12, 0.55);
-  --shadow-lg: 0 18px 48px -12px rgba(2, 4, 12, 0.62);
-  --shadow-xl: 0 32px 80px -20px rgba(2, 4, 12, 0.7);
-  --shadow-glow: 0 10px 34px -10px rgba(79, 70, 229, 0.55);
-  --shadow-glow-strong: 0 16px 48px -12px rgba(99, 102, 241, 0.7);
-  --shadow-inset-top: inset 0 1px 0 rgba(255, 255, 255, 0.07);
+     never a substitute for elevation.
+
+     On light these are far softer than the dark set: a shadow on a dark page
+     is doing the work of a border, whereas on white the same opacity reads as
+     grime. Tinted navy rather than black so they stay in the same family. */
+  --shadow-xs: 0 1px 2px rgba(20, 28, 60, 0.05);
+  --shadow-sm: 0 2px 8px rgba(20, 28, 60, 0.06);
+  --shadow-md: 0 8px 24px -6px rgba(20, 28, 60, 0.1);
+  --shadow-lg: 0 18px 48px -12px rgba(20, 28, 60, 0.14);
+  --shadow-xl: 0 32px 80px -20px rgba(20, 28, 60, 0.18);
+  --shadow-glow: 0 10px 30px -10px rgba(79, 70, 229, 0.35);
+  --shadow-glow-strong: 0 16px 44px -12px rgba(79, 70, 229, 0.45);
+  --shadow-inset-top: inset 0 1px 0 rgba(255, 255, 255, 0.85);
+
+  /* ---------------------------------------------------- Scrims and ambience
+     `--scrim-rgb` is the colour image overlays resolve to. It stays navy in
+     both schemes on purpose: it sits over a duotoned photograph, not over the
+     page, so it should not follow the surrounding surface.
+
+     The ambient tokens drive <AnimatedBackground>. On light they are nearly
+     invisible by design — the same orb opacity that reads as atmosphere on
+     navy reads as a stain on white. */
+  --scrim-rgb: 5 7 15;
+  --band-wash: linear-gradient(180deg, var(--paper-200), rgba(238, 242, 251, 0.35));
+  --spot-colour: rgb(79 70 229 / 0.07);
+  --ambient-base: radial-gradient(120% 100% at 50% 0%, rgba(79, 70, 229, 0.07) 0%, rgba(255, 255, 255, 0) 70%);
+  --ambient-a: rgba(79, 70, 229, 0.14);
+  --ambient-b: rgba(124, 58, 237, 0.12);
+  --ambient-c: rgba(37, 99, 235, 0.09);
+  --ambient-beam: rgba(79, 70, 229, 0.05);
+  --ambient-fade: var(--background);
 
   /* ---------------------------------------------------------------- Radius */
   --radius-xs: 0.25rem;
@@ -184,10 +226,96 @@
   --blur-sm: 8px;
   --blur-md: 16px;
   --blur-lg: 28px;
+  --noise-opacity: 0.02;
+
+  --selection: rgba(79, 70, 229, 0.18);
+  --selection-foreground: #0f1428;
+}
+
+/* ==========================================================================
+   DARK SCHEME
+   Not a mode — a band. The page is light; a few sections opt into this and
+   everything inside them follows, because components reference the semantic
+   tokens and never a raw ramp value. Adding a dark section is therefore
+   `<Section scheme="dark">` and nothing else.
+
+   `color-scheme` is re-declared so form controls, scrollbars and the like
+   inside the band render dark too.
+   ========================================================================== */
+
+[data-scheme="dark"] {
+  color-scheme: dark;
+
+  --primary: var(--indigo-500);
+  --primary-hover: var(--indigo-400);
+  --secondary: var(--violet-500);
+  --accent: var(--indigo-400);
+  --accent-strong: var(--violet-400);
+  --accent-cyan: var(--cyan-400);
+
+  --success: #34d399;
+  --warning: #fbbf24;
+  --danger: #fb7185;
+  --info: var(--blue-400);
+
+  --background: var(--navy-950);
+  --surface: var(--navy-900);
+  --surface-raised: var(--navy-850);
+  --surface-overlay: var(--navy-800);
+
+  --surface-glass: rgba(14, 19, 36, 0.72);
+  --surface-glass-strong: rgba(10, 14, 28, 0.88);
+  --surface-tint: rgba(99, 102, 241, 0.07);
+  --surface-tint-strong: rgba(99, 102, 241, 0.13);
+
+  --foreground: #eef1f8;
+  --text-primary: #eef1f8;
+  --text-secondary: #b4bcd4;
+  --text-tertiary: #7b86a4;
+
+  --border: rgba(148, 163, 214, 0.13);
+  --border-hover: rgba(148, 163, 214, 0.24);
+  --border-strong: rgba(129, 140, 248, 0.36);
+  --border-brand: rgba(99, 102, 241, 0.5);
+  --grid-line: rgba(129, 140, 248, 0.055);
+
+  --gradient-text: linear-gradient(115deg, #ffffff 0%, #c7d2fe 38%, #a78bfa 72%, #67e8f9 100%);
+  --gradient-border: linear-gradient(
+    135deg,
+    rgba(129, 140, 248, 0.45),
+    rgba(139, 92, 246, 0.16) 45%,
+    transparent 75%
+  );
+
+  --shadow-xs: 0 1px 2px rgba(2, 4, 12, 0.4);
+  --shadow-sm: 0 2px 8px rgba(2, 4, 12, 0.45);
+  --shadow-md: 0 8px 24px -6px rgba(2, 4, 12, 0.55);
+  --shadow-lg: 0 18px 48px -12px rgba(2, 4, 12, 0.62);
+  --shadow-xl: 0 32px 80px -20px rgba(2, 4, 12, 0.7);
+  --shadow-glow: 0 10px 34px -10px rgba(79, 70, 229, 0.55);
+  --shadow-glow-strong: 0 16px 48px -12px rgba(99, 102, 241, 0.7);
+  --shadow-inset-top: inset 0 1px 0 rgba(255, 255, 255, 0.07);
+
+  --ambient-base: radial-gradient(120% 100% at 50% 0%, rgba(19, 25, 48, 0.85) 0%, rgba(5, 7, 15, 0) 70%);
+  --ambient-a: rgba(99, 102, 241, 0.5);
+  --ambient-b: rgba(139, 92, 246, 0.42);
+  --ambient-c: rgba(34, 211, 238, 0.2);
+  --ambient-beam: rgba(129, 140, 248, 0.09);
+  --ambient-fade: var(--navy-950);
+  --band-wash: linear-gradient(180deg, rgba(10, 14, 28, 0.6), rgba(8, 11, 22, 0.3));
+  --spot-colour: rgb(129 140 248 / 0.14);
+
   --noise-opacity: 0.035;
 
   --selection: rgba(129, 140, 248, 0.32);
   --selection-foreground: #ffffff;
+}
+
+/* A dark band has to paint its own background. Sections that already set one
+   (`--band`, `--elevated`) are left alone so their own tone still applies. */
+[data-scheme="dark"]:not(.site-section--band):not(.site-section--elevated) {
+  background-color: var(--background);
+  color: var(--foreground);
 }
 
 /* Tailwind v4 theme bridge — exposes tokens as utility classes. */
@@ -282,24 +410,25 @@ img {
   border-radius: var(--radius-sm);
 }
 
-/* Scrollbar tuned to the navy surface rather than the OS default. */
+/* Scrollbar tuned to the page surface rather than the OS default. Built from
+   semantic tokens so it follows whichever scheme the document is in. */
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--navy-950);
+  background: var(--background);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--navy-700);
-  border: 2px solid var(--navy-950);
+  background: var(--border-hover);
+  border: 2px solid var(--background);
   border-radius: var(--radius-pill);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--navy-600);
+  background: var(--border-strong);
 }
 
 .font-mono {
@@ -331,7 +460,7 @@ img {
 
 .site-section--band {
   border-block: 1px solid var(--border);
-  background: linear-gradient(180deg, rgba(10, 14, 28, 0.6), rgba(8, 11, 22, 0.3));
+  background: var(--band-wash);
 }
 
 .site-section--elevated {
@@ -575,7 +704,7 @@ img {
   --spot-x: 50%;
   --spot-y: 50%;
   --spot-size: 340px;
-  --spot-tint: rgb(129 140 248 / 0.14);
+  --spot-tint: var(--spot-colour);
 }
 
 .spotlight::after {
@@ -688,13 +817,13 @@ img {
     conic-gradient(
       from 180deg at 30% 40%,
       transparent 0deg,
-      rgba(79, 107, 255, 0.5) 60deg,
+      var(--ambient-a) 60deg,
       transparent 150deg
     ),
     conic-gradient(
       from 20deg at 70% 55%,
       transparent 0deg,
-      rgba(139, 92, 246, 0.45) 70deg,
+      var(--ambient-b) 70deg,
       transparent 160deg
     );
   animation: aurora-sweep calc(var(--duration-ambient) * 1.75) linear infinite;
@@ -717,8 +846,8 @@ img {
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(129, 140, 248, 0.09),
-    rgba(167, 139, 250, 0.05),
+    var(--ambient-beam),
+    var(--ambient-beam),
     transparent
   );
   filter: blur(28px);

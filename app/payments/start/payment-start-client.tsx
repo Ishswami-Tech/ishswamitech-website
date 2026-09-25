@@ -534,16 +534,16 @@ export default function PaymentStartClient({
     <div className="flex min-h-[60vh] items-center justify-center px-4 py-16">
       {status === "loading" ? (
         <div className="flex flex-col items-center gap-4 text-center">
-          <Loader2 className="h-7 w-7 animate-spin text-emerald-400" />
-          <p className="text-sm text-white/70">{statusLabel}</p>
+          <Loader2 className="h-7 w-7 animate-spin text-[var(--success)]" />
+          <p className="text-sm text-[var(--text-secondary)]">{statusLabel}</p>
         </div>
       ) : (
-        <div className="max-w-lg rounded-2xl border border-red-500/30 bg-red-500/10 px-5 py-4 text-left text-sm text-red-200">
+        <div className="max-w-lg rounded-2xl border border-red-500/30 bg-red-500/10 px-5 py-4 text-left text-sm text-[var(--danger)]">
           <p className="text-center font-medium">
             {errorMessage || "Payment gateway could not be opened. Please go back and try again."}
           </p>
           {errorDetails ? (
-            <pre className="mt-3 max-h-64 overflow-auto whitespace-pre-wrap rounded-xl bg-black/30 p-3 text-xs leading-5 text-red-100/90">
+            <pre className="mt-3 max-h-64 overflow-auto whitespace-pre-wrap rounded-xl bg-[var(--surface-overlay)] p-3 text-xs leading-5 text-[var(--danger)]">
               {errorDetails}
             </pre>
           ) : null}
@@ -551,7 +551,7 @@ export default function PaymentStartClient({
             <button
               type="button"
               onClick={() => window.location.replace(resolvedFallbackUrl)}
-              className="rounded-xl border border-red-400/30 bg-white/10 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-white/15"
+              className="rounded-xl border border-red-400/30 bg-[var(--surface)] px-4 py-2 text-sm font-medium text-[var(--danger)] transition-colors hover:bg-[var(--surface-overlay)]"
             >
               Go back to Viddhakarma
             </button>

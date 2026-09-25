@@ -229,10 +229,10 @@ export default function PaymentCallbackClient({ queryString }: { queryString: st
     <div className="flex min-h-[70vh] items-center justify-center px-4 py-16">
       {state === "verifying" ? (
         <div className="flex flex-col items-center gap-4 text-center">
-          <Loader2 className="h-7 w-7 animate-spin text-emerald-400" />
+          <Loader2 className="h-7 w-7 animate-spin text-[var(--success)]" />
         </div>
       ) : (
-        <div className="max-w-lg rounded-2xl border border-red-500/30 bg-red-500/10 px-5 py-4 text-left text-sm text-red-200">
+        <div className="max-w-lg rounded-2xl border border-red-500/30 bg-red-500/10 px-5 py-4 text-left text-sm text-[var(--danger)]">
           <p className="text-center font-medium">
             Payment failed or could not be verified. Redirecting to appointments in {redirectCountdown} seconds.
           </p>
@@ -240,7 +240,7 @@ export default function PaymentCallbackClient({ queryString }: { queryString: st
             <button
               type="button"
               onClick={() => window.location.replace(fallbackRedirectUrl)}
-              className="rounded-xl border border-red-400/30 bg-white/10 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-white/15"
+              className="rounded-xl border border-red-400/30 bg-[var(--surface)] px-4 py-2 text-sm font-medium text-[var(--danger)] transition-colors hover:bg-[var(--surface-overlay)]"
             >
               Go to appointments now
             </button>

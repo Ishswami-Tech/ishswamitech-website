@@ -146,7 +146,7 @@ export function ContactForm() {
               <Input
                 id={fieldId("name")}
                 autoComplete="name"
-                placeholder="Jane Doe"
+                placeholder="Enter your full name"
                 invalid={Boolean(errors.name)}
                 aria-invalid={Boolean(errors.name)}
                 aria-describedby={describedBy("name")}
@@ -159,7 +159,7 @@ export function ContactForm() {
                 id={fieldId("email")}
                 type="email"
                 autoComplete="email"
-                placeholder="jane@company.com"
+                placeholder="Enter your email address"
                 invalid={Boolean(errors.email)}
                 aria-invalid={Boolean(errors.email)}
                 aria-describedby={describedBy("email")}
@@ -172,7 +172,7 @@ export function ContactForm() {
                 id={fieldId("phone")}
                 type="tel"
                 autoComplete="tel"
-                placeholder="+91 98765 43210"
+                placeholder="Enter your phone number"
                 {...register("phone")}
               />
             </Field>
@@ -181,14 +181,14 @@ export function ContactForm() {
               <Input
                 id={fieldId("company")}
                 autoComplete="organization"
-                placeholder="Acme Inc."
+                placeholder="Enter your company name"
                 {...register("company")}
               />
             </Field>
 
             <Field label="Service of Interest" htmlFor={fieldId("service")}>
               <Select id={fieldId("service")} defaultValue="" {...register("service")}>
-                <option value="">Select a service…</option>
+                <option value="">Choose the service you need</option>
                 {serviceOptions.map((option) => (
                   <option key={option} value={option}>
                     {option}
@@ -199,7 +199,7 @@ export function ContactForm() {
 
             <Field label="Estimated Budget" htmlFor={fieldId("budget")}>
               <Select id={fieldId("budget")} defaultValue="" {...register("budget")}>
-                <option value="">Select a range…</option>
+                <option value="">Choose your budget range</option>
                 {budgetOptions.map((option) => (
                   <option key={option} value={option}>
                     {option}
@@ -218,7 +218,7 @@ export function ContactForm() {
               <Textarea
                 id={fieldId("message")}
                 rows={5}
-                placeholder="Tell us about your goals, current state, and what you'd like to build…"
+                placeholder="Tell us what you want to build, where it stands today, and the outcome you are after"
                 invalid={Boolean(errors.message)}
                 aria-invalid={Boolean(errors.message)}
                 aria-describedby={describedBy("message")}

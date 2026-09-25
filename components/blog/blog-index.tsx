@@ -71,7 +71,7 @@ export function BlogIndex({ posts }: { posts: readonly BlogPost[] }) {
             <Input
               id="blog-search"
               type="search"
-              placeholder="Search articles…"
+              placeholder="Search articles by title or topic"
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               className="pl-10"

@@ -24,9 +24,27 @@ function isLowPowerDevice(): boolean {
     connection?: { saveData?: boolean };
   };
 
+  // An explicit request from the user, so it is honoured as-is.
   if (nav.connection?.saveData) return true;
-  if (typeof nav.deviceMemory === "number" && nav.deviceMemory <= 4) return true;
-  if (typeof nav.hardwareConcurrency === "number" && nav.hardwareConcurrency <= 4) return true;
+
+  /*
+    The two hardware thresholds used to be `<= 4`, which was far too eager and
+    made this the single biggest source of "the animations do not run on
+    Windows".
+
+    Both signals are Chromium-only. Safari and Firefox expose neither
+    `deviceMemory` nor a meaningful `hardwareConcurrency` ceiling, so on a Mac
+    the checks were effectively skipped and everything animated. On Windows,
+    Chrome and Edge report both — and a four-core laptop (still extremely
+    common) hit `hardwareConcurrency <= 4` exactly, while `deviceMemory` is
+    reported rounded down to a power of two, so a 6GB machine reports 4. Those
+    users were silently dropped to the degraded tier on hardware that composites
+    a few blurred layers without trouble.
+
+    2 or fewer is a genuinely constrained device; 4 is a normal one.
+  */
+  if (typeof nav.deviceMemory === "number" && nav.deviceMemory <= 2) return true;
+  if (typeof nav.hardwareConcurrency === "number" && nav.hardwareConcurrency <= 2) return true;
   return false;
 }
 

@@ -933,6 +933,11 @@ img {
 
 .ai-ring {
   animation: ai-spin linear infinite;
+  /* Without this the px transform-origin set on each ring resolves against
+     whatever box the engine happens to default to, and the rings orbit an
+     off-centre point on anything that does not match Chromium. Pinning it to
+     the viewBox makes the centre 200,200 everywhere. */
+  transform-box: view-box;
 }
 
 /* Counter-rotation, so adjacent rings never look locked together. */
@@ -970,6 +975,7 @@ img {
 
 .ai-breathe {
   animation: ai-breathe 6s var(--ease-in-out) infinite;
+  transform-box: view-box;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1019,7 +1025,8 @@ img {
   .bg-beam,
   .marquee,
   .pulse-ring,
-  .skeleton::after {
+  .skeleton::after,
+  .gradient-text--sweep {
     animation: none !important;
   }
 
@@ -1029,12 +1036,30 @@ img {
     justify-content: center;
   }
 
+  /*
+    Movement off, feedback intact.
+
+    This used to be `animation-duration: 1ms` and `transition-duration: 1ms` on
+    `*`, which did not reduce motion so much as abolish every animated thing on
+    the page — including the submit button's spinner and the skeleton
+    placeholders. A spinner that does not spin reads as a hang, and the
+    preference asks for less motion, not none.
+
+    What actually causes vestibular trouble is movement, so transforms come out
+    of the transition list while colour, opacity and shadow stay in. Keyframe
+    animations are dealt with by name above, which leaves functional ones —
+    spinners — running.
+
+    Windows is where this bites hardest: "Animation effects" under Settings →
+    Accessibility → Visual effects is commonly off, and every Chromium browser
+    reports that as prefers-reduced-motion, so a whole platform was landing on
+    this rule.
+  */
   *,
   *::before,
   *::after {
-    transition-duration: 1ms !important;
-    animation-duration: 1ms !important;
-    animation-iteration-count: 1 !important;
+    transition-property: opacity, color, background-color, border-color,
+      box-shadow, fill, stroke, backdrop-filter !important;
   }
 }
 

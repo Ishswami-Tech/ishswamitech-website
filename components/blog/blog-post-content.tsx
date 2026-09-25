@@ -293,7 +293,7 @@ export default function BlogPostContent({ post, relatedPosts }: BlogPostContentP
                 <input
                   type="email"
                   required
-                  placeholder="your@email.com"
+                  placeholder="Enter your email address"
                   className="flex-1 rounded-full border border-[var(--border)] bg-[var(--surface)] px-5 py-3 text-[var(--foreground)] placeholder-[var(--text-secondary)] focus:border-[var(--border-strong)] focus:outline-none"
                 />
                 <button

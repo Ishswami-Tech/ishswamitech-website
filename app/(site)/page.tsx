@@ -54,6 +54,39 @@ const serviceIcons: Record<string, React.ElementType> = {
   Palette,
 };
 
+/**
+ * The three capabilities the showcase band stands on. Deliberately not the
+ * service list — these are the seams the section's copy claims not to have, so
+ * they are interface, intelligence and infrastructure rather than ten products.
+ */
+const showcasePillars = [
+  {
+    eyebrow: "Product Engineering",
+    title: "Interface and API as One System",
+    description:
+      "The screen, the endpoint behind it, and the schema behind that get designed together, so the seams never become your problem.",
+    image: "/Assets/frontend.jpg",
+    tint: "var(--violet-500)",
+  },
+  {
+    eyebrow: "AI & Automation",
+    title: "Intelligence Wired Into the Product",
+    description:
+      "Assistants, search and workflow automation built into the thing people already use — not bolted on beside it as a second app.",
+    image: "/Assets/aiml.jpg",
+    tint: "var(--indigo-500)",
+  },
+  {
+    eyebrow: "Security & QA",
+    title: "Auditable From Day One",
+    description:
+      "Typed, tested and observable, with security review and performance budgets part of the build rather than a phase after it.",
+    image:
+      "/Assets/double-exposure-caucasian-man-virtual-reality-vr-headset-is-presumably-gamer-hacker-cracking-code-into-secure-network-server-with-lines-code.jpg",
+    tint: "var(--cyan-400)",
+  },
+];
+
 const ctaAssurances = [
   { icon: Headphones, text: "Free 30-Minute Discovery" },
   { icon: FileCheck2, text: "Honest, Fixed-Scope Quotes" },
@@ -503,54 +536,49 @@ export default function HomePage() {
           }
         />
 
-        {/* Deliberately unequal: a 3-up of identical tiles is the stock agency
-            grid. One dominant frame with two supporting ones gives the band a
-            subject instead of an inventory. */}
-        <Stagger className="grid gap-5 lg:grid-cols-3">
-          {/* The laptop render that used to run the hero. It reads better here
-              than it did up there: a literal product shot is the right thing to
-              show under "craft you can see", and it no longer has to compete
-              with a headline sitting on top of it. Its own violet is close
-              enough to the brand ramp that it takes almost no tint. */}
-          <StaggerItem className="lg:col-span-2">
-            <MediaFrame
-              src="/Assets/hero-visual.webp"
-              alt="A product build in progress — editor, analytics and performance panels side by side"
-              ratio="video"
-              tint="var(--violet-500)"
-              strength={0.22}
-              sizes="(max-width: 1024px) 100vw, 66vw"
-              className="h-full"
-            >
-              <p className="type-eyebrow mb-1.5">Product Engineering</p>
-              <p className="type-panel-title text-[var(--foreground)]">
-                Interface, API and infrastructure shipped as one system
-              </p>
-            </MediaFrame>
-          </StaggerItem>
+        {/*
+          Three equal cards, image over text, exactly like the service cards
+          further up — so the page reads as one system rather than two.
 
-          <StaggerItem className="flex flex-col gap-5">
-            <MediaFrame
-              src="/Assets/double-exposure-caucasian-man-virtual-reality-vr-headset-is-presumably-gamer-hacker-cracking-code-into-secure-network-server-with-lines-code.jpg"
-              alt="Source code projected across a developer during a security review"
-              ratio="square"
-              tint="var(--cyan-400)"
-              sizes="(max-width: 1024px) 100vw, 33vw"
-              className="flex-1"
-            >
-              <p className="type-ui text-[var(--foreground)]">Security &amp; QA From Day One</p>
-            </MediaFrame>
-            <MediaFrame
-              src="/Assets/aiml.jpg"
-              alt="An AI assistant surface running alongside a build review"
-              ratio="square"
-              tint="var(--indigo-400)"
-              sizes="(max-width: 1024px) 100vw, 33vw"
-              className="flex-1"
-            >
-              <p className="type-ui text-[var(--foreground)]">AI Wired Into the Product</p>
-            </MediaFrame>
-          </StaggerItem>
+          It replaced a bento: one wide frame beside two stacked squares. That
+          layout was broken rather than merely unfashionable. <MediaFrame>
+          applies its own aspect ratio, so the wide tile carried `aspect-video`
+          *and* `h-full`; the two squares beside it stacked to roughly 920px,
+          the grid row grew to match, and the wide tile stretched to near
+          square. Its artwork then cropped to the empty black corner of the
+          render — the large void that made the band look unfinished. Captions
+          overlaid on dark scrims were also the last dark thing left in the
+          middle of a light page.
+        */}
+        <Stagger as="ul" className="grid gap-5 md:grid-cols-3">
+          {showcasePillars.map((pillar) => (
+            <StaggerItem as="li" key={pillar.title} className="h-full">
+              <Card
+                tone="solid"
+                interactive
+                padding="none"
+                className="flex h-full flex-col overflow-hidden"
+              >
+                <MediaFrame
+                  src={pillar.image}
+                  alt=""
+                  ratio="wide"
+                  tint={pillar.tint}
+                  strength={0.5}
+                  framed={false}
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  className="border-b border-[var(--border)]"
+                />
+                <div className="flex flex-1 flex-col p-5 md:p-6">
+                  <p className="type-eyebrow mb-2">{pillar.eyebrow}</p>
+                  <h3 className="type-block-title mb-2.5 text-[var(--foreground)]">
+                    {pillar.title}
+                  </h3>
+                  <p className="type-body text-[var(--text-secondary)]">{pillar.description}</p>
+                </div>
+              </Card>
+            </StaggerItem>
+          ))}
         </Stagger>
       </Section>
 

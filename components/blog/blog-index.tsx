@@ -184,68 +184,73 @@ export function BlogIndex({ posts }: { posts: readonly BlogPost[] }) {
               </Link>
             )}
 
-            <div className="grid gap-10 lg:grid-cols-3">
-              <div className="lg:col-span-2">
-                {/* Re-keyed on the active filters so the grid re-runs its
-                    entrance when the result set changes, rather than silently
-                    swapping cards in place. */}
-                <AnimatePresence mode="wait">
-                  <Stagger
-                    key={`${activeTag}-${search}`}
-                    as="ul"
-                    immediate
-                    gap={0.05}
-                    className="grid gap-5 md:grid-cols-2"
-                  >
-                    {rest.map((post) => (
-                      <StaggerItem as="li" key={post.id} className="h-full">
-                        <Link href={`/blog/${post.slug}`} className="block h-full">
-                          <article
-                            data-spotlight=""
-                            className="spotlight group flex h-full flex-col overflow-hidden rounded-[var(--radius-2xl)] border border-[var(--border)] bg-[var(--surface-raised)] shadow-[var(--shadow-sm)] transition-[border-color,box-shadow,translate] duration-[var(--duration-normal)] ease-[var(--ease-out)] hover:-translate-y-1 hover:border-[var(--border-strong)] hover:shadow-[var(--shadow-lg)] motion-reduce:transform-none"
-                          >
-                            <div className="relative aspect-video overflow-hidden">
-                              <Image
-                                src={post.image}
-                                alt=""
-                                fill
-                                className="object-cover transition-transform duration-[var(--duration-slow)] ease-[var(--ease-out)] group-hover:scale-105 motion-reduce:transition-none"
-                                sizes="(max-width: 768px) 100vw, 50vw"
-                              />
-                            </div>
-                            <div className="flex flex-1 flex-col p-5">
-                              <Badge tone="accent" className="mb-3 w-fit">
-                                {post.category}
-                              </Badge>
-                              <h3 className="type-card-title mb-2 line-clamp-2 text-[var(--foreground)] transition-colors duration-[var(--duration-fast)] group-hover:text-[var(--accent)]">
-                                {post.title}
-                              </h3>
-                              <p className="mb-5 line-clamp-2 flex-1 text-[var(--text-base)] leading-[var(--leading-relaxed)] text-[var(--text-secondary)]">
-                                {post.excerpt}
-                              </p>
-                              <div className="type-ui flex items-center justify-between text-[var(--text-tertiary)]">
-                                <span className="inline-flex items-center gap-1.5">
-                                  <Calendar className="h-3.5 w-3.5" aria-hidden />
-                                  <time dateTime={post.date}>{formatDate(post.date)}</time>
-                                </span>
-                                <span className="inline-flex items-center gap-1 text-[var(--accent)]">
-                                  Read
-                                  <ArrowUpRight
-                                    className="h-3.5 w-3.5 transition-transform duration-[var(--duration-fast)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                                    aria-hidden
-                                  />
-                                </span>
-                              </div>
-                            </div>
-                          </article>
-                        </Link>
-                      </StaggerItem>
-                    ))}
-                  </Stagger>
-                </AnimatePresence>
-              </div>
+            {/*
+              An index, not a card wall. The grid-of-cards plus sidebar gave
+              every post the same visual weight as the one beside it and left
+              the titles competing with their own thumbnails for the eye. Rows
+              put the headline first at a readable measure, keep the image as
+              support, and let the whole list be scanned down a single edge —
+              which is what someone browsing an archive is actually doing.
+            */}
+            <AnimatePresence mode="wait">
+              <Stagger
+                key={`${activeTag}-${search}`}
+                as="ul"
+                immediate
+                gap={0.04}
+                className="border-t border-[var(--border)]"
+              >
+                {rest.map((post) => (
+                  <StaggerItem as="li" key={post.id}>
+                    <Link
+                      href={`/blog/${post.slug}`}
+                      className="group grid items-center gap-5 border-b border-[var(--border)] py-6 transition-colors duration-[var(--duration-fast)] hover:bg-[var(--surface-tint)] sm:grid-cols-[14rem_1fr] sm:gap-7 sm:px-2 lg:grid-cols-[16rem_1fr_auto]"
+                    >
+                      <div className="relative aspect-[16/10] overflow-hidden rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface-overlay)]">
+                        <Image
+                          src={post.image}
+                          alt=""
+                          fill
+                          className="object-cover saturate-[0.5] transition-[transform,filter] duration-[var(--duration-slow)] ease-[var(--ease-out)] group-hover:scale-105 group-hover:saturate-100 motion-reduce:transition-none"
+                          sizes="(max-width: 640px) 100vw, 16rem"
+                        />
+                      </div>
 
-              <aside className="flex flex-col gap-5">
+                      <div className="min-w-0">
+                        <div className="type-ui mb-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-[var(--text-tertiary)]">
+                          <span className="text-[var(--accent)]">{post.category}</span>
+                          <span aria-hidden>·</span>
+                          <time dateTime={post.date}>{formatDate(post.date)}</time>
+                          <span aria-hidden>·</span>
+                          <span>{post.readTime}</span>
+                        </div>
+                        <h3 className="type-block-title mb-2 text-[var(--foreground)] transition-colors duration-[var(--duration-fast)] group-hover:text-[var(--accent)]">
+                          {post.title}
+                        </h3>
+                        <p className="type-body line-clamp-2 max-w-2xl text-[var(--text-secondary)]">
+                          {post.excerpt}
+                        </p>
+                      </div>
+
+                      {/* The affordance only needs to exist once per row, and
+                          at the end of it — repeating "Read" under every card
+                          was noise when the whole row is already the link. */}
+                      <span
+                        aria-hidden
+                        className="hidden h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[var(--border)] text-[var(--accent)] transition-[border-color,background-color,translate] duration-[var(--duration-fast)] group-hover:-translate-y-0.5 group-hover:border-[var(--border-strong)] group-hover:bg-[var(--surface-tint-strong)] motion-reduce:transform-none lg:inline-flex"
+                      >
+                        <ArrowUpRight className="h-4 w-4" />
+                      </span>
+                    </Link>
+                  </StaggerItem>
+                ))}
+              </Stagger>
+            </AnimatePresence>
+
+            {/* What the sidebar used to hold, moved under the list. Beside the
+                rows it competed with them for width; below, it reads as a
+                footer to the archive. */}
+            <div className="mt-12 grid gap-5 lg:grid-cols-3">
                 <Card tone="solid" padding="md">
                   <h2 className="type-card-title mb-4 text-[var(--foreground)]">Popular Posts</h2>
                   <ol className="flex flex-col gap-4">
@@ -305,7 +310,6 @@ export function BlogIndex({ posts }: { posts: readonly BlogPost[] }) {
                       ))}
                   </ul>
                 </Card>
-              </aside>
             </div>
           </>
         )}

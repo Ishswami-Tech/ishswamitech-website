@@ -84,10 +84,6 @@ export const metadata: Metadata = {
     description: siteConfig.description,
     images: [siteConfig.ogImage],
   },
-  icons: {
-    icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
-    apple: "/icon.svg",
-  },
 };
 
 export default function RootLayout({

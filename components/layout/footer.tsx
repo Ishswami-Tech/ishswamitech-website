@@ -115,11 +115,20 @@ export default function Footer() {
       <Container className="py-14">
         <div className="grid grid-cols-2 gap-10 md:grid-cols-3 lg:grid-cols-6">
           <div className="col-span-2">
-            <Link href="/" className="mb-5 flex w-fit items-center gap-2.5">
-              <span className="flex items-center justify-center overflow-hidden rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface-tint-strong)] p-1.5">
-                <Image src={siteConfig.logo} alt="" width={28} height={28} className="h-7 w-7" />
-              </span>
-              <span className="text-[var(--text-lg)] font-semibold tracking-[-0.02em] text-[var(--foreground)]">
+            {/* Mark plus type rather than the lockup: this footer runs the dark
+                scheme, and the lockup's navy "IshSwami" all but vanishes on it.
+                The mark carries enough gold to hold up either way, and the name
+                beside it is already a light token here. No chip behind it — the
+                mark has its own silhouette and a plaque only fought it. */}
+            <Link href="/" className="mb-5 flex w-fit items-center gap-3">
+              <Image
+                src={siteConfig.logo}
+                alt=""
+                width={658}
+                height={658}
+                className="h-11 w-11 shrink-0"
+              />
+              <span className="text-[var(--text-xl)] font-semibold tracking-[-0.02em] text-[var(--foreground)]">
                 {siteConfig.shortName}
               </span>
             </Link>

@@ -78,24 +78,28 @@ export default function Navbar() {
       >
         <nav aria-label="Main" className="container">
           <div className="flex h-[var(--navbar-height)] items-center justify-between gap-4">
+            {/* The bar carries a light glass surface at every scroll position,
+                so the full lockup is safe here — this is the one place on the
+                site guaranteed not to be dark behind it. The tagline-free
+                variant is deliberate: at 40px tall the three tagline words
+                collapse into unreadable texture. */}
             <Link
               href="/"
-              className="group flex items-center gap-2.5"
+              className="group flex items-center"
               aria-label={`${siteConfig.shortName} home`}
             >
-              <span
+              <Image
+                src={siteConfig.logoLockup}
+                alt={siteConfig.name}
+                width={1915}
+                height={483}
+                priority
                 className={cn(
-                  "flex h-9 w-9 items-center justify-center overflow-hidden rounded-[var(--radius-lg)]",
-                  "border border-[var(--border)] bg-[var(--surface-tint-strong)] p-1",
+                  "h-10 w-auto",
                   "transition-transform duration-[var(--duration-normal)] ease-[var(--ease-out)]",
-                  "group-hover:scale-105 motion-reduce:transform-none"
+                  "group-hover:scale-[1.03] motion-reduce:transform-none"
                 )}
-              >
-                <Image src={siteConfig.logo} alt="" width={28} height={28} className="h-7 w-7" />
-              </span>
-              <span className="text-[var(--text-lg)] font-semibold tracking-[-0.02em] text-[var(--foreground)]">
-                {siteConfig.shortName}
-              </span>
+              />
             </Link>
 
             <ul className="hidden items-center gap-0.5 lg:flex">

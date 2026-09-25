@@ -394,9 +394,16 @@ a {
   text-underline-offset: 0.2em;
 }
 
-img {
-  max-width: 100%;
-  height: auto;
+/* In @layer base on purpose. Tailwind v4 emits utilities inside a layer, and
+   an unlayered declaration beats a layered one — so as plain `img { height:
+   auto }` this quietly overrode every h-* utility on an image. Square logos
+   hid it (setting w-7 derived the right height anyway); the first wide asset
+   rendered at its intrinsic width and blew the header apart. */
+@layer base {
+  img {
+    max-width: 100%;
+    height: auto;
+  }
 }
 
 ::selection {

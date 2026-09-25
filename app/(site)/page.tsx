@@ -491,7 +491,7 @@ export default function HomePage() {
       </section>
 
       {/* ------------------------------------------------------------ SHOWCASE */}
-      <Section tone="plain" scheme="dark">
+      <Section tone="ruled">
         <SectionHeader
           eyebrow="Inside the Work"
           title="Craft You Can See, Engineering You Can Audit"

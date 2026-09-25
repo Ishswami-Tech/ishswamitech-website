@@ -19,7 +19,14 @@ export const siteConfig = {
     { number: "+91-7218378311", label: "Primary" },
     { number: "+91-7888154917", label: "Direct" },
   ],
-  logo: "/Assets/brand/logo-mark.svg",
+  /*
+    Two forms of the same logo, because one cannot serve both schemes. The
+    lockup's "IshSwami" is dark navy and disappears on the dark footer and
+    hero, so anywhere on a dark surface uses the mark — which carries enough
+    gold to read on either — beside type in the site's own font.
+  */
+  logo: "/Assets/brand/logo-mark.png",
+  logoLockup: "/Assets/brand/logo-lockup.png",
   ogImage: "/Assets/hero_img.jpg",
   locale: "en_US",
   keywords: [

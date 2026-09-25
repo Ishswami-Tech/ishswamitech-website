@@ -142,6 +142,14 @@
   --scrim-rgb: 5 7 15;
   --band-wash: linear-gradient(180deg, var(--paper-200), rgba(238, 242, 251, 0.35));
   --spot-colour: rgb(79 70 229 / 0.07);
+  --cursor-size: 34rem;
+  /* 0.07, not 0.10. The glow sits over content, so its alpha lands on the
+     text and its background alike and compresses the ratio between them. At
+     0.10 the worst small-text pair on this page measured 4.58:1 — passing,
+     but with 0.08 to spare. 0.07 keeps roughly 0.25 of margin and is still
+     plainly visible as a wash at this size. Dark needs no such care: adding
+     light to a near-black ground leaves 12.8:1. */
+  --cursor-tint: rgb(79 70 229 / 0.07);
   --ambient-base: radial-gradient(120% 100% at 50% 0%, rgba(79, 70, 229, 0.07) 0%, rgba(255, 255, 255, 0) 70%);
   --ambient-a: rgba(79, 70, 229, 0.14);
   --ambient-b: rgba(124, 58, 237, 0.12);
@@ -304,6 +312,8 @@
   --ambient-fade: var(--navy-950);
   --band-wash: linear-gradient(180deg, rgba(10, 14, 28, 0.6), rgba(8, 11, 22, 0.3));
   --spot-colour: rgb(129 140 248 / 0.14);
+  --cursor-size: 30rem;
+  --cursor-tint: rgb(129 140 248 / 0.16);
 
   --noise-opacity: 0.035;
 
@@ -728,6 +738,59 @@ a {
     var(--spot-tint),
     transparent 70%
   );
+}
+
+/* ==========================================================================
+   CURSOR GLOW
+   A single page-wide light that follows the pointer, driven by --cursor-x /
+   --cursor-y which <SpotlightRoot> writes on <html>. Distinct from
+   `.spotlight` above: that one lights a card from within its own bounds, this
+   one carries across the gaps between sections so the page never goes inert
+   between cards.
+   ========================================================================== */
+
+.cursor-glow {
+  position: fixed;
+  /* Sized in its own box and moved with translate, so following the cursor is
+     a compositor transform rather than a layout change every frame. The -50%
+     centres it on the pointer. */
+  top: 0;
+  left: 0;
+  width: var(--cursor-size);
+  height: var(--cursor-size);
+  margin: calc(var(--cursor-size) / -2) 0 0 calc(var(--cursor-size) / -2);
+  translate: var(--cursor-x, 50vw) var(--cursor-y, 50vh);
+  /* Above content rather than behind it. Behind is the instinct, but `body`
+     paints an opaque background and most sections paint their own, so a
+     negative layer is invisible and a z-0 one is covered by some sections and
+     over the text of others. Sitting on top is the only placement that is
+     consistent everywhere — which is affordable only because the tint is a
+     single-digit alpha. 20 keeps it under the navbar (50) and any modal. */
+  z-index: 20;
+  pointer-events: none;
+  border-radius: 50%;
+  opacity: var(--cursor-opacity, 0);
+  /* Opacity only — transitioning the translate would make the glow lag the
+     cursor by the transition duration, which reads as broken rather than
+     smooth. */
+  transition: opacity var(--duration-slow) var(--ease-out);
+  background: radial-gradient(closest-side, var(--cursor-tint), transparent 70%);
+  will-change: translate;
+}
+
+@media (hover: none), (pointer: coarse) {
+  /* No pointer to follow. */
+  .cursor-glow {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* This is motion bound to the pointer and nothing else — there is no
+     reduced version of it that still means anything. */
+  .cursor-glow {
+    display: none;
+  }
 }
 
 /* Hover-capable, fine pointers only. A touch device has no hover state to

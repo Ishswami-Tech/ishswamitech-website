@@ -409,7 +409,11 @@ export function isPrebuiltPaymentIntent(payload: PaymentBridgePayload): boolean 
 
   const provider = String(payload.provider || "").toLowerCase();
   if (provider === "razorpay") {
-    return Boolean(payload.orderId && payload.razorpayKeyId);
+    // Razorpay Checkout needs only the order id plus the public key id; the
+    // client falls back to the site's configured key when the payload lacks one.
+    const keyId =
+      payload.razorpayKeyId || process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "";
+    return Boolean(payload.orderId && keyId);
   }
 
   if (provider === "cashfree") {
@@ -417,6 +421,15 @@ export function isPrebuiltPaymentIntent(payload: PaymentBridgePayload): boolean 
   }
 
   return false;
+}
+
+/**
+ * True when the payload already names a gateway order created by the backend.
+ * Such a payload must be opened as-is (or fail) — creating another intent for it
+ * produces a duplicate gateway order with no local payment record.
+ */
+export function hasExistingGatewayOrder(payload: PaymentBridgePayload): boolean {
+  return Boolean(String(payload.orderId || "").trim());
 }
 
 export async function createPaymentIntentOnServer(

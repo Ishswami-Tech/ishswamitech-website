@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import {
   createPaymentIntentOnServer,
   decodePaymentBridgePayload,
+  hasExistingGatewayOrder,
   isPrebuiltPaymentIntent,
 } from "@/lib/payment-bridge.server";
 
@@ -55,9 +56,23 @@ export async function POST(request: Request) {
     );
   }
 
+  const isPrebuilt = isPrebuiltPaymentIntent(payload);
+  if (!isPrebuilt && hasExistingGatewayOrder(payload)) {
+    // Never open a second gateway order for a payment that already has one.
+    return NextResponse.json(
+      {
+        success: false,
+        error:
+          "This payment session is incomplete. Please go back and tap Pay again.",
+        payload,
+      },
+      { status: 409 },
+    );
+  }
+
   try {
     const provider = String(payload.provider || "").toLowerCase();
-    const paymentIntent = isPrebuiltPaymentIntent(payload)
+    const paymentIntent = isPrebuilt
       ? payload
       : await createPaymentIntentOnServer(payload, provider);
 

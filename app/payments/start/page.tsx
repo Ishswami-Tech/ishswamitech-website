@@ -3,6 +3,7 @@ import PaymentStartClient from "./payment-start-client";
 import {
   createPaymentIntentOnServer,
   decodePaymentBridgePayload,
+  hasExistingGatewayOrder,
   isPrebuiltPaymentIntent,
   buildFallbackCallbackUrl,
 } from "@/lib/payment-bridge.server";
@@ -60,12 +61,16 @@ export default async function PaymentStartPage(props: {
   const provider = String(payload.provider || "").toLowerCase() || undefined;
 
   let paymentIntent: Record<string, unknown> | null = null;
-  try {
-    paymentIntent = isPrebuiltPaymentIntent(payload)
-      ? payload
-      : await createPaymentIntentOnServer(payload, provider);
-  } catch {
-    paymentIntent = null;
+  if (isPrebuiltPaymentIntent(payload)) {
+    paymentIntent = payload;
+  } else if (!hasExistingGatewayOrder(payload)) {
+    // Only create an order when the backend has not already created one;
+    // otherwise the client shows an error instead of opening a duplicate order.
+    try {
+      paymentIntent = await createPaymentIntentOnServer(payload, provider);
+    } catch {
+      paymentIntent = null;
+    }
   }
 
   return (

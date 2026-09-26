@@ -3,6 +3,9 @@ import type { Metadata } from "next";
 export const siteConfig = {
   name: "IshSwamiTech",
   shortName: "IshSwamiTech",
+  /** The wordmark in two parts: the logo sets "Tech" in gold, and the brand
+   *  text mirrors it. Split here so every place that renders it agrees. */
+  wordmark: { primary: "IshSwami", accent: "Tech" },
   url: "https://ishswami.in",
   title: "IshSwamiTech | Custom Software, AI, Cloud & Product Design",
   description:

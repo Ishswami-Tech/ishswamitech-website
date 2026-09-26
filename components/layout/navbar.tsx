@@ -106,7 +106,8 @@ export default function Navbar() {
                 )}
               />
               <span className="font-heading text-[var(--text-xl)] font-semibold tracking-[-0.022em] text-[var(--foreground)]">
-                {siteConfig.shortName}
+                {siteConfig.wordmark.primary}
+                <span className="text-[var(--brand-gold)]">{siteConfig.wordmark.accent}</span>
               </span>
             </Link>
 
@@ -224,7 +225,8 @@ export default function Navbar() {
             >
               <div className="flex h-[var(--navbar-height)] items-center justify-between border-b border-[var(--border)] px-5">
                 <span className="font-heading text-[var(--text-md)] font-semibold tracking-[-0.022em] text-[var(--foreground)]">
-                  {siteConfig.shortName}
+                  {siteConfig.wordmark.primary}
+                  <span className="text-[var(--brand-gold)]">{siteConfig.wordmark.accent}</span>
                 </span>
                 <button
                   type="button"

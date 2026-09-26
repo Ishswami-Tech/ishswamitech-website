@@ -63,17 +63,21 @@ export default function Navbar() {
     <>
       <header
         className={cn(
-          "fixed inset-x-0 top-0 z-50 border-b backdrop-blur-xl",
-          "transition-[background-color,border-color,box-shadow]",
+          "fixed inset-x-0 top-0 z-50 border-b bg-[var(--surface)]",
+          "transition-[border-color,box-shadow]",
           "duration-[var(--duration-normal)] ease-[var(--ease-out)]",
-          // Glass from the top rather than transparent-until-scrolled. The bar
-          // now spans a dark home hero and light heroes on every other page,
-          // and no single text colour survives both; carrying its own surface
-          // is what lets one treatment work everywhere. It still firms up on
-          // scroll, so the page keeps the sense of lifting under it.
+          // Opaque white, not glass. The bar spans a dark home hero and light
+          // heroes on every other page, and no single text colour survives
+          // both — so it carries its own surface. Translucent white did carry
+          // one, but over the dark hero 72% white composites to a murky grey
+          // that reads as unfinished rather than as glass. Solid keeps the
+          // logo and nav on the surface they were drawn for.
+          //
+          // No backdrop-blur either: blurring what is behind an opaque fill
+          // buys a compositing layer and nothing visible.
           isScrolled
-            ? "border-[var(--border)] bg-[var(--surface-glass-strong)] shadow-[var(--shadow-md)]"
-            : "border-transparent bg-[var(--surface-glass)]"
+            ? "border-[var(--border)] shadow-[var(--shadow-md)]"
+            : "border-transparent"
         )}
       >
         <nav aria-label="Main" className="container">

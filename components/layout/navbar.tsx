@@ -82,28 +82,32 @@ export default function Navbar() {
       >
         <nav aria-label="Main" className="container">
           <div className="flex h-[var(--navbar-height)] items-center justify-between gap-4">
-            {/* The bar carries a light glass surface at every scroll position,
-                so the full lockup is safe here — this is the one place on the
-                site guaranteed not to be dark behind it. The tagline-free
-                variant is deliberate: at 40px tall the three tagline words
-                collapse into unreadable texture. */}
+            {/* Mark as artwork, name as live type. The full lockup carried its
+                own baked-in wordmark, which put a second typeface next to
+                every heading on the site; setting the name in the display face
+                puts the header back in the same voice. `font-heading` is the
+                Tailwind bridge to --font-display-stack, so it tracks Sora
+                rather than pinning the family here. */}
             <Link
               href="/"
-              className="group flex items-center"
+              className="group flex items-center gap-2.5"
               aria-label={`${siteConfig.shortName} home`}
             >
               <Image
-                src={siteConfig.logoLockup}
-                alt={siteConfig.name}
-                width={1915}
-                height={483}
+                src={siteConfig.logo}
+                alt=""
+                width={658}
+                height={658}
                 priority
                 className={cn(
-                  "h-10 w-auto",
+                  "h-9 w-9 shrink-0",
                   "transition-transform duration-[var(--duration-normal)] ease-[var(--ease-out)]",
-                  "group-hover:scale-[1.03] motion-reduce:transform-none"
+                  "group-hover:scale-105 motion-reduce:transform-none"
                 )}
               />
+              <span className="font-heading text-[var(--text-xl)] font-semibold tracking-[-0.022em] text-[var(--foreground)]">
+                {siteConfig.shortName}
+              </span>
             </Link>
 
             <ul className="hidden items-center gap-0.5 lg:flex">
@@ -219,7 +223,7 @@ export default function Navbar() {
               )}
             >
               <div className="flex h-[var(--navbar-height)] items-center justify-between border-b border-[var(--border)] px-5">
-                <span className="text-[var(--text-md)] font-semibold text-[var(--foreground)]">
+                <span className="font-heading text-[var(--text-md)] font-semibold tracking-[-0.022em] text-[var(--foreground)]">
                   {siteConfig.shortName}
                 </span>
                 <button

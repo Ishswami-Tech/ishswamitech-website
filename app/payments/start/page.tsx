@@ -58,8 +58,6 @@ export default async function PaymentStartPage(props: {
     );
   }
 
-  const provider = String(payload.provider || "").toLowerCase() || undefined;
-
   let paymentIntent: Record<string, unknown> | null = null;
   if (isPrebuiltPaymentIntent(payload)) {
     paymentIntent = payload;
@@ -67,7 +65,7 @@ export default async function PaymentStartPage(props: {
     // Only create an order when the backend has not already created one;
     // otherwise the client shows an error instead of opening a duplicate order.
     try {
-      paymentIntent = await createPaymentIntentOnServer(payload, provider);
+      paymentIntent = await createPaymentIntentOnServer(payload);
     } catch {
       paymentIntent = null;
     }

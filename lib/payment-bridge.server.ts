@@ -337,10 +337,7 @@ async function fetchJson(
   }
 }
 
-function buildPaymentIntentEndpoint(
-  payload: PaymentBridgePayload,
-  _provider?: string
-): { url: string; body?: string } {
+function buildPaymentIntentEndpoint(payload: PaymentBridgePayload): { url: string; body?: string } {
   const backendBase = getBackendBaseUrl();
 
   if (payload.subscriptionId) {
@@ -433,10 +430,9 @@ export function hasExistingGatewayOrder(payload: PaymentBridgePayload): boolean 
 }
 
 export async function createPaymentIntentOnServer(
-  payload: PaymentBridgePayload,
-  provider?: string
+  payload: PaymentBridgePayload
 ): Promise<PaymentIntentRecord> {
-  const request = buildPaymentIntentEndpoint(payload, provider);
+  const request = buildPaymentIntentEndpoint(payload);
   const forwardedHeaders = await getForwardHeaders({ "X-Clinic-ID": payload.clinicId });
   const headers = {
     "Content-Type": "application/json",

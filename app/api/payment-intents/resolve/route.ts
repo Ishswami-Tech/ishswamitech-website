@@ -71,10 +71,9 @@ export async function POST(request: Request) {
   }
 
   try {
-    const provider = String(payload.provider || "").toLowerCase();
     const paymentIntent = isPrebuilt
       ? payload
-      : await createPaymentIntentOnServer(payload, provider);
+      : await createPaymentIntentOnServer(payload);
 
     return NextResponse.json({
       success: true,

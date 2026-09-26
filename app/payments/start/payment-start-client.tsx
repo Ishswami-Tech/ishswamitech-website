@@ -332,9 +332,7 @@ export default function PaymentStartClient({
         }
       }
 
-      const provider = String(
-        paymentIntent?.provider || resolvedPayload.provider || "",
-      ).toLowerCase();
+      const provider = String(resolvedPaymentIntent.provider || "").toLowerCase();
       const amount = Number(resolvedPaymentIntent.amount || resolvedPayload.amount);
       const displayAmount = String(resolvedPayload.displayAmount || "");
       const orderId = String(
@@ -516,7 +514,7 @@ export default function PaymentStartClient({
         setErrorMessage(message || "Payment gateway could not be opened.");
         setErrorDetails(
           [
-            `provider=${resolvedPayload?.provider || ""}`,
+            `provider=${provider}`,
             `appointmentId=${resolvedPayload?.appointmentId || ""}`,
             `clinicId=${resolvedPayload?.clinicId || ""}`,
             `status=${status}`,

@@ -63,43 +63,52 @@ export default function Navbar() {
     <>
       <header
         className={cn(
-          "fixed inset-x-0 top-0 z-50 border-b backdrop-blur-xl",
-          "transition-[background-color,border-color,box-shadow]",
+          "fixed inset-x-0 top-0 z-50 border-b bg-[var(--surface)]",
+          "transition-[border-color,box-shadow]",
           "duration-[var(--duration-normal)] ease-[var(--ease-out)]",
-          // Glass from the top rather than transparent-until-scrolled. The bar
-          // now spans a dark home hero and light heroes on every other page,
-          // and no single text colour survives both; carrying its own surface
-          // is what lets one treatment work everywhere. It still firms up on
-          // scroll, so the page keeps the sense of lifting under it.
+          // Opaque white, not glass. The bar spans a dark home hero and light
+          // heroes on every other page, and no single text colour survives
+          // both — so it carries its own surface. Translucent white did carry
+          // one, but over the dark hero 72% white composites to a murky grey
+          // that reads as unfinished rather than as glass. Solid keeps the
+          // logo and nav on the surface they were drawn for.
+          //
+          // No backdrop-blur either: blurring what is behind an opaque fill
+          // buys a compositing layer and nothing visible.
           isScrolled
-            ? "border-[var(--border)] bg-[var(--surface-glass-strong)] shadow-[var(--shadow-md)]"
-            : "border-transparent bg-[var(--surface-glass)]"
+            ? "border-[var(--border)] shadow-[var(--shadow-md)]"
+            : "border-transparent"
         )}
       >
         <nav aria-label="Main" className="container">
           <div className="flex h-[var(--navbar-height)] items-center justify-between gap-4">
-            {/* The bar carries a light glass surface at every scroll position,
-                so the full lockup is safe here — this is the one place on the
-                site guaranteed not to be dark behind it. The tagline-free
-                variant is deliberate: at 40px tall the three tagline words
-                collapse into unreadable texture. */}
+            {/* Mark as artwork, name as live type. The full lockup carried its
+                own baked-in wordmark, which put a second typeface next to
+                every heading on the site; setting the name in the display face
+                puts the header back in the same voice. `font-heading` is the
+                Tailwind bridge to --font-display-stack, so it tracks Sora
+                rather than pinning the family here. */}
             <Link
               href="/"
-              className="group flex items-center"
+              className="group flex items-center gap-2.5"
               aria-label={`${siteConfig.shortName} home`}
             >
               <Image
-                src={siteConfig.logoLockup}
-                alt={siteConfig.name}
-                width={1915}
-                height={483}
+                src={siteConfig.logo}
+                alt=""
+                width={658}
+                height={658}
                 priority
                 className={cn(
-                  "h-10 w-auto",
+                  "h-9 w-9 shrink-0",
                   "transition-transform duration-[var(--duration-normal)] ease-[var(--ease-out)]",
-                  "group-hover:scale-[1.03] motion-reduce:transform-none"
+                  "group-hover:scale-105 motion-reduce:transform-none"
                 )}
               />
+              <span className="font-heading text-[var(--text-xl)] font-semibold tracking-[-0.022em] text-[var(--foreground)]">
+                {siteConfig.wordmark.primary}
+                <span className="text-[var(--brand-gold)]">{siteConfig.wordmark.accent}</span>
+              </span>
             </Link>
 
             <ul className="hidden items-center gap-0.5 lg:flex">
@@ -215,8 +224,9 @@ export default function Navbar() {
               )}
             >
               <div className="flex h-[var(--navbar-height)] items-center justify-between border-b border-[var(--border)] px-5">
-                <span className="text-[var(--text-md)] font-semibold text-[var(--foreground)]">
-                  {siteConfig.shortName}
+                <span className="font-heading text-[var(--text-md)] font-semibold tracking-[-0.022em] text-[var(--foreground)]">
+                  {siteConfig.wordmark.primary}
+                  <span className="text-[var(--brand-gold)]">{siteConfig.wordmark.accent}</span>
                 </span>
                 <button
                   type="button"

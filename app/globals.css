@@ -57,6 +57,11 @@
   --accent: var(--indigo-600);
   --accent-strong: var(--violet-700);
   --accent-cyan: #0891b2;
+  /* The gold from the logo's "Tech". Sampled at #e4a824, which is right on the
+     artwork but only 2.1:1 on white — under the 3:1 floor the wordmark needs at
+     20px semibold. Darkened along the same hue to 4.01:1. The dark scheme gets
+     the original, where it measures 9.5:1. */
+  --brand-gold: #a9750a;
 
   --success: #059669;
   --warning: #b45309;
@@ -260,6 +265,7 @@
   --accent: var(--indigo-400);
   --accent-strong: var(--violet-400);
   --accent-cyan: var(--cyan-400);
+  --brand-gold: #e4a824;
 
   --success: #34d399;
   --warning: #fbbf24;

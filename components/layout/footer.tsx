@@ -128,8 +128,9 @@ export default function Footer() {
                 height={658}
                 className="h-11 w-11 shrink-0"
               />
-              <span className="text-[var(--text-xl)] font-semibold tracking-[-0.02em] text-[var(--foreground)]">
-                {siteConfig.shortName}
+              <span className="font-heading text-[var(--text-xl)] font-semibold tracking-[-0.022em] text-[var(--foreground)]">
+                {siteConfig.wordmark.primary}
+                <span className="text-[var(--brand-gold)]">{siteConfig.wordmark.accent}</span>
               </span>
             </Link>
             <p className="type-body mb-5 max-w-sm text-[var(--text-base)] text-[var(--text-secondary)]">

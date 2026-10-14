@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { decryptBridgeCustomer, sanitizeBranding } from "@/lib/bridge/customer";
 import { getAppRegistry } from "@/lib/bridge/app-registry";
 import { verifyBridgeToken } from "@/lib/bridge/token";
 import { buildReturnUrl } from "@/lib/bridge/verify-client";
@@ -46,10 +47,14 @@ export default async function PayStartPage(props: { searchParams: Promise<Search
   }
 
   const { payload, app } = result;
+  const branding = sanitizeBranding(app, payload);
+  const prefill = decryptBridgeCustomer(app.secret, payload.customerEnc) ?? undefined;
 
   return (
     <PayStartClient
       appName={app.name}
+      branding={branding}
+      prefill={prefill}
       payment={{
         provider: payload.provider,
         orderId: payload.orderId,

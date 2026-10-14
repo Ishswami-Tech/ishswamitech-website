@@ -17,6 +17,18 @@ interface PayablePayment {
   gatewayRedirectUrl?: string;
 }
 
+interface CheckoutBranding {
+  name: string;
+  image?: string;
+  note?: string;
+}
+
+interface CheckoutPrefill {
+  name?: string;
+  email?: string;
+  contact?: string;
+}
+
 interface RazorpayHandlerResponse {
   razorpay_payment_id?: string;
   razorpay_order_id?: string;
@@ -35,6 +47,8 @@ type RazorpayConstructor = new (options: {
   currency?: string;
   name: string;
   description?: string;
+  image?: string;
+  prefill?: CheckoutPrefill;
   order_id?: string;
   subscription_id?: string;
   theme?: { color?: string };
@@ -84,12 +98,16 @@ function buildCallbackUrl(appId: string, params: Record<string, string | undefin
 export default function PayStartClient({
   appId,
   appName,
+  branding,
+  prefill,
   payment,
   cancelUrl,
   failureUrl,
 }: {
   appId: string;
   appName: string;
+  branding: CheckoutBranding;
+  prefill?: CheckoutPrefill;
   payment: PayablePayment;
   cancelUrl: string;
   failureUrl: string;
@@ -141,8 +159,10 @@ export default function PayStartClient({
           const isSubscription = payment.razorpayMode === "subscription";
           const checkout = new Razorpay({
             key: keyId,
-            name: appName,
-            description: payment.description,
+            name: branding.name,
+            description: [payment.description, branding.note].filter(Boolean).join(" - ") || undefined,
+            ...(branding.image ? { image: branding.image } : {}),
+            ...(prefill ? { prefill } : {}),
             theme: { color: "#0B5E45" },
             ...(isSubscription
               ? { subscription_id: payment.orderId }
@@ -187,7 +207,7 @@ export default function PayStartClient({
     };
 
     void openGateway();
-  }, [appId, appName, cancelUrl, payment]);
+  }, [appId, branding, prefill, cancelUrl, payment]);
 
   return (
     <div className="flex min-h-[60vh] items-center justify-center px-4 py-16">
@@ -195,6 +215,9 @@ export default function PayStartClient({
         <div className="flex flex-col items-center gap-4 text-center">
           <Loader2 className="h-7 w-7 animate-spin text-[var(--success)]" />
           <p className="text-sm text-[var(--text-secondary)]">{statusLabel}</p>
+          {branding.note ? (
+            <p className="max-w-sm text-xs text-[var(--text-secondary)]">{branding.note}</p>
+          ) : null}
         </div>
       ) : (
         <div className="max-w-lg rounded-2xl border border-red-500/30 bg-red-500/10 px-5 py-4 text-left text-sm text-[var(--danger)]">

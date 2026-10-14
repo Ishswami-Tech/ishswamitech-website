@@ -48,6 +48,15 @@ const bridgePayloadSchema = z
     /** "subscription" opens Razorpay checkout with `subscription_id` (orderId holds the sub id). */
     razorpayMode: z.enum(["order", "subscription"]).optional(),
     gatewayRedirectUrl: z.string().refine(isGatewayUrl, "not an allowed gateway URL").optional(),
+    /**
+     * Optional branding / prefill fields. Deliberately lenient (`unknown`): they are validated and
+     * dropped individually by `sanitizeBranding` / `decryptBridgeCustomer`, so a bad value can never
+     * invalidate an otherwise valid token. They are covered by the HMAC like every other field.
+     */
+    displayName: z.unknown().optional(),
+    logoUrl: z.unknown().optional(),
+    note: z.unknown().optional(),
+    customerEnc: z.unknown().optional(),
     iat: z.number().int(),
     exp: z.number().int(),
   })

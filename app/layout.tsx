@@ -5,6 +5,7 @@ import StructuredData from "@/components/layout/structured-data";
 import { MotionProvider } from "@/components/motion/motion-provider";
 import { SpotlightRoot } from "@/components/motion/spotlight-root";
 import { AnimatedBackground } from "@/components/ui/animated-background";
+import { TempsAnalytics } from "@/components/analytics/temps-analytics";
 import { siteConfig } from "@/lib/site";
 
 const inter = Inter({
@@ -117,14 +118,16 @@ export default function RootLayout({
       </head>
       <body className="bg-[var(--background)] text-[var(--foreground)] antialiased">
         <StructuredData />
-        <MotionProvider>
-          {/* Single ambient layer for the whole app. Sections that want
-              something louder mount their own <AnimatedBackground> locally. */}
-          <AnimatedBackground variant="minimal" position="fixed" intensity="subtle" />
-          {/* Single pointer listener behind every `.spotlight` card surface. */}
-          <SpotlightRoot />
-          {children}
-        </MotionProvider>
+        <TempsAnalytics>
+          <MotionProvider>
+            {/* Single ambient layer for the whole app. Sections that want
+                something louder mount their own <AnimatedBackground> locally. */}
+            <AnimatedBackground variant="minimal" position="fixed" intensity="subtle" />
+            {/* Single pointer listener behind every `.spotlight` card surface. */}
+            <SpotlightRoot />
+            {children}
+          </MotionProvider>
+        </TempsAnalytics>
       </body>
     </html>
   );

@@ -1,4 +1,3 @@
-import { registerOTel } from "@vercel/otel";
 import type * as SentryNamespace from "@sentry/nextjs";
 
 /**
@@ -16,14 +15,26 @@ import type * as SentryNamespace from "@sentry/nextjs";
 export async function register() {
   const runtime = process.env.NEXT_RUNTIME;
 
-  if (runtime === "nodejs" && process.env.SENTRY_DSN) {
-    await import("./sentry.server.config");
-  }
-  if (runtime === "edge" && process.env.SENTRY_DSN) {
-    await import("./sentry.edge.config");
+  // Everything below is optional: a telemetry failure must never block the app.
+  try {
+    if (runtime === "nodejs" && process.env.SENTRY_DSN) {
+      await import("./sentry.server.config");
+    }
+    if (runtime === "edge" && process.env.SENTRY_DSN) {
+      await import("./sentry.edge.config");
+    }
+  } catch (error) {
+    console.warn("[sentry] disabled:", error instanceof Error ? error.message : error);
   }
 
-  registerOTel({ serviceName: "ishswamitech-website" });
+  if (process.env.OTEL_EXPORTER_OTLP_ENDPOINT) {
+    try {
+      const { registerOTel } = await import("@vercel/otel");
+      registerOTel({ serviceName: "ishswamitech-website" });
+    } catch (error) {
+      console.warn("[otel] tracing disabled:", error instanceof Error ? error.message : error);
+    }
+  }
 }
 
 export const onRequestError: typeof SentryNamespace.captureRequestError = async (

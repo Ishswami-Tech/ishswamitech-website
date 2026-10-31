@@ -34,12 +34,14 @@ export async function POST(request: Request) {
     );
   }
 
-  if (!payload.clinicId || !payload.appointmentId) {
+  const hasPayableReference = Boolean(
+    payload.appointmentId || payload.subscriptionId || payload.invoiceId || payload.prescriptionId,
+  );
+  if (!payload.clinicId || !hasPayableReference) {
     return NextResponse.json(
       {
         success: false,
-        error: "Payment payload is missing clinic or appointment details.",
-        payload,
+        error: "Payment payload is missing clinic or payment details.",
       },
       { status: 400 },
     );
@@ -50,7 +52,6 @@ export async function POST(request: Request) {
       {
         success: false,
         error: "Payment amount is invalid or missing.",
-        payload,
       },
       { status: 400 },
     );
@@ -64,7 +65,6 @@ export async function POST(request: Request) {
         success: false,
         error:
           "This payment session is incomplete. Please go back and tap Pay again.",
-        payload,
       },
       { status: 409 },
     );
@@ -85,7 +85,6 @@ export async function POST(request: Request) {
       {
         success: false,
         error: error instanceof Error ? error.message : "Payment gateway could not be opened.",
-        payload,
       },
       { status: 500 },
     );

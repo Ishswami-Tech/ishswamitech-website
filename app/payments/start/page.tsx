@@ -33,9 +33,8 @@ export default async function PaymentStartPage(props: {
 }) {
   const searchParams = await props.searchParams;
   const payloadParam = getSearchParam(searchParams, "payload");
-  const fallbackUrl = buildFallbackCallbackUrl(
-    payloadParam ? `payload=${encodeURIComponent(payloadParam)}` : "",
-  );
+  // Never forward the payment payload to another URL (PG-02).
+  const fallbackUrl = buildFallbackCallbackUrl("");
   const invalidPayloadFallbackUrl = buildFallbackCallbackUrl(
     "paymentError=invalid_payload&paymentVerified=0",
   );

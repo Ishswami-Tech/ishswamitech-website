@@ -39,6 +39,29 @@ describe("bridge token", () => {
     }
   });
 
+  it("carries the cashfree environment", () => {
+    const token = signBridgeToken(
+      input({ provider: "cashfree", paymentSessionId: "session_x", environment: "sandbox" }),
+      SECRET,
+    );
+    const result = verifyBridgeToken(token, apps, now);
+    assert.equal(result.ok, true);
+    if (result.ok) {
+      assert.equal(result.payload.environment, "sandbox");
+    }
+  });
+
+  it("rejects an unknown environment", () => {
+    const signed = signBridgeToken(
+      {
+        ...input({ provider: "cashfree", paymentSessionId: "s" }),
+        environment: "staging" as unknown as "sandbox",
+      },
+      SECRET,
+    );
+    assert.deepEqual(verifyBridgeToken(signed, apps, now), { ok: false, reason: "invalid_payload" });
+  });
+
   it("rejects a tampered body", () => {
     const [body, sig] = signBridgeToken(input(), SECRET).split(".");
     const forged = Buffer.from(JSON.stringify({ ...input(), amount: 1 })).toString("base64url");

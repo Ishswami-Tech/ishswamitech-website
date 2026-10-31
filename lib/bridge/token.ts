@@ -48,6 +48,8 @@ const bridgePayloadSchema = z
     /** "subscription" opens Razorpay checkout with `subscription_id` (orderId holds the sub id). */
     razorpayMode: z.enum(["order", "subscription"]).optional(),
     gatewayRedirectUrl: z.string().refine(isGatewayUrl, "not an allowed gateway URL").optional(),
+    /** Cashfree mode the order was created in; the bridge opens the matching SDK. */
+    environment: z.enum(["sandbox", "production"]).optional(),
     /**
      * Optional branding / prefill fields. Deliberately lenient (`unknown`): they are validated and
      * dropped individually by `sanitizeBranding` / `decryptBridgeCustomer`, so a bad value can never

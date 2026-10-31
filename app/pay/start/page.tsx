@@ -66,6 +66,7 @@ export default async function PayStartPage(props: { searchParams: Promise<Search
         razorpayKeyId: payload.razorpayKeyId,
         razorpayMode: payload.razorpayMode,
         gatewayRedirectUrl: payload.gatewayRedirectUrl,
+        environment: payload.environment,
       }}
       appId={app.appId}
       cancelUrl={buildReturnUrl(app, {

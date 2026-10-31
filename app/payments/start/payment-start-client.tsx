@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { load as loadCashfree } from "@cashfreepayments/cashfree-js";
 import { Loader2 } from "lucide-react";
+import { resolveCashfreeMode } from "@/lib/bridge/cashfree-mode";
 
 type PaymentBridgePayload = {
   provider?: string;
@@ -24,6 +25,8 @@ type PaymentBridgePayload = {
   paymentSessionId?: string;
   razorpayKeyId?: string;
   paymentIntentId?: string;
+  /** Cashfree mode the order was minted in ("sandbox" | "production"). */
+  environment?: string;
 };
 
 type PaymentIntentRecord = Record<string, unknown>;
@@ -202,13 +205,7 @@ function collectRawPayloadCandidates(initialRawPayload?: string): string[] {
     }
   };
 
-  addCandidate(initialRawPayload);
-
-  const searchParams = new URLSearchParams(window.location.search);
-  for (const key of ["payload", "data", "token"]) {
-    addCandidate(searchParams.get(key));
-  }
-
+  // The fragment is the preferred carrier: it never reaches any server, logs or Referer.
   const hashValue = window.location.hash.startsWith("#")
     ? window.location.hash.slice(1)
     : window.location.hash;
@@ -222,7 +219,43 @@ function collectRawPayloadCandidates(initialRawPayload?: string): string[] {
     }
   }
 
+  // Legacy links still carry the payload in the query string.
+  addCandidate(initialRawPayload);
+  const searchParams = new URLSearchParams(window.location.search);
+  for (const key of ["payload", "data", "token"]) {
+    addCandidate(searchParams.get(key));
+  }
+
   return Array.from(candidates);
+}
+
+/** Removes payment details from the address bar and history once they have been read. */
+function scrubPayloadFromAddressBar(): void {
+  try {
+    if (window.location.hash || window.location.search) {
+      window.history.replaceState(window.history.state, "", window.location.pathname);
+    }
+  } catch {
+    // Non-fatal: the payment can continue even if the URL cannot be rewritten.
+  }
+}
+
+const FRIENDLY_ERROR_FALLBACK =
+  "We could not open the payment page. No money was taken. Please go back and tap Pay again.";
+
+/** Maps technical failures to patient-facing copy; details stay in the console only. */
+function toFriendlyError(message: string): string {
+  const text = message.toLowerCase();
+  if (text.includes("payment_session_id") || text.includes("session")) {
+    return "This payment session is no longer valid. No money was taken. Please go back and tap Pay again.";
+  }
+  if (text.includes("payload") || text.includes("link")) {
+    return "This payment link is incomplete or has expired. Please go back and tap Pay again.";
+  }
+  if (text.includes("not available") || text.includes("failed to load") || text.includes("timed out")) {
+    return "The payment service did not load. Check your connection, then go back and try again.";
+  }
+  return FRIENDLY_ERROR_FALLBACK;
 }
 
 export default function PaymentStartClient({
@@ -239,7 +272,6 @@ export default function PaymentStartClient({
   const [status, setStatus] = useState<"loading" | "error">("loading");
   const [statusLabel, setStatusLabel] = useState("Preparing secure checkout...");
   const [errorMessage, setErrorMessage] = useState("");
-  const [errorDetails, setErrorDetails] = useState("");
   const startedRef = useRef(false);
 
   const resolvedFallbackUrl = useMemo(() => {
@@ -268,8 +300,7 @@ export default function PaymentStartClient({
         const rawPayloadCandidates = collectRawPayloadCandidates(initialRawPayload);
         if (!rawPayloadCandidates.length) {
           setStatus("error");
-          setErrorMessage("Invalid payment payload. Please reopen the payment link.");
-          setErrorDetails("The payment payload could not be decoded from the URL.");
+          setErrorMessage(toFriendlyError("Invalid payment payload."));
           return;
         }
 
@@ -282,7 +313,11 @@ export default function PaymentStartClient({
               "Content-Type": "application/json",
             },
             body: JSON.stringify({ rawPayload }),
-          });
+          }).catch(() => null);
+          if (!resolveResponse) {
+            lastErrorMessage = "Payment service not available.";
+            continue;
+          }
 
           const resolved = (await resolveResponse.json().catch(() => null)) as
             | PaymentIntentResolveResponse
@@ -308,29 +343,20 @@ export default function PaymentStartClient({
         if (resolvedPayload && hasPrebuiltGatewayTarget(resolvedPayload)) {
           resolvedPaymentIntent = resolvedPayload as PaymentIntentRecord;
         } else {
-          throw new Error(
-            lastErrorMessage || "Invalid payment payload. Please reopen the payment link.",
-          );
-        }
-      }
-
-      if (!resolvedPayload) {
-        setStatus("error");
-        setErrorMessage("Invalid payment payload. Please reopen the payment link.");
-        setErrorDetails("The payment payload could not be decoded from the URL.");
-        return;
-      }
-
-      if (!resolvedPaymentIntent) {
-        if (hasPrebuiltGatewayTarget(resolvedPayload)) {
-          resolvedPaymentIntent = resolvedPayload as PaymentIntentRecord;
-        } else {
+          console.error("[payment-bridge] payment session could not be resolved", lastErrorMessage);
+          setErrorMessage(toFriendlyError(lastErrorMessage || "Invalid payment payload."));
           setStatus("error");
-          setErrorMessage("Unable to prepare payment session.");
-          setErrorDetails("The backend did not return a payment intent.");
           return;
         }
       }
+
+      if (!resolvedPayload || !resolvedPaymentIntent) {
+        setStatus("error");
+        setErrorMessage(toFriendlyError("Invalid payment payload."));
+        return;
+      }
+
+      scrubPayloadFromAddressBar();
 
       const provider = String(resolvedPaymentIntent.provider || "").toLowerCase();
       const amount = Number(resolvedPaymentIntent.amount || resolvedPayload.amount);
@@ -389,8 +415,12 @@ export default function PaymentStartClient({
             throw new Error("Cashfree payment session was not returned by the server.");
           }
 
-          const cashfreeMode =
-            process.env.NEXT_PUBLIC_CASHFREE_MODE === "production" ? "production" : "sandbox";
+          // PG-01: follow the order's own mode (sandbox vs production), not this site's build.
+          const cashfreeMode = resolveCashfreeMode(
+            process.env.NEXT_PUBLIC_CASHFREE_MODE,
+            resolvedPaymentIntent,
+            resolvedPayload,
+          );
           const cashfree = await loadCashfree({ mode: cashfreeMode });
           if (!cashfree) {
             throw new Error("Cashfree checkout is not available.");
@@ -511,22 +541,14 @@ export default function PaymentStartClient({
         window.location.replace(gatewayRedirectUrl);
       } catch (error) {
         const message = error instanceof Error ? error.message : String(error);
-        setErrorMessage(message || "Payment gateway could not be opened.");
-        setErrorDetails(
-          [
-            `provider=${provider}`,
-            `appointmentId=${resolvedPayload?.appointmentId || ""}`,
-            `clinicId=${resolvedPayload?.clinicId || ""}`,
-            `status=${status}`,
-            `message=${message}`,
-          ].join("\n"),
-        );
+        console.error("[payment-bridge] gateway could not be opened", { provider, message });
+        setErrorMessage(toFriendlyError(message));
         setStatus("error");
       }
     };
 
     void openGateway();
-  }, [initialRawPayload, paymentIntent, payload, resolvedFallbackUrl, status]);
+  }, [initialRawPayload, paymentIntent, payload, resolvedFallbackUrl]);
 
   return (
     <div className="flex min-h-[60vh] items-center justify-center px-4 py-16">
@@ -536,16 +558,13 @@ export default function PaymentStartClient({
           <p className="text-sm text-[var(--text-secondary)]">{statusLabel}</p>
         </div>
       ) : (
-        <div className="max-w-lg rounded-2xl border border-red-500/30 bg-red-500/10 px-5 py-4 text-left text-sm text-[var(--danger)]">
-          <p className="text-center font-medium">
-            {errorMessage || "Payment gateway could not be opened. Please go back and try again."}
-          </p>
-          {errorDetails ? (
-            <pre className="mt-3 max-h-64 overflow-auto whitespace-pre-wrap rounded-xl bg-[var(--surface-overlay)] p-3 text-xs leading-5 text-[var(--danger)]">
-              {errorDetails}
-            </pre>
-          ) : null}
-          <div className="mt-3 flex justify-center">
+        <div
+          role="alert"
+          className="max-w-lg rounded-2xl border border-red-500/30 bg-red-500/10 px-5 py-4 text-center text-sm text-[var(--danger)]"
+        >
+          <p className="text-base font-semibold">Payment could not be started</p>
+          <p className="mt-2">{errorMessage || FRIENDLY_ERROR_FALLBACK}</p>
+          <div className="mt-4 flex justify-center">
             <button
               type="button"
               onClick={() => window.location.replace(resolvedFallbackUrl)}

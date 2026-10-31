@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { load as loadCashfree } from "@cashfreepayments/cashfree-js";
 import { Loader2 } from "lucide-react";
+import { resolveCashfreeMode } from "@/lib/bridge/cashfree-mode";
 
 interface PayablePayment {
   provider: "razorpay" | "cashfree" | "phonepe";
@@ -15,6 +16,7 @@ interface PayablePayment {
   razorpayKeyId?: string;
   razorpayMode?: "order" | "subscription";
   gatewayRedirectUrl?: string;
+  environment?: "sandbox" | "production";
 }
 
 interface CheckoutBranding {
@@ -135,7 +137,7 @@ export default function PayStartClient({
           if (!payment.paymentSessionId) {
             throw new Error("Cashfree payment session is missing.");
           }
-          const mode = process.env.NEXT_PUBLIC_CASHFREE_MODE === "production" ? "production" : "sandbox";
+          const mode = resolveCashfreeMode(process.env.NEXT_PUBLIC_CASHFREE_MODE, payment);
           const cashfree = await loadCashfree({ mode });
           if (!cashfree) {
             throw new Error("Cashfree checkout is not available.");

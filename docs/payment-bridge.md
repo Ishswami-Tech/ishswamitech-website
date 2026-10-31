@@ -1,5 +1,8 @@
 # Ishswami Payment Bridge
 
+> **Other apps (Yoga, Shop, ...):** this page covers the legacy Viddhakarma routes only. For every other app and for
+> multi-provider setup see [payment-bridge-multi-app.md](./payment-bridge-multi-app.md).
+
 This project hosts the merchant-side payment bridge used by Viddhakarma to open payment gateways from the Ishswami domain.
 
 ## Purpose
